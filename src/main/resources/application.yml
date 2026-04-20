@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: GarageManagementSystem
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/garage_db
+    username: postgres
+    password: 1111
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
