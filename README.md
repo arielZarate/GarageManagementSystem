@@ -74,6 +74,7 @@ src/main/java/com/arielzarate/GarageManagementSystem/
     ├── config/             # Spring/application config
     └── persistence/        # Outbound adapter implementation
         ├── entities/       # JPA entities (@Entity, @Id, ...)
+        ├── enums/          # JPA enums (Role, VehicleType, RepairStatus, QuoteStatus)
         ├── mappers/        # Domain ↔ Entity mapping
         └── repositories/   # Spring Data JPA repositories
 ```
@@ -93,16 +94,19 @@ src/main/resources
 
 ## 🧩 Entities
 
+All entities extend `BaseEntity` (id, createdAt, updatedAt, deletedAt).
+
 ### 🔸 COMPANY (Empresa)
 
-Configuration for invoices/quotes (logo, business name, address, phone, hours, CUIT).
+Configuration for invoices/quotes (logo, business name, legal name, address, phone, hours, CUIT).
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
-| businessName | String | Company name |
+| id | Long | Primary key (inherited) |
+| businessName | String | Commercial name |
+| legalName | String | Legal name (razón social) |
 | logo | String | Logo path/URL |
-| address | Address | Full address |
+| address | AddressEmbeddable | Full address |
 | phone | String | Phone number |
 | email | String | Email |
 | horario | String | Business hours |
@@ -114,23 +118,20 @@ System users with roles. Legajo tracks all repairs performed.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
-| legajo | String | Employee ID (unique) |
+| id | Long | Primary key (inherited) |
+| legajo | String | Employee ID (auto-generated) |
 | firstName | String | First name |
 | lastName | String | Last name |
-| alias | String | Short name/nickname |
-| role | Enum | ADMIN, MECHANIC |
+| dni | String | ID number |
+| birthDate | LocalDate | Date of birth |
+| CUIT | String | CUIT (tax ID) |
+| role | Role (enum) | ADMIN, MECHANIC |
+| email | String | Email (unique) |
 | password | String | Hashed password |
 | phone | String | Phone |
-| address | Address | Home address |
+| address | AddressEmbeddable | Home address |
 | active | Boolean | Active/inactive |
 | joinDate | LocalDate | Start date |
-
-**Tracking**: Each repair order records the mechanic. Query by legajo shows:
-- Total repairs performed
-- Date and duration of each repair
-- Reasons/motifs
-- Performance history
 
 ### 🔸 CUSTOMER (Cliente)
 
@@ -138,13 +139,15 @@ Vehicle owner/customer.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
+| legajo | String | Customer ID (auto-generated, unique) |
 | firstName | String | First name |
 | lastName | String | Last name |
 | phone | String | Phone |
-| email | String | Email (optional) |
-| address | Address | Full address |
-| createdAt | LocalDateTime | Created date |
+| email | String | Email |
+| cuit | String | CUIT (tax ID) |
+| dni | String | ID number |
+| address | AddressEmbeddable | Full address |
 | active | Boolean | Active/inactive |
 
 ### 🔸 VEHICLE
@@ -153,18 +156,18 @@ Registered vehicle in the system.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
 | licensePlate | String | License plate (unique) |
 | brand | String | Brand (VW, Ford, Yamaha) |
 | model | String | Model (Gol, Ranger, Fazer) |
 | year | Integer | Year |
 | version | String | Version (1.6, Sport, S) |
-| vehicleType | Enum | CAR, MOTORCYCLE, TRUCK |
+| vehicleType | VehicleType (enum) | CAR, MOTORCYCLE, TRUCK |
 | color | String | Color |
 | kilometers | Integer | Current km |
-| vin | String | VIN/Chassis (optional) |
+| chassisNumber | String | Chassis number (VIN) |
+| engineNumber | String | Engine number |
 | customer | Customer | Owner |
-| createdAt | LocalDateTime | Created date |
 
 ### 🔸 REPAIR_ORDER (Orden de Reparación)
 
@@ -172,20 +175,17 @@ Repair work order.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
 | orderNumber | String | Order number (unique) |
 | vehicle | Vehicle | Vehicle |
 | customer | Customer | Customer |
 | employee | Employee | Assigned mechanic |
-| status | Enum | PENDING, IN_PROGRESS, WAITING_PARTS, COMPLETED, DELIVERED |
+| status | RepairStatus (enum) | PENDING, IN_PROGRESS, WAITING_PARTS, COMPLETED, DELIVERED |
 | diagnosis | Text | Initial diagnosis |
 | admissionDate | LocalDateTime | Admission date |
 | estimatedFinish | LocalDateTime | Estimated finish |
-| laborCost | BigDecimal | Labor cost |
 | totalCost | BigDecimal | Total cost |
 | notes | Text | Additional notes |
-| createdAt | LocalDateTime | Created date |
-| updatedAt | LocalDateTime | Last update |
 
 ### 🔸 REPAIR_DETAIL
 
@@ -193,15 +193,15 @@ Line items for repair order (labor + parts).
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
 | repairOrder | RepairOrder | Parent order |
 | description | String | Description |
 | partName | String | Part name |
-| partPrice | BigDecimal | Part price |
+| partPrice | BigDecimal | Part price (per unit) |
 | quantity | Integer | Quantity |
-| laborHours | BigDecimal | Labor hours |
-| laborPrice | BigDecimal | Hourly rate |
+| laborPrice | BigDecimal | Fixed labor price |
 | subtotal | BigDecimal | Line total |
+| photos | List\<String\> | Photo paths |
 
 ### 🔸 QUOTE (Presupuesto)
 
@@ -209,15 +209,14 @@ Budget/quote (independent flow).
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
 | quoteNumber | String | Quote number (unique) |
+| quoteDate | LocalDate | Quote date |
 | vehicle | Vehicle | Vehicle |
 | customer | Customer | Customer |
-| status | Enum | DRAFT, SENT, ACCEPTED, REJECTED |
-| laborSubtotal | BigDecimal | Labor subtotal |
-| partsSubtotal | BigDecimal | Parts subtotal |
+| status | QuoteStatus (enum) | DRAFT, SENT, ACCEPTED, REJECTED |
 | total | BigDecimal | Total |
-| details | List<QuoteDetail> | Line items |
+| validUntil | LocalDate | Valid until date |
 
 ### 🔸 QUOTE_DETAIL
 
@@ -225,25 +224,20 @@ Line items for quote (labor + parts).
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | Long | Primary key |
+| id | Long | Primary key (inherited) |
 | quote | Quote | Parent quote |
 | description | String | Description |
 | partName | String | Part name |
-| partPrice | BigDecimal | Part price |
+| partPrice | BigDecimal | Part price (per unit) |
 | quantity | Integer | Quantity |
-| laborHours | BigDecimal | Labor hours |
-| laborPrice | BigDecimal | Hourly rate |
+| laborPrice | BigDecimal | Fixed labor price |
 | subtotal | BigDecimal | Line total |
-| notes | Text | Additional notes |
-| validUntil | LocalDate | Valid until |
-| createdAt | LocalDateTime | Created date |
-| acceptedAt | LocalDateTime | Accepted date |
 
 ---
 
 ## 📊 Enums
 
-### EMPLOYEE_ROLE
+### ROLE
 - ADMIN - Owner/administrator
 - MECHANIC - Mechanic
 
@@ -356,18 +350,29 @@ Customer enters license plate and sees:
 
 ```yaml
 spring:
+  application:
+    name: GarageManagementSystem
+
   datasource:
     url: jdbc:postgresql://localhost:5432/garage_db
     username: postgres
     password: 1111
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    open-in-view: false
 
   thymeleaf:
     cache: false
+    check-template-location: false
 
 server:
   port: 8080
