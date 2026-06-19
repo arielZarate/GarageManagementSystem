@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-2xl mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6">Company</h1>
+        <form th:action="@{/company}" th:object="${companyObject}" method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Nombre Fantasia</label>
+                <input type="text" th:field="*{businessName}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Razón Social</label>
+                <input type="text" th:field="*{legalName}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">CUIT</label>
+                <input type="text" th:field="*{cuit}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Teléfono</label>
+                <input type="text" th:field="*{phone}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" th:field="*{email}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Horario</label>
+                <input type="text" th:field="*{horario}" class="w-full border rounded p-2">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar Empresa</button>
+        </form>
+    </div>
+</body>
+</html>

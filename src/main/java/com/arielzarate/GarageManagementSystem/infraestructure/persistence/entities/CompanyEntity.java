@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "company")
-public class Company extends BaseEntity {
+public class CompanyEntity extends BaseEntity {
 
     private String businessName;
 
