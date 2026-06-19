@@ -74,6 +74,7 @@ src/main/java/com/arielzarate/GarageManagementSystem/
     ├── config/             # Spring/application config
     └── persistence/        # Outbound adapter implementation
         ├── entities/       # JPA entities (@Entity, @Id, ...)
+        ├── enums/          # JPA enums (Role, VehicleType, RepairStatus, QuoteStatus)
         ├── mappers/        # Domain ↔ Entity mapping
         └── repositories/   # Spring Data JPA repositories
 ```
@@ -118,15 +119,14 @@ System users with roles. Legajo tracks all repairs performed.
 | Field | Type | Description |
 |-------|------|-------------|
 | id | Long | Primary key (inherited) |
-| legajo | String | Employee ID (unique) |
+| legajo | String | Employee ID (auto-generated) |
 | firstName | String | First name |
 | lastName | String | Last name |
 | dni | String | ID number |
 | birthDate | LocalDate | Date of birth |
 | CUIT | String | CUIT (tax ID) |
-| alias | String | Short name/nickname |
 | role | Role (enum) | ADMIN, MECHANIC |
-| email | String | Email |
+| email | String | Email (unique) |
 | password | String | Hashed password |
 | phone | String | Phone |
 | address | AddressEmbeddable | Home address |
@@ -140,6 +140,7 @@ Vehicle owner/customer.
 | Field | Type | Description |
 |-------|------|-------------|
 | id | Long | Primary key (inherited) |
+| legajo | String | Customer ID (auto-generated, unique) |
 | firstName | String | First name |
 | lastName | String | Last name |
 | phone | String | Phone |
