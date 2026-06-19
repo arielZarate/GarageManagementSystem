@@ -1,4 +1,4 @@
-package com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums;
+package com.arielzarate.GarageManagementSystem.domain.model.enums;
 
 public enum QuoteStatus {
     DRAFT,  //borrador

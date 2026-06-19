@@ -1,6 +1,6 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities;
 
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums.VehicleType;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

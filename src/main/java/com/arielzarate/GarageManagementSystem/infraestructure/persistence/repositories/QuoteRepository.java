@@ -1,7 +1,7 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories;
 
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Quote;
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums.QuoteStatus;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.QuoteStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities;
 
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums.Role;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

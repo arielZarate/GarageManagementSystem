@@ -1,7 +1,7 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories;
 
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.RepairOrder;
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums.RepairStatus;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.RepairStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

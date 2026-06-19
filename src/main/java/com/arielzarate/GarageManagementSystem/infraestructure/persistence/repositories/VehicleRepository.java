@@ -1,7 +1,7 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories;
 
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle;
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.enums.VehicleType;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
