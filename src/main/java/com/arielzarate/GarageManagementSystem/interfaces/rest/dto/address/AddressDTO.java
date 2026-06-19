@@ -1,23 +1,20 @@
-package com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities;
+package com.arielzarate.GarageManagementSystem.interfaces.rest.dto.address;
 
-import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Embeddable
-public class AddressEmbeddable {
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class AddressDTO {
     private String province;
-
     private String city;
-
     private String neighborhood;
-
     private String street;
     private String number;
     private String postalCode;
     private String country;
-
 }
