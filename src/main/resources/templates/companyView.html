@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body>
+    <div th:replace="~{layout/layout :: navbar}"></div>
+    <div th:replace="~{layout/layout :: sidebar}"></div>
+    <div th:replace="~{layout/layout :: overlay}"></div>
+
+    <main class="main-content">
+        <h1 class="text-2xl font-bold mb-6">Company</h1>
+        <div class="bg-white shadow rounded p-6 space-y-2">
+            <p><strong>ID:</strong> <span th:text="${company.id}"></span></p>
+            <p><strong>Nombre Fantasia:</strong> <span th:text="${company.businessName}"></span></p>
+            <p><strong>Razon Social:</strong> <span th:text="${company.legalName}"></span></p>
+            <p><strong>CUIT:</strong> <span th:text="${company.cuit}"></span></p>
+            <p><strong>Telefono:</strong> <span th:text="${company.phone}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${company.email}"></span></p>
+            <p><strong>Horario:</strong> <span th:text="${company.horario}"></span></p>
+            <p><strong>Logo:</strong> <span th:text="${company.logo}"></span></p>
+
+            <hr class="my-4">
+            <h2 class="text-xl font-semibold">Direccion</h2>
+            <p><strong>Provincia:</strong> <span th:text="${company.address?.province ?: ''}"></span></p>
+            <p><strong>Ciudad:</strong> <span th:text="${company.address?.city ?: ''}"></span></p>
+            <p><strong>Barrio:</strong> <span th:text="${company.address?.neighborhood ?: ''}"></span></p>
+            <p><strong>Calle:</strong> <span th:text="${company.address?.street ?: ''}"></span></p>
+            <p><strong>Numero:</strong> <span th:text="${company.address?.number ?: ''}"></span></p>
+            <p><strong>CP:</strong> <span th:text="${company.address?.postalCode ?: ''}"></span></p>
+            <p><strong>Pais:</strong> <span th:text="${company.address?.country ?: ''}"></span></p>
+        </div>
+        <div class="mt-4">
+            <a href="/api/v1/company/edit" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
+            <form action="/api/v1/company/delete" method="post" style="display:inline">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Eliminar company?')">Eliminar</button>
+            </form>
+            <a href="/api/v1/" class="ml-2 text-gray-600">Volver</a>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/layout :: footer}"></div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

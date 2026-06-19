@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-2xl mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-6">Company</h1>
-        <form th:action="@{/company}" th:object="${companyObject}" method="post" class="space-y-4">
+<body>
+    <div th:replace="~{layout/layout :: navbar}"></div>
+    <div th:replace="~{layout/layout :: sidebar}"></div>
+    <div th:replace="~{layout/layout :: overlay}"></div>
+
+    <main class="main-content">
+        <h1 class="text-2xl font-bold mb-6" th:text="${editMode} ? 'Editar Empresa' : 'Nueva Empresa'">Company</h1>
+
+        <form th:action="${editMode} ? @{/company/update} : @{/company}" th:object="${companyObject}" method="post" class="space-y-4">
+            <input type="hidden" th:field="*{id}" th:if="${editMode}">
             <div>
                 <label class="block text-sm font-medium">Nombre Fantasia</label>
                 <input type="text" th:field="*{businessName}" class="w-full border rounded p-2">
             </div>
             <div>
-                <label class="block text-sm font-medium">Razón Social</label>
+                <label class="block text-sm font-medium">Razon Social</label>
                 <input type="text" th:field="*{legalName}" class="w-full border rounded p-2">
             </div>
             <div>
@@ -23,7 +29,7 @@
                 <input type="text" th:field="*{cuit}" class="w-full border rounded p-2">
             </div>
             <div>
-                <label class="block text-sm font-medium">Teléfono</label>
+                <label class="block text-sm font-medium">Telefono</label>
                 <input type="text" th:field="*{phone}" class="w-full border rounded p-2">
             </div>
             <div>
@@ -34,8 +40,54 @@
                 <label class="block text-sm font-medium">Horario</label>
                 <input type="text" th:field="*{horario}" class="w-full border rounded p-2">
             </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar Empresa</button>
+            <div>
+                <label class="block text-sm font-medium">Logo URL</label>
+                <input type="text" th:field="*{logo}" class="w-full border rounded p-2">
+            </div>
+
+            <hr class="my-4">
+            <h2 class="text-xl font-semibold mb-4">Direccion</h2>
+
+            <div>
+                <label class="block text-sm font-medium">Provincia</label>
+                <input type="text" th:field="*{address.province}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Ciudad</label>
+                <input type="text" th:field="*{address.city}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Barrio</label>
+                <input type="text" th:field="*{address.neighborhood}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Calle</label>
+                <input type="text" th:field="*{address.street}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Numero</label>
+                <input type="text" th:field="*{address.number}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Codigo Postal</label>
+                <input type="text" th:field="*{address.postalCode}" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Pais</label>
+                <input type="text" th:field="*{address.country}" class="w-full border rounded p-2">
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded" th:text="${editMode} ? 'Actualizar' : 'Guardar'"></button>
+            <a href="/api/v1/company" class="ml-2 text-gray-600">Cancelar</a>
         </form>
-    </div>
+    </main>
+
+    <div th:replace="~{layout/layout :: footer}"></div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+    </script>
 </body>
 </html>

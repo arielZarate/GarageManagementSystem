@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CompanyRequest {
+    private Long id;
     private String businessName;
     private String legalName;
     private String logo;
@@ -18,5 +21,5 @@ public class CompanyRequest {
     private String email;
     private String horario;
     private String cuit;
-    private AddressDTO address;
+    private AddressDTO address = new AddressDTO();
 }
