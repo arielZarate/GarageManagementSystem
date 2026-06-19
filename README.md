@@ -16,7 +16,7 @@ The system allows:
 
 ## 🎯 Objectives
 
-- Implement MVC architecture with Spring Boot
+- Implement Hexagonal Architecture (Ports & Adapters)
 - Manage customers, vehicles, quotes, and repair orders (CRUD)
 - Generate detailed quotes/budgets with labor and parts
 - Track repair status in real-time
@@ -31,7 +31,7 @@ The system allows:
 
 ### 🔹 Backend
 
-- Java + Spring Boot
+- Java 21 + Spring Boot
 - Spring MVC
 - Spring Data JPA
 - Spring Security + JWT (basic authentication)
@@ -47,28 +47,46 @@ The system allows:
 
 ---
 
-## 📦 Project Structure
+## 📦 Project Structure (Hexagonal Architecture)
 
 ```
-src/main/java/com/workshop
+src/main/java/com/arielzarate/GarageManagementSystem/
 │
-├── controller/
-├── service/
-├── repository/
-├── entity/
-├── dto/
-├── config/
-└── enums/
+├── domain/
+│   ├── model/              # Pure business POJOs (no framework annotations)
+│   ├── ports/
+│   │   ├── in/             # Inbound port interfaces (use cases)
+│   │   └── out/            # Outbound port interfaces (repositories)
+│   └── services/           # Business logic implementations
+│
+├── application/
+│   └── services/           # Application-level orchestration services
+│
+├── interfaces/
+│   ├── errors/             # Error handling
+│   ├── middleware/         # Middleware (filters, interceptors)
+│   ├── rest/               # REST controllers (inbound adapters)
+│   └── security/           # Security config
+│
+└── infraestructure/
+    ├── adapters/
+    │   └── mappers/        # Domain ↔ DTO mappers
+    ├── config/             # Spring/application config
+    └── persistence/        # Outbound adapter implementation
+        ├── entities/       # JPA entities (@Entity, @Id, ...)
+        ├── mappers/        # Domain ↔ Entity mapping
+        └── repositories/   # Spring Data JPA repositories
 ```
 
 ```
 src/main/resources
 │
-├── templates/      (Thymeleaf)
+├── templates/              (Thymeleaf views)
 ├── static/
 │   ├── css/
 │   └── js/
-└── application.yml
+├── application.yml
+└── application.properties
 ```
 
 ---
@@ -339,9 +357,9 @@ Customer enters license plate and sees:
 ```yaml
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/workshop_db
+    url: jdbc:postgresql://localhost:5432/garage_db
     username: postgres
-    password: password
+    password: 1111
 
   jpa:
     hibernate:
@@ -353,7 +371,24 @@ spring:
 
 server:
   port: 8080
+  servlet:
+    context-path: /api/v1
 ```
+
+---
+
+## 🧱 Layer Rules
+
+| Layer | Depends on | Contains |
+|-------|-----------|----------|
+| `domain/` | Nothing | Models, Ports interfaces, Service implementations |
+| `application/` | `domain/` | Application orchestration services |
+| `interfaces/` | `domain/` | REST controllers, error handling, security, middleware |
+| `infraestructure/` | `domain/` | JPA entities, repositories, mappers, Spring config |
+
+- **Domain models** have zero framework annotations (no `@Entity`, no `@Spring`).
+- **Ports** define contracts: inbound (use cases) and outbound (repositories).
+- **Infrastructure** adapters implement outbound ports and map between domain ↔ JPA entities.
 
 ---
 
@@ -373,7 +408,7 @@ server:
 
 This project demonstrates:
 
-- MVC architecture with Spring Boot
+- Hexagonal Architecture with Spring Boot
 - Relational database design
 - Complex entity relationships
 - Business logic implementation

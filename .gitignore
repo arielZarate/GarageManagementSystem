@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Node / Tailwind ###
+node_modules/
+package-lock.json
+src/main/resources/static/css/output.css

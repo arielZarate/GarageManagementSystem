@@ -1,0 +1,22 @@
+{
+  "name": "garagemanagementsystem",
+  "version": "1.0.0",
+  "description": "Web-based system for managing a generic repair workshop (cars, motorcycles, trucks). Manages customers, vehicles, repair orders, quotes (budgets), and provides real-time status tracking.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i src/main/resources/static/css/input.css -o src/main/resources/static/css/output.css",
+    "watch:css": "npx @tailwindcss/cli -i src/main/resources/static/css/input.css -o src/main/resources/static/css/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@personal:arielZarate/GarageManagementSystem.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "tailwindcss": "^4.3.1"
+  }
+}
