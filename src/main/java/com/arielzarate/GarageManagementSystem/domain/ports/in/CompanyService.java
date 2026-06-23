@@ -9,7 +9,7 @@ public interface CompanyService {
 
     Company getCompany();
 
-    Company updateCompany(Company company);
+    Company editCompany(Company company);
 
     void deleteCompany(Long id);
 }

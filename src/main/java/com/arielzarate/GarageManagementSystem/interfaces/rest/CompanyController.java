@@ -44,7 +44,7 @@ public class CompanyController {
         log.info("Request recibida: {}", request);
         var domain = mapper.toDomain(request);
         var saved = service.addCompany(domain);
-        log.info("Company guardada: {}", saved);
+        log.info("Response Company saved con id : {}", saved.getId());
         return "redirect:/company";
     }
 
@@ -67,7 +67,7 @@ public class CompanyController {
     public String update(@ModelAttribute CompanyRequest request) {
         log.info("Update request: {}", request);
         var domain = mapper.toDomain(request);
-        service.updateCompany(domain);
+        service.editCompany(domain);
         log.info("Company updated");
         return "redirect:/company";
     }

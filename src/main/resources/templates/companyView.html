@@ -34,11 +34,11 @@
             <p><strong>Pais:</strong> <span th:text="${company.address?.country ?: ''}"></span></p>
         </div>
         <div class="mt-4">
-            <a href="/api/v1/company/edit" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
-            <form action="/api/v1/company/delete" method="post" style="display:inline">
+            <a th:href="@{/company/edit}" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
+            <form th:action="@{/company/delete}" method="post" style="display:inline">
                 <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Eliminar company?')">Eliminar</button>
             </form>
-            <a href="/api/v1/" class="ml-2 text-gray-600">Volver</a>
+            <a th:href="@{/}" class="ml-2 text-white bg-green-400 px-4 py-2 rounded">Volver</a>
         </div>
     </main>
 

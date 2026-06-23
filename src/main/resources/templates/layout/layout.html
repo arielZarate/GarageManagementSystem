@@ -33,20 +33,20 @@
         <span></span><span></span><span></span>
     </button>
     <div class="nav-brand">
-        <a href="/api/v1/">GarageSystem</a>
+        <a th:href="@{/}">GarageSystem</a>
     </div>
     <div class="nav-spacer"></div>
     <ul class="nav-menu">
-        <li><a href="/api/v1/client">Clientes</a></li>
-        <li><a href="/api/v1/vehicle">Vehiculos</a></li>
-        <li><a href="/api/v1/quote">Presupuestos</a></li>
-        <li><a href="/api/v1/repair-order">Ordenes</a></li>
+        <li><a th:href="@{/client}">Clientes</a></li>
+        <li><a th:href="@{/vehicle}">Vehiculos</a></li>
+        <li><a th:href="@{/quote}">Presupuestos</a></li>
+        <li><a th:href="@{/repair-order}">Ordenes</a></li>
     </ul>
 </nav>
 
 <div class="sidebar" id="sidebar" th:fragment="sidebar">
     <h3>Configuracion</h3>
-    <a href="/api/v1/company">Company</a>
+    <a th:href="@{/company}">Company</a>
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleSidebar()" th:fragment="overlay"></div>

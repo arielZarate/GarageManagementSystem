@@ -5,8 +5,6 @@ import com.arielzarate.GarageManagementSystem.domain.ports.in.CompanyService;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.CompanyProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
-
 
 @Service
 @AllArgsConstructor
@@ -21,11 +19,11 @@ public class CompanyUseCase implements CompanyService {
 
     @Override
     public Company getCompany() {
-        return provider.list().stream().findFirst().orElse(null);
+        return provider.getCompany().orElse(null);
     }
 
     @Override
-    public Company updateCompany(Company company) {
+    public Company editCompany(Company company) {
         return provider.update(company);
     }
 

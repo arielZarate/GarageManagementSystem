@@ -6,7 +6,7 @@ import com.arielzarate.GarageManagementSystem.infraestructure.adapters.mappers.C
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories.CompanyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -35,16 +35,12 @@ public class CompanyAdapter implements CompanyProvider {
     }
 
     @Override
-    public Company getCompany(Long id) {
-        return companyRepository.findById(id)
-                .map(mapper::toDomain)
-                .orElse(null);
+    public Optional<Company> getCompany() {
+        return companyRepository.findAll()
+                .stream()
+                .findFirst()
+                .map(mapper::toDomain);
     }
 
-    @Override
-    public List<Company> list() {
-        return companyRepository.findAll().stream()
-                .map(mapper::toDomain)
-                .toList();
-    }
+
 }
