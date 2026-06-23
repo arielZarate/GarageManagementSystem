@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://stage-db-server:5432/garage_db
+    username: postgres
+    password: 1111

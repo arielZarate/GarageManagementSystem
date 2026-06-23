@@ -1,0 +1,15 @@
+spring:
+  thymeleaf:
+    cache: false
+    check-template-location: false
+    prefix: file:src/main/resources/templates/
+
+  web:
+    resources:
+      static-locations: classpath:/static/,file:src/main/resources/static/
+      cache:
+        period: 0
+
+  devtools:
+    livereload:
+      enabled: true

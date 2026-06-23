@@ -4,13 +4,14 @@ import com.arielzarate.GarageManagementSystem.domain.ports.in.CompanyService;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.address.AddressDTO;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.company.CompanyRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.CompanyDTOMapper;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -40,12 +41,23 @@ public class CompanyController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute CompanyRequest request) {
+    public String create(@Valid @ModelAttribute("companyObject") CompanyRequest request, BindingResult result) {
         log.info("Request recibida: {}", request);
-        var domain = mapper.toDomain(request);
-        var saved = service.addCompany(domain);
-        log.info("Response Company saved con id : {}", saved.getId());
-        return "redirect:/company";
+
+        if (result.hasErrors()) {
+            return "companyForm";
+        }
+
+        try {
+            var domain = mapper.toDomain(request);
+            var saved = service.addCompany(domain);
+            log.info("Company saved con id: {}", saved.getId());
+            return "redirect:/company";
+        } catch (IllegalArgumentException e) {
+            log.warn("Error de validación de negocio: {}", e.getMessage());
+            result.reject("error.business", e.getMessage());
+            return "companyForm";
+        }
     }
 
     @GetMapping("/edit")
@@ -64,12 +76,24 @@ public class CompanyController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute CompanyRequest request) {
+    public String update(@Valid @ModelAttribute("companyObject") CompanyRequest request,
+                         BindingResult result) {
         log.info("Update request: {}", request);
-        var domain = mapper.toDomain(request);
-        service.editCompany(domain);
-        log.info("Company updated");
-        return "redirect:/company";
+
+        if (result.hasErrors()) {
+            return "companyForm";
+        }
+
+        try {
+            var domain = mapper.toDomain(request);
+            service.editCompany(domain);
+            log.info("Company updated");
+            return "redirect:/company";
+        } catch (IllegalArgumentException e) {
+            log.warn("Error de validación de negocio: {}", e.getMessage());
+            result.reject("error.business", e.getMessage());
+            return "companyForm";
+        }
     }
 
     @PostMapping("/delete")
