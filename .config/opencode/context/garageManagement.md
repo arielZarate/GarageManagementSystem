@@ -15,24 +15,29 @@ domain/
   ports/
     in/               CompanyService (interfaces de caso de uso)
     out/              CompanyProvider (interfaces de repositorio)
-  services/           CodeGenerator
+  services/
+    CodeGenerator
+    validators/
+      CUITValidator       validate() / isValid() — formato XX-XXXXXXXX-X o 11 dígitos
+      EmailValidator      validate() / isValid() — regex email completo
+      PhoneValidator      validate() / isValid() / normalize() — solo Córdoba (351), +54 opcional
 
 application/
-  services/           CompayUseCase (orquestación)
+  services/               CompanyUseCase (orquestación + validación de negocio)
 
 interfaces/
-  rest/               CompanyController (Thymeleaf MVC)
+  rest/                   CompanyController (Thymeleaf MVC, @Valid + BindingResult)
     dto/
-      company/        CompanyRequest, CompanyResponse
-      address/        AddressDTO
+      company/            CompanyRequest (con Jakarta Validation: @NotBlank, @Size, @Email, @Valid), CompanyResponse
+      address/            AddressDTO (con Jakarta Validation: @NotBlank, @Size)
 
 infraestructure/
   adapters/
-    mappers/          CompanyMapper (MapStruct: DTO ↔ Domain ↔ Entity)
+    mappers/              CompanyMapper (MapStruct: DTO ↔ Domain ↔ Entity)
   config/
   persistence/
-    entities/         BaseEntity, CompanyEntity, Customer, Employee, Vehicle, RepairOrder, RepairDetail, Quote, QuoteDetail, AddressEmbeddable
-    repositories/     CompanyRepository, CustomerRepository, EmployeeRepository, VehicleRepository, RepairOrderRepository, RepairDetailRepository, QuoteRepository, QuoteDetailRepository
+    entities/             BaseEntity, CompanyEntity, Customer, Employee, Vehicle, RepairOrder, RepairDetail, Quote, QuoteDetail, AddressEmbeddable
+    repositories/         CompanyRepository, CustomerRepository, EmployeeRepository, VehicleRepository, RepairOrderRepository, RepairDetailRepository, QuoteRepository, QuoteDetailRepository
 ```
 
 ## Entities
@@ -77,14 +82,20 @@ companyForm.html → CompanyController
   ← redirect
 ```
 
+## Validation Strategy (implemented)
+- **DTO (capa web)**: Jakarta Validation (@NotBlank, @Size, @Email, @Valid, @Pattern) — validación de estructura y formato básico, early fail
+- **Servicio (capa dominio)**: Validators específicos (CUITValidator, EmailValidator, PhoneValidator) con regex propios — validación de reglas de negocio, reutilizables desde cualquier punto de entrada
+- **Controller**: @ModelAttribute + @Valid + BindingResult, captura IllegalArgumentException del servicio como error global
+
 ## Commands
 - `npm run build:css` - Build Tailwind CSS
 - `npm run watch:css` - Watch Tailwind CSS
 - `mvn spring-boot:run` - Run app on port 8080/api/v1
 - `mvn compile` - Compile
+- `mvn test` - Run tests
 
 ## Next Steps (roadmap)
-1. Complete Company template with Tailwind + test in browser
+1. ✅ Company CRUD (model → port → adapter → usecase → controller → template + validations)
 2. Repeat full flow for Customer (model → port → adapter → mapper → usecase → controller → template)
 3. Same for Vehicle, RepairOrder, Quote
 4. Layout base (sidebar + header) for all screens

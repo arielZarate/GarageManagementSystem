@@ -4,6 +4,11 @@ spring:
     check-template-location: false
     prefix: file:src/main/resources/templates/
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/garage_db
+    username: postgres
+    password: 1111
+
   web:
     resources:
       static-locations: classpath:/static/,file:src/main/resources/static/
