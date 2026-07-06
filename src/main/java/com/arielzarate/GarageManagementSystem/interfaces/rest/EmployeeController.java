@@ -3,6 +3,7 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 import com.arielzarate.GarageManagementSystem.domain.model.Address;
 import com.arielzarate.GarageManagementSystem.domain.model.Employee;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
+import com.arielzarate.GarageManagementSystem.domain.ports.in.EmployeeService;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.employee.EmployeeRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.EmployeeDTOMapper;
 import lombok.AllArgsConstructor;
@@ -25,19 +26,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
-
+    private final EmployeeService service;
     private final EmployeeDTOMapper mapper;
 
     @GetMapping
-    public String index(Model model) {
-
-        Address ad1 = new Address("cordoba", "Cordoba", "granja de funes", "potel junot", "6872", "5000", "Argentina");
-        Employee e1 = new Employee(13245L, "12345Lehajo", "Ariel", "Zarate", "3278551", LocalDate.of(1987, 1, 7), "20327855515",
-                "arieltecnico@gmail.com", "admin", "35122266656", ad1, Role.MANAGER, true, LocalDate.now());
-        List<Employee> list = new ArrayList<Employee>();
-
-        list.add(e1);
-
+    public String getEmployees(Model model) {
+        List<Employee> list = service.getEmployees();
         model.addAttribute("employees", list);
         return "employee/employeeView";
 
@@ -72,7 +66,7 @@ public class EmployeeController {
         return "/employee/employeeForm";
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updateEmployee(@ModelAttribute("employeeObject") EmployeeRequest request) {
         return "";
     }

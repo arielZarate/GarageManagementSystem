@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "employee")
-public class Employee extends BaseEntity {
+public class EmployeeEntity extends BaseEntity {
 
     private String legajo;
 

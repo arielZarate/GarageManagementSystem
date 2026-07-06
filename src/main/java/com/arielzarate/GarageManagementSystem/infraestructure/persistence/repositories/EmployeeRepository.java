@@ -1,13 +1,13 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories;
 
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Employee;
+import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 
-    Optional<Employee> findByLegajo(String legajo);
+    Optional<EmployeeEntity> findByLegajo(String legajo);
 
-    Optional<Employee> findByEmail(String email);
+    Optional<EmployeeEntity> findByEmail(String email);
 }

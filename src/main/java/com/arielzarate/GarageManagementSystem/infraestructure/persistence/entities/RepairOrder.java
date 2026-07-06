@@ -34,7 +34,7 @@ public class RepairOrder extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employee;
+    private EmployeeEntity employee;
 
     @Enumerated(EnumType.STRING)
 
