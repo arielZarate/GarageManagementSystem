@@ -31,13 +31,13 @@ public class CompanyController {
             return "redirect:/company/new";
         }
         model.addAttribute("company", mapper.toResponse(company));
-        return "companyView";
+        return "/company/companyView";
     }
 
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("companyObject", new CompanyRequest());
-        return "companyForm";
+        return "/company/companyForm";
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class CompanyController {
         log.info("Request recibida: {}", request);
 
         if (result.hasErrors()) {
-            return "companyForm";
+            return "/company/companyForm";
         }
 
         try {
@@ -56,7 +56,7 @@ public class CompanyController {
         } catch (IllegalArgumentException e) {
             log.warn("Error de validación de negocio: {}", e.getMessage());
             result.reject("error.business", e.getMessage());
-            return "companyForm";
+            return "/company/companyForm";
         }
     }
 
@@ -72,7 +72,7 @@ public class CompanyController {
         }
         model.addAttribute("companyObject", request);
         model.addAttribute("editMode", true);
-        return "companyForm";
+        return "/company/companyForm";
     }
 
     @PostMapping("/update")
@@ -81,7 +81,7 @@ public class CompanyController {
         log.info("Update request: {}", request);
 
         if (result.hasErrors()) {
-            return "companyForm";
+            return "/company/companyForm";
         }
 
         try {
@@ -92,7 +92,7 @@ public class CompanyController {
         } catch (IllegalArgumentException e) {
             log.warn("Error de validación de negocio: {}", e.getMessage());
             result.reject("error.business", e.getMessage());
-            return "companyForm";
+            return "/company/companyForm";
         }
     }
 

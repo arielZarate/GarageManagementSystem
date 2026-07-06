@@ -12,7 +12,7 @@
     <div th:replace="~{layout/layout :: overlay}"></div>
 
     <main class="main-content">
-        <h1 class="text-2xl font-bold mb-6" th:text="${editMode} ? 'Editar Empresa' : 'Nueva Empresa'">Company</h1>
+        <h1 class="text-2xl font-bold mb-6" th:text="${editMode} ? 'Editar Empresa' : 'Nueva Empresa'"></h1>
 
         <form th:action="${editMode} ? @{/company/update} : @{/company}" th:object="${companyObject}" method="post" class="space-y-4">
             <input type="hidden" th:field="*{id}" th:if="${editMode}">

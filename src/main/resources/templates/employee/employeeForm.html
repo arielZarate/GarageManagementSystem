@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Empleados</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body>
+<div th:replace="~{layout/layout::navbar}"></div>
+<div th:replace="~{layout/layout::sidebar}"></div>
+<div th:replace="~{layout/layout::overlay}"></div>
+
+<main class="main-content">
+    <h1 th:text="${editMode} ? 'Editar Empleado' : 'Nuevo Empleado'"></h1>
+
+    <form th:object="${employeeObject}" method="post" th:action="${editMode}?@{/employee/update}: @{/employee}">
+
+        <input type="hidden" th:field="*{id}" th:if="${editMode}"/>
+
+        <div>
+            <label>Nombres</label>
+            <input type="text" th:field="*{firstName}"/>
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </div>
+
+        <div>
+            <label>Apellido</label>
+            <input type="text" th:field="*{lastName}"/>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </div>
+
+        <div>
+            <label>DNI</label>
+            <input type="text" th:field="*{dni}"/>
+            <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+        </div>
+
+        <div>
+            <label>Fecha de Nacimiento</label>
+            <input type="date" th:field="*{birthDate}"/>
+            <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
+        </div>
+
+        <div>
+            <label>CUIT</label>
+            <input type="text" th:field="*{cuit}"/>
+            <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}"></span>
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}"/>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+
+        <div>
+            <label>Contraseña</label>
+            <input type="password" th:field="*{password}"/>
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <div>
+            <label>Teléfono</label>
+            <input type="text" th:field="*{phone}"/>
+            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+        </div>
+
+        <div>
+            <label>Role</label>
+            <select th:field="*{role}">
+                <option value="">Seleccione...</option>
+                <option value="ADMIN">Admin</option>
+                <option value="SALES">Ventas</option>
+                <option value="MANAGER">Gerente</option>
+                <option value="MECHANIC">Mecánico</option>
+            </select>
+            <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+        </div>
+
+
+        <fieldset>
+            <legend>Dirección</legend>
+
+            <div>
+                <label>Provincia</label>
+                <input type="text" th:field="*{province}"/>
+                <span th:if="${#fields.hasErrors('province')}" th:errors="*{province}"></span>
+            </div>
+
+            <div>
+                <label>Ciudad</label>
+                <input type="text" th:field="*{city}"/>
+                <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+            </div>
+
+            <div>
+                <label>Barrio</label>
+                <input type="text" th:field="*{neighborhood}"/>
+                <span th:if="${#fields.hasErrors('neighborhood')}" th:errors="*{neighborhood}"></span>
+            </div>
+
+            <div>
+                <label>Calle</label>
+                <input type="text" th:field="*{street}"/>
+                <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+            </div>
+
+            <div>
+                <label>Número</label>
+                <input type="text" th:field="*{number}"/>
+                <span th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
+            </div>
+
+            <div>
+                <label>Código Postal</label>
+                <input type="text" th:field="*{postalCode}"/>
+                <span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></span>
+            </div>
+
+            <div>
+                <label>País</label>
+                <input type="text" th:field="*{country}"/>
+                <span th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
+            </div>
+        </fieldset>
+
+        <div>
+            <button type="submit" th:text="${editMode} ? 'Actualizar' : 'Guardar'"></button>
+            <a th:href="@{/employee}">Cancelar</a>
+        </div>
+
+    </form>
+</main>
+
+<div th:replace="~{layout/layout::footer}"></div>
+</body>
+</html>

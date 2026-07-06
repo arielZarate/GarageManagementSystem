@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Empleados</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body>
+    <div th:replace="~{layout/layout::navbar}"></div>
+    <div th:replace="~{layout/layout::sidebar}"></div>
+    <div th:replace="~{layout/layout::overlay}"></div>
+
+   <main class="main-content">
+       <h1 class="text-2xl font-bold mb-6">Empleados</h1>
+
+       <div>
+           <a th:href="@{/employee/new}" class="bg-blue-500 text-white px-4 py-2 rounded inline-block mb-4">Nuevo Empleado</a>
+           <table>
+               <tr>
+                   <th>Id</th>
+                   <th>Legajo</th>
+                   <th>Nombre</th>
+                   <th>Dni</th>
+                   <th>Nacimiento</th>
+                   <th>CUIT</th>
+                   <th>Email</th>
+                   <th>Teléfono</th>
+                   <th>Alta</th>
+                   <th>Estado</th>
+                   <th>Role</th>
+                   <th>Provincia</th>
+                   <th>Ciudad</th>
+                   <th>Barrio</th>
+                   <th>Calle</th>
+                   <th>CP</th>
+                   <th>Pais</th>
+                   <th>Acciones</th>
+               </tr>
+               <tr th:each="employee : ${employees}">
+                   <td th:text="${employee.id}"></td>
+                   <td th:text="${employee.legajo}"></td>
+                   <td th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
+                   <td th:text="${employee.dni}"></td>
+                   <td th:text="${employee.birthDate}"></td>
+                   <td th:text="${employee.CUIT}"></td>
+                   <td th:text="${employee.email}"></td>
+                   <td th:text="${employee.phone}"></td>
+                   <td th:text="${employee.joinDate}"></td>
+                   <td th:text="${employee.active}"></td>
+                   <td th:text="${employee.role}"></td>
+                   <td th:text="${employee.address?.province}"></td>
+                   <td th:text="${employee.address?.city}"></td>
+                   <td th:text="${employee.address?.neighborhood}"></td>
+                   <td th:text="|${employee.address?.street}  ${employee.address?.number}|"></td>
+                   <td th:text="${employee.address?.postalCode}"></td>
+                   <td th:text="${employee.address?.country}"></td>
+                   <td>
+                       <a th:href="@{/employee/edit/{id}(id=${employee.id})}">Editar</a>
+                       <a th:href="@{/employee/delete/{id}(id=${employee.id})}">Eliminar</a>
+                   </td>
+               </tr>
+           </table>
+       </div>
+    </main>
+   <div th:replace="~{layout/layout::footer}"></div>
+</body>
+</html>
