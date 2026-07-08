@@ -1,6 +1,8 @@
 spring:
   application:
     name: GarageManagementSystem
+  profiles:
+    active: local
 
   datasource:
     url: jdbc:postgresql://localhost:5432/garage_db
@@ -18,10 +20,6 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
-
-  thymeleaf:
-    cache: false
-    check-template-location: false
 
 server:
   port: 8080

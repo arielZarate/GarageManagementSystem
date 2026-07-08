@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Employee {
 
     private Long id;
@@ -21,11 +23,12 @@ public class Employee {
     private String dni;
     private LocalDate birthDate;
     private String CUIT;
-    private String email;
-    private String password;
     private String phone;
     private Address address;
     private Role role;
     private Boolean active;
     private LocalDate joinDate;
+    //data for login
+    private String email;
+    private String password;
 }

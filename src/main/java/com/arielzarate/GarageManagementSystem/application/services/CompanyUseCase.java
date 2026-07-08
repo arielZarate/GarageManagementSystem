@@ -3,10 +3,14 @@ package com.arielzarate.GarageManagementSystem.application.services;
 import com.arielzarate.GarageManagementSystem.domain.model.Company;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CompanyService;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.CompanyProvider;
+import com.arielzarate.GarageManagementSystem.domain.services.validators.CUITValidator;
+import com.arielzarate.GarageManagementSystem.domain.services.validators.EmailValidator;
+import com.arielzarate.GarageManagementSystem.domain.services.validators.PhoneValidator;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CompanyUseCase implements CompanyService {
@@ -15,16 +19,29 @@ public class CompanyUseCase implements CompanyService {
 
     @Override
     public Company addCompany(Company company) {
+        validateBusinessRules(company);
         return provider.create(company);
     }
 
     @Override
-    public Company getCompany(Long id) {
-        return provider.getCompany(id);
+    public Company getCompany() {
+        return provider.getCompany().orElse(null);
     }
 
     @Override
-    public Company updateCompany(Company company) {
+    public Company editCompany(Company company) {
+        validateBusinessRules(company);
         return provider.update(company);
+    }
+
+    @Override
+    public void deleteCompany(Long id) {
+        provider.deleteCompany(id);
+    }
+
+    private void validateBusinessRules(Company company) {
+        CUITValidator.validate(company.getCuit());
+        EmailValidator.validate(company.getEmail());
+        PhoneValidator.validate(company.getPhone());
     }
 }
