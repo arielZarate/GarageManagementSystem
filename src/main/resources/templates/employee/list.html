@@ -1,0 +1,54 @@
+<div th:fragment="content">
+    <h1 class="text-xl font-bold mb-6">Empleados</h1>
+
+    <div>
+        <a th:href="@{/employee/form}" class="bg-blue-500 text-white px-4 py-2 rounded inline-block mb-4">Nuevo Empleado</a>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Legajo</th>
+                <th>Nombre</th>
+                <th>Dni</th>
+                <th>Nacimiento</th>
+                <th>CUIT</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Alta</th>
+                <th>Estado</th>
+                <th>Role</th>
+                <th>Provincia</th>
+                <th>Ciudad</th>
+                <th>Barrio</th>
+                <th>Calle</th>
+                <th>CP</th>
+                <th>Pais</th>
+                <th>Acciones</th>
+            </tr>
+            <tr th:each="employee: ${employees}">
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.legajo}"></td>
+                <td th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
+                <td th:text="${employee.dni}"></td>
+                <td th:text="${employee.birthDate}"></td>
+                <td th:text="${employee.CUIT}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.phone}"></td>
+                <td th:text="${employee?.joinDate}"></td>
+                <td th:text="${employee?.active}"></td>
+                <td th:text="${employee.role}"></td>
+                <td th:text="${employee.address?.province}"></td>
+                <td th:text="${employee.address?.city}"></td>
+                <td th:text="${employee.address?.neighborhood}"></td>
+                <td th:text="|${employee.address?.street}  ${employee.address?.number}|"></td>
+                <td th:text="${employee.address?.postalCode}"></td>
+                <td th:text="${employee.address?.country}"></td>
+                <td>
+                    <a th:href="@{/employee/edit/{id}(id=${employee.id})}">Editar</a>
+                     <form method="post" th:action="@{/employee/toggle/{id}(id=${employee.id})}" style="display:inline">
+                         <button type="submit" th:text="${employee.active} ? 'Desactivar' : 'Activar'"></button>
+                     </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

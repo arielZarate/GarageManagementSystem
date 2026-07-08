@@ -30,22 +30,28 @@ public class CompanyController {
         if (company == null) {
             return "redirect:/company/new";
         }
+        model.addAttribute("pageTitle", "Compañía");
+        model.addAttribute("content", "company/view");
         model.addAttribute("company", mapper.toResponse(company));
-        return "/company/companyView";
+        return "layout/base";
     }
 
     @GetMapping("/new")
     public String showForm(Model model) {
+        model.addAttribute("pageTitle", "Nueva Empresa");
+        model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", new CompanyRequest());
-        return "/company/companyForm";
+        return "layout/base";
     }
 
     @PostMapping
-    public String create(@Valid @ModelAttribute("companyObject") CompanyRequest request, BindingResult result) {
+    public String create(@Valid @ModelAttribute("companyObject") CompanyRequest request, BindingResult result, Model model) {
         log.info("Request recibida: {}", request);
 
         if (result.hasErrors()) {
-            return "/company/companyForm";
+            model.addAttribute("pageTitle", "Nueva Empresa");
+            model.addAttribute("content", "company/form");
+            return "layout/base";
         }
 
         try {
@@ -56,7 +62,9 @@ public class CompanyController {
         } catch (IllegalArgumentException e) {
             log.warn("Error de validación de negocio: {}", e.getMessage());
             result.reject("error.business", e.getMessage());
-            return "/company/companyForm";
+            model.addAttribute("pageTitle", "Nueva Empresa");
+            model.addAttribute("content", "company/form");
+            return "layout/base";
         }
     }
 
@@ -70,18 +78,22 @@ public class CompanyController {
         if (request.getAddress() == null) {
             request.setAddress(new AddressDTO());
         }
+        model.addAttribute("pageTitle", "Editar Empresa");
+        model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", request);
         model.addAttribute("editMode", true);
-        return "/company/companyForm";
+        return "layout/base";
     }
 
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute("companyObject") CompanyRequest request,
-                         BindingResult result) {
+                         BindingResult result, Model model) {
         log.info("Update request: {}", request);
 
         if (result.hasErrors()) {
-            return "/company/companyForm";
+            model.addAttribute("pageTitle", "Editar Empresa");
+            model.addAttribute("content", "company/form");
+            return "layout/base";
         }
 
         try {
@@ -92,7 +104,9 @@ public class CompanyController {
         } catch (IllegalArgumentException e) {
             log.warn("Error de validación de negocio: {}", e.getMessage());
             result.reject("error.business", e.getMessage());
-            return "/company/companyForm";
+            model.addAttribute("pageTitle", "Editar Empresa");
+            model.addAttribute("content", "company/form");
+            return "layout/base";
         }
     }
 

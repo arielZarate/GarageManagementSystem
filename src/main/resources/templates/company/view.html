@@ -1,0 +1,36 @@
+<div th:fragment="content">
+    <h1 class="text-2xl font-bold mb-6">Compañía</h1>
+
+    <div th:if="${company == null}">
+        <p>No hay compañía registrada.</p>
+        <a th:href="@{/company/new}" class="bg-blue-500 text-white px-4 py-2 rounded inline-block mt-4">Crear Compañía</a>
+    </div>
+
+    <div th:if="${company != null}" class="bg-white shadow rounded p-6 space-y-2">
+        <p><strong>Nombre Fantasia:</strong> <span th:text="${company.businessName}"></span></p>
+        <p><strong>Razon Social:</strong> <span th:text="${company.legalName}"></span></p>
+        <p><strong>CUIT:</strong> <span th:text="${company.cuit}"></span></p>
+        <p><strong>Telefono:</strong> <span th:text="${company.phone}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${company.email}"></span></p>
+        <p><strong>Horario:</strong> <span th:text="${company.horario}"></span></p>
+        <p><strong>Logo:</strong> <span th:text="${company.logo}"></span></p>
+
+        <hr class="my-4">
+        <h2 class="text-xl font-semibold">Direccion</h2>
+        <p><strong>Provincia:</strong> <span th:text="${company.address?.province ?: ''}"></span></p>
+        <p><strong>Ciudad:</strong> <span th:text="${company.address?.city ?: ''}"></span></p>
+        <p><strong>Barrio:</strong> <span th:text="${company.address?.neighborhood ?: ''}"></span></p>
+        <p><strong>Calle:</strong> <span th:text="${company.address?.street ?: ''}"></span></p>
+        <p><strong>Numero:</strong> <span th:text="${company.address?.number ?: ''}"></span></p>
+        <p><strong>CP:</strong> <span th:text="${company.address?.postalCode ?: ''}"></span></p>
+        <p><strong>Pais:</strong> <span th:text="${company.address?.country ?: ''}"></span></p>
+
+        <div class="mt-4">
+            <a th:href="@{/company/edit}" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
+            <form th:action="@{/company/delete}" method="post" style="display:inline">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Eliminar company?')">Eliminar</button>
+            </form>
+            <a th:href="@{/company}" class="ml-2 text-white bg-green-400 px-4 py-2 rounded">Volver</a>
+        </div>
+    </div>
+</div>

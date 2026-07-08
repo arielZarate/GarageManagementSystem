@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Customer {
 
     private Long id;
-    private String legajo;
+    private String customerCode;
     private String firstName;
     private String lastName;
     private String phone;

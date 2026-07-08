@@ -26,29 +26,32 @@ public class EmployeeController {
     @GetMapping
     public String getEmployees(Model model) {
         List<Employee> list = service.getEmployees();
+        model.addAttribute("pageTitle", "Empleados");
+        model.addAttribute("content", "employee/list");
         model.addAttribute("employees", list);
-        return "employee/employeeView";
-
+        return "layout/base";
     }
-
 
     @GetMapping("/form")
     public String showForm(Model model) {
+        model.addAttribute("pageTitle", "Nuevo Empleado");
+        model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", new EmployeeRequest());
-        model.addAttribute("roles",Role.values()); //send list al front
+        model.addAttribute("roles", Role.values());
         model.addAttribute("editMode", false);
-        return "employee/employeeForm";
+        return "layout/base";
     }
-
 
     @PostMapping
     public String createEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
                                  BindingResult result,
                                  Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Nuevo Empleado");
+            model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("editMode", false);
-            return "employee/employeeForm";
+            return "layout/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -58,25 +61,28 @@ public class EmployeeController {
         return "redirect:/employee";
     }
 
-
     @GetMapping("/edit/{id}")
     public String showForm(Model model, @PathVariable Long id) {
         Employee e = service.getEmployeeById(id);
         EmployeeRequest request = mapper.toRequest(e);
 
+        model.addAttribute("pageTitle", "Editar Empleado");
+        model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", request);
         model.addAttribute("roles", Role.values());
         model.addAttribute("editMode", true);
-        return "employee/employeeForm";
+        return "layout/base";
     }
 
     @PostMapping("/update")
     public String updateEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
                                  BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Editar Empleado");
+            model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("editMode", true);
-            return "employee/employeeForm";
+            return "layout/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -89,6 +95,4 @@ public class EmployeeController {
         service.toggleStatusEmployee(id);
         return "redirect:/employee";
     }
-
-
 }

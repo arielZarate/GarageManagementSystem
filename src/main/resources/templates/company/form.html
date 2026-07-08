@@ -1,0 +1,84 @@
+<div th:fragment="content">
+    <h1 class="text-2xl font-bold mb-6" th:text="${editMode} ? 'Editar Empresa' : 'Nueva Empresa'"></h1>
+
+    <form th:action="${editMode} ? @{/company/update} : @{/company}" th:object="${companyObject}" method="post" class="space-y-4">
+
+        <input type="hidden" th:field="*{id}" th:if="${editMode}">
+
+        <div th:if="${#fields.hasGlobalErrors()}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">Nombre Fantasia</label>
+            <input type="text" th:field="*{businessName}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('businessName')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('businessName')}" th:errors="*{businessName}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Razon Social</label>
+            <input type="text" th:field="*{legalName}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('legalName')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('legalName')}" th:errors="*{legalName}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">CUIT</label>
+            <input type="text" th:field="*{cuit}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('cuit')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Telefono</label>
+            <input type="text" th:field="*{phone}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('phone')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Email</label>
+            <input type="email" th:field="*{email}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('email')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Horario</label>
+            <input type="text" th:field="*{horario}" class="w-full border rounded p-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Logo URL</label>
+            <input type="text" th:field="*{logo}" class="w-full border rounded p-2">
+        </div>
+
+        <hr class="my-4">
+        <h2 class="text-xl font-semibold mb-4">Direccion</h2>
+
+        <div>
+            <label class="block text-sm font-medium">Provincia</label>
+            <input type="text" th:field="*{address.province}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('address.province')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('address.province')}" th:errors="*{address.province}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Ciudad</label>
+            <input type="text" th:field="*{address.city}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('address.city')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Barrio</label>
+            <input type="text" th:field="*{address.neighborhood}" class="w-full border rounded p-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Calle</label>
+            <input type="text" th:field="*{address.street}" class="w-full border rounded p-2" th:classappend="${#fields.hasErrors('address.street')} ? 'border-red-500' : ''">
+            <span th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Numero</label>
+            <input type="text" th:field="*{address.number}" class="w-full border rounded p-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Codigo Postal</label>
+            <input type="text" th:field="*{address.postalCode}" class="w-full border rounded p-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium">Pais</label>
+            <input type="text" th:field="*{address.country}" class="w-full border rounded p-2">
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded" th:text="${editMode} ? 'Actualizar' : 'Guardar'"></button>
+        <a th:href="@{/company}" class="ml-2 text-green-600">Cancelar</a>
+    </form>
+</div>
