@@ -13,7 +13,7 @@
 <main class="main-content">
     <h1 th:text="${editMode} ? 'Editar Empleado' : 'Nuevo Empleado'"></h1>
 
-    <form th:object="${employeeObject}" method="post" th:action="${editMode}?@{/employee/update}: @{/employee}">
+    <form th:object="${employeeObject}" method="post" th:action="${editMode} ? @{/employee/update} : @{/employee}">
 
         <input type="hidden" th:field="*{id}" th:if="${editMode}"/>
 
@@ -47,17 +47,6 @@
             <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}"></span>
         </div>
 
-        <div>
-            <label>Email</label>
-            <input type="email" th:field="*{email}"/>
-            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-        </div>
-
-        <div>
-            <label>Contraseña</label>
-            <input type="password" th:field="*{password}"/>
-            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-        </div>
 
         <div>
             <label>Teléfono</label>
@@ -69,10 +58,7 @@
             <label>Role</label>
             <select th:field="*{role}">
                 <option value="">Seleccione...</option>
-                <option value="ADMIN">Admin</option>
-                <option value="SALES">Ventas</option>
-                <option value="MANAGER">Gerente</option>
-                <option value="MECHANIC">Mecánico</option>
+                <option th:each="r: ${roles}" th:value="${r.name()}" th:text="${r.displayName}"></option>
             </select>
             <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
         </div>
@@ -122,6 +108,21 @@
                 <input type="text" th:field="*{country}"/>
                 <span th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
             </div>
+        </fieldset>
+
+        <fieldset>
+            <div>
+                <label>Email</label>
+                <input type="email" th:field="*{email}"/>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div>
+                <label>Contraseña</label>
+                <input type="text" th:field="*{password}"/>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+
         </fieldset>
 
         <div>

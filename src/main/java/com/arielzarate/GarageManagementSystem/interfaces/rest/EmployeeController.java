@@ -1,24 +1,18 @@
 package com.arielzarate.GarageManagementSystem.interfaces.rest;
 
-import com.arielzarate.GarageManagementSystem.domain.model.Address;
 import com.arielzarate.GarageManagementSystem.domain.model.Employee;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.EmployeeService;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.employee.EmployeeRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.EmployeeDTOMapper;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -38,37 +32,63 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/new")
+    @GetMapping("/form")
     public String showForm(Model model) {
         model.addAttribute("employeeObject", new EmployeeRequest());
+        model.addAttribute("roles",Role.values()); //send list al front
         model.addAttribute("editMode", false);
         return "employee/employeeForm";
     }
 
 
     @PostMapping
-    public String createEmployee(@ModelAttribute("employeeObject") EmployeeRequest request) {
+    public String createEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
+                                 BindingResult result,
+                                 Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("roles", Role.values());
+            model.addAttribute("editMode", false);
+            return "employee/employeeForm";
+        }
+
         Employee e = mapper.toDomain(request);
-        log.info("Empleado recibido: {}", e.toString());
+        service.addEmployee(e);
+        log.info("employee created");
+
         return "redirect:/employee";
     }
 
 
-    @PostMapping("/edit/{id}")
-    public String editModeEmployee(Model model, Long id) {
-        //buscar id en db
+    @GetMapping("/edit/{id}")
+    public String showForm(Model model, @PathVariable Long id) {
+        Employee e = service.getEmployeeById(id);
+        EmployeeRequest request = mapper.toRequest(e);
 
-        //Employee e=service.getEmployeeById(id);
-        //var request=  mapper.mapToRequest(e);
-
-        model.addAttribute("employeeObject", new Employee());
-        model.addAttribute("editMode", false);
-        return "/employee/employeeForm";
+        model.addAttribute("employeeObject", request);
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("editMode", true);
+        return "employee/employeeForm";
     }
 
     @PostMapping("/update")
-    public String updateEmployee(@ModelAttribute("employeeObject") EmployeeRequest request) {
-        return "";
+    public String updateEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("roles", Role.values());
+            model.addAttribute("editMode", true);
+            return "employee/employeeForm";
+        }
+
+        Employee e = mapper.toDomain(request);
+        service.updateEmployee(e);
+        return "redirect:/employee";
     }
+
+    @PostMapping("/toggle/{id}")
+    public String toggleEmployee(@PathVariable Long id) {
+        service.toggleStatusEmployee(id);
+        return "redirect:/employee";
+    }
+
 
 }
