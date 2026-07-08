@@ -1,54 +1,87 @@
 <div th:fragment="content">
-    <h1 class="text-xl font-bold mb-6">Empleados</h1>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Empleados</h1>
+        <a th:href="@{/employee/form}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nuevo Empleado
+        </a>
+    </div>
 
-    <div>
-        <a th:href="@{/employee/form}" class="bg-blue-500 text-white px-4 py-2 rounded inline-block mb-4">Nuevo Empleado</a>
-        <table>
-            <tr>
-                <th>Id</th>
-                <th>Legajo</th>
-                <th>Nombre</th>
-                <th>Dni</th>
-                <th>Nacimiento</th>
-                <th>CUIT</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Alta</th>
-                <th>Estado</th>
-                <th>Role</th>
-                <th>Provincia</th>
-                <th>Ciudad</th>
-                <th>Barrio</th>
-                <th>Calle</th>
-                <th>CP</th>
-                <th>Pais</th>
-                <th>Acciones</th>
-            </tr>
-            <tr th:each="employee: ${employees}">
-                <td th:text="${employee.id}"></td>
-                <td th:text="${employee.legajo}"></td>
-                <td th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
-                <td th:text="${employee.dni}"></td>
-                <td th:text="${employee.birthDate}"></td>
-                <td th:text="${employee.CUIT}"></td>
-                <td th:text="${employee.email}"></td>
-                <td th:text="${employee.phone}"></td>
-                <td th:text="${employee?.joinDate}"></td>
-                <td th:text="${employee?.active}"></td>
-                <td th:text="${employee.role}"></td>
-                <td th:text="${employee.address?.province}"></td>
-                <td th:text="${employee.address?.city}"></td>
-                <td th:text="${employee.address?.neighborhood}"></td>
-                <td th:text="|${employee.address?.street}  ${employee.address?.number}|"></td>
-                <td th:text="${employee.address?.postalCode}"></td>
-                <td th:text="${employee.address?.country}"></td>
-                <td>
-                    <a th:href="@{/employee/edit/{id}(id=${employee.id})}">Editar</a>
-                     <form method="post" th:action="@{/employee/toggle/{id}(id=${employee.id})}" style="display:inline">
-                         <button type="submit" th:text="${employee.active} ? 'Desactivar' : 'Activar'"></button>
-                     </form>
-                </td>
-            </tr>
+    <!-- Tabla responsive -->
+    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-x-auto">
+        <table class="w-full text-sm text-gray-700">
+            <thead>
+                <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold tracking-wider">
+                    <th class="px-3 py-3 text-left">Legajo</th>
+                    <th class="px-3 py-3 text-left">Nombre</th>
+                    <th class="px-3 py-3 text-left">CUIT</th>
+                    <th class="px-3 py-3 text-left">Email</th>
+                    <th class="px-3 py-3 text-left">Teléfono</th>
+                    <th class="px-3 py-3 text-left">Role</th>
+                    <th class="px-3 py-3 text-center">Estado</th>
+                    <th class="px-3 py-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr th:each="employee: ${employees}"
+                    class="hover:bg-gray-50 transition even:bg-gray-50/50">
+                    <td class="px-3 py-3 font-medium text-gray-900" th:text="${employee.legajo}"></td>
+                    <td class="px-3 py-3" th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
+                    <td class="px-3 py-3 font-mono text-xs" th:text="${employee.CUIT}"></td>
+                    <td class="px-3 py-3" th:text="${employee.email}"></td>
+                    <td class="px-3 py-3" th:text="${employee.phone}"></td>
+                    <td class="px-3 py-3">
+                        <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded" th:text="${employee.role.displayName}"></span>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span th:if="${employee.active}"
+                              class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                            Activo
+                        </span>
+                        <span th:unless="${employee.active}"
+                              class="inline-flex items-center gap-1 bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
+                            <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                            Inactivo
+                        </span>
+                    </td>
+                    <td class="px-3 py-3">
+                        <div class="flex items-center justify-center gap-1">
+                            <!-- Ver detalle -->
+                            <a th:href="@{/employee/detail/{id}(id=${employee.id})}"
+                               class="p-1.5 rounded hover:bg-blue-100 text-blue-600 transition"
+                               title="Ver detalle">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </a>
+                            <!-- Editar -->
+                            <a th:href="@{/employee/edit/{id}(id=${employee.id})}"
+                               class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition"
+                               title="Editar">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+                <!-- Fila vacía -->
+                <tr th:if="${#lists.isEmpty(employees)}">
+                    <td colspan="8" class="px-3 py-12 text-center text-gray-400">
+                        <p class="text-lg mb-1">No hay empleados registrados</p>
+                        <p class="text-sm">Creá el primer empleado</p>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

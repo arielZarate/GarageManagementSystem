@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +30,15 @@ public class EmployeeController {
         model.addAttribute("pageTitle", "Empleados");
         model.addAttribute("content", "employee/list");
         model.addAttribute("employees", list);
+        return "layout/base";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        Employee employee = service.getEmployeeById(id);
+        model.addAttribute("pageTitle", "Detalle de Empleado");
+        model.addAttribute("content", "employee/detail");
+        model.addAttribute("employee", employee);
         return "layout/base";
     }
 
@@ -91,8 +101,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/toggle/{id}")
-    public String toggleEmployee(@PathVariable Long id) {
+    public String toggleEmployee(@PathVariable Long id, HttpServletRequest request) {
         service.toggleStatusEmployee(id);
-        return "redirect:/employee";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/employee");
     }
 }
