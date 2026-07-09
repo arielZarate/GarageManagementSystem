@@ -39,6 +39,8 @@ public class CustomerRequest {
     @NotBlank(message = "El teléfono es obligatorio")
     private String phone;
 
+    private Boolean active;
+
     // Address fields
     private String province;
     private String city;

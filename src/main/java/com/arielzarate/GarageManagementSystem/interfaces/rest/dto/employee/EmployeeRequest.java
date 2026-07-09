@@ -50,6 +50,8 @@ public class EmployeeRequest {
     private String role;
 
 
+    private Boolean active;
+
     // Address fields
   //  @NotBlank(message = "La provincia es obligatoria")
     private String province;

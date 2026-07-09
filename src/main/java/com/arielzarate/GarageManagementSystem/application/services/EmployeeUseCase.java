@@ -42,12 +42,4 @@ public class EmployeeUseCase implements EmployeeService {
     public Employee updateEmployee(Employee employee) {
         return provider.update(employee);
     }
-
-    @Override
-    public void toggleStatusEmployee(Long id) {
-        Employee employee = this.getEmployeeById(id);
-        employee.setActive(!Boolean.TRUE.equals(employee.getActive()));
-        log.info("Employee {} active status toggled to {}", id, employee.getActive());
-        provider.update(employee);
-    }
 }

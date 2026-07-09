@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -100,10 +99,4 @@ public class EmployeeController {
         return "redirect:/employee";
     }
 
-    @PostMapping("/toggle/{id}")
-    public String toggleEmployee(@PathVariable Long id, HttpServletRequest request) {
-        service.toggleStatusEmployee(id);
-        String referer = request.getHeader("Referer");
-        return "redirect:" + (referer != null ? referer : "/employee");
-    }
 }

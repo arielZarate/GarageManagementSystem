@@ -5,70 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
-<body class="font-sans bg-gray-100 min-h-screen flex flex-col">
+<body class="font-sans bg-surface min-h-screen flex flex-col">
 
 <!-- ====== NAVBAR ====== -->
-<nav class="bg-gray-800 text-white h-14 flex items-center px-4 relative z-30" th:fragment="navbar">
-    <button class="text-white p-2 mr-3 focus:outline-none" onclick="toggleSidebar()" aria-label="Menú">
+<nav class="bg-inverse-surface text-inverse-on-surface h-14 flex items-center px-4 relative z-30" th:fragment="navbar">
+    <button class="text-inverse-on-surface p-2 mr-3 focus:outline-none" onclick="toggleSidebar()" aria-label="Menú">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
     </button>
     <div class="font-bold text-xl">
-        <a th:href="@{/}" class="text-white no-underline">Gestion de Taller</a>
+        <a th:href="@{/}" class="text-inverse-on-surface no-underline">Gestion de Taller</a>
     </div>
     <div class="flex-1"></div>
+
+    <!--Toggle dark mode-->
+    <button id="darkToggle"
+            class="p-2 rounded hover:bg-inverse-on-surface/10 transition"
+            title="Modo oscuro">
+        <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+        <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+    </button>
+
     <!-- Perfil / Login placeholder -->
-    <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">
+    <div class="w-8 h-8 bg-inverse-on-surface/20 rounded-full flex items-center justify-center text-sm font-semibold">
         <span>Ariel</span>
     </div>
 </nav>
 
 <!-- ====== SIDEBAR ====== -->
-<aside class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-50 transform -translate-x-full transition-transform duration-300 shadow-xl"
+<aside class="fixed top-0 left-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 transform -translate-x-full transition-transform duration-300 shadow-xl"
        id="sidebar" th:fragment="sidebar">
 
-    <div class="p-6 border-b border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-300">Navegación</h2>
+    <div class="p-6 border-b border-outline-variant">
+        <h2 class="text-lg font-semibold text-inverse-on-surface/70">Navegación</h2>
     </div>
 
     <nav class="p-4 space-y-1">
         <a th:href="@{/customer}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Clientes
         </a>
         <a th:href="@{/vehicle}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Vehículos
         </a>
         <a th:href="@{/quote}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Presupuestos
         </a>
         <a th:href="@{/repair-order}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Órdenes de Reparación
         </a>
 
-        <hr class="border-gray-700 my-4">
+        <hr class="border-outline-variant my-4">
 
-        <p class="px-4 text-xs text-gray-500 uppercase tracking-wide">Administración</p>
+        <p class="px-4 text-xs text-inverse-on-surface/50 uppercase tracking-wide">Administración</p>
         <a th:href="@{/company}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Empresa
         </a>
         <a th:href="@{/employee}"
-           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
            Empleados
         </a>
     </nav>
 
+    <hr class="border-inverse-on-surface/20 my-4">
+
+    <p class="px-4 text-xs text-inverse-on-surface/50 uppercase tracking-wide">Configuración</p>
+    <nav class="p-4 space-y-1">
+        <!-- Temas (colapsable) -->
+        <button onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('-rotate-90')"
+                class="w-full flex items-center justify-between px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
+            <span class="flex items-center gap-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 21h10"/>
+                </svg>
+                Temas
+            </span>
+            <svg class="arrow w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </button>
+        <div class="hidden space-y-1 pl-4">
+            <button onclick="ThemeManager.setTheme('theme-azul')"
+                    class="theme-dot w-full flex items-center gap-3 px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition text-left border-2 border-transparent"
+                    data-theme="theme-azul">
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:#1976D2"></span>
+                Azul
+            </button>
+            <button onclick="ThemeManager.setTheme('theme-verde')"
+                    class="theme-dot w-full flex items-center gap-3 px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition text-left border-2 border-transparent"
+                    data-theme="theme-verde">
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:#B0FF42"></span>
+                Verde
+            </button>
+            <button onclick="ThemeManager.setTheme('theme-violeta')"
+                    class="theme-dot w-full flex items-center gap-3 px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition text-left border-2 border-transparent"
+                    data-theme="theme-violeta">
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:#9142FF"></span>
+                Violeta
+            </button>
+            <button onclick="ThemeManager.setTheme('theme-naranja')"
+                    class="theme-dot w-full flex items-center gap-3 px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition text-left border-2 border-transparent"
+                    data-theme="theme-naranja">
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:#F57C00"></span>
+                Naranja
+            </button>
+            <button onclick="ThemeManager.setTheme('theme-celeste')"
+                    class="theme-dot w-full flex items-center gap-3 px-3 py-2 rounded text-sm text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition text-left border-2 border-transparent"
+                    data-theme="theme-celeste">
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:#42B0FF"></span>
+                Celeste
+            </button>
+        </div>
+    </nav>
+
     <!-- Perfil en sidebar (mobile) -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
-        <div class="flex items-center gap-3 text-gray-400">
-            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm">A</div>
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-outline-variant">
+        <div class="flex items-center gap-3 text-inverse-on-surface/60">
+            <div class="w-8 h-8 bg-inverse-on-surface/20 rounded-full flex items-center justify-center text-sm">A</div>
             <div class="text-sm">
-                <p class="text-white font-medium">Admin</p>
+                <p class="text-inverse-on-surface font-medium">Admin</p>
                 <p class="text-xs">admin@taller.com</p>
             </div>
         </div>
@@ -79,20 +143,23 @@
 <div class="fixed inset-0 bg-black/50 z-40 hidden" id="overlay" onclick="toggleSidebar()" th:fragment="overlay"></div>
 
 <!-- ====== FOOTER ====== -->
-<footer class="bg-gray-800 text-gray-400 text-center px-4 py-3 mt-auto text-sm" th:fragment="footer">
+<footer class="bg-inverse-surface text-inverse-on-surface/60 text-center px-4 py-3 mt-auto text-sm" th:fragment="footer">
     <p>&copy; 2026 Sistema de Gestión de Taller. Desarrollado por Ariel Zarate.</p>
 </footer>
 
 <!-- ====== SCRIPTS ====== -->
-<script th:fragment="scripts">
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        sidebar.classList.toggle('-translate-x-full');
-        sidebar.classList.toggle('translate-x-0');
-        overlay.classList.toggle('hidden');
-    }
-</script>
+<th:block th:fragment="scripts">
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+    <script th:src="@{/js/darkMode-theme.js}"></script>
+</th:block>
 
 </body>
 </html>

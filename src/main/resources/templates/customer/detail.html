@@ -1,34 +1,34 @@
 <div th:fragment="content">
     <div class="flex items-center justify-between mb-4">
         <div>
-            <h1 class="text-xl font-bold text-gray-800">
+            <h1 class="text-xl font-bold text-on-surface">
                 <span th:text="${customer.firstName} + ' ' + ${customer.lastName}"></span>
-                <span class="text-gray-400 font-normal text-base" th:text="'(' + ${customer.customerCode} + ')'"></span>
+                <span class="text-on-surface/40 font-normal text-base" th:text="'(' + ${customer.customerCode} + ')'"></span>
             </h1>
-            <p class="text-xs text-gray-500">Detalle del cliente</p>
+            <p class="text-xs text-on-surface/60">Detalle del cliente</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <!-- Datos personales -->
-        <div class="bg-white rounded-lg shadow border border-gray-200 p-4">
-            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Datos Personales</h2>
+        <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4">
+            <h2 class="text-sm font-semibold text-on-surface mb-3 pb-1 border-b border-outline-variant">Datos Personales</h2>
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Código</dt>
-                    <dd class="text-gray-800 font-mono text-xs" th:text="${customer.customerCode}"></dd>
+                    <dt class="text-on-surface/60">Código</dt>
+                    <dd class="text-on-surface font-mono text-xs" th:text="${customer.customerCode}"></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">DNI</dt>
-                    <dd class="text-gray-800" th:text="${customer.dni}"></dd>
+                    <dt class="text-on-surface/60">DNI</dt>
+                    <dd class="text-on-surface" th:text="${customer.dni}"></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">CUIT</dt>
-                    <dd class="text-gray-800 font-mono text-xs" th:text="${customer.cuit}"></dd>
+                    <dt class="text-on-surface/60">CUIT</dt>
+                    <dd class="text-on-surface font-mono text-xs" th:text="${customer.cuit}"></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Estado</dt>
+                    <dt class="text-on-surface/60">Estado</dt>
                     <dd class="flex items-center gap-2">
                         <span th:if="${customer.active}"
                               class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">
@@ -40,68 +40,53 @@
                             <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                             Inactivo
                         </span>
-                        <form method="post" th:action="@{/customer/toggle/{id}(id=${customer.id})}" style="display:inline" class="leading-none">
-                            <button type="submit"
-                                    th:classappend="${customer.active} ? 'hover:bg-red-100 text-red-500' : 'hover:bg-green-100 text-green-500'"
-                                    class="p-1 rounded transition"
-                                    th:title="${customer.active} ? 'Desactivar cliente' : 'Activar cliente'">
-                                <svg th:if="${customer.active}" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                    <rect x="1" y="5" width="22" height="14" rx="7"/>
-                                    <circle cx="17" cy="12" r="5" fill="currentColor"/>
-                                </svg>
-                                <svg th:unless="${customer.active}" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                    <rect x="1" y="5" width="22" height="14" rx="7"/>
-                                    <circle cx="7" cy="12" r="5" fill="currentColor"/>
-                                </svg>
-                            </button>
-                        </form>
                     </dd>
                 </div>
             </dl>
         </div>
 
         <!-- Contacto -->
-        <div class="bg-white rounded-lg shadow border border-gray-200 p-4">
-            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Contacto</h2>
+        <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4">
+            <h2 class="text-sm font-semibold text-on-surface mb-3 pb-1 border-b border-outline-variant">Contacto</h2>
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Email</dt>
-                    <dd class="text-gray-800" th:text="${customer.email}"></dd>
+                    <dt class="text-on-surface/60">Email</dt>
+                    <dd class="text-on-surface" th:text="${customer.email}"></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Teléfono</dt>
-                    <dd class="text-gray-800" th:text="${customer.phone}"></dd>
+                    <dt class="text-on-surface/60">Teléfono</dt>
+                    <dd class="text-on-surface" th:text="${customer.phone}"></dd>
                 </div>
             </dl>
         </div>
 
         <!-- Dirección -->
-        <div class="md:col-span-2 bg-white rounded-lg shadow border border-gray-200 p-4">
-            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Dirección</h2>
+        <div class="md:col-span-2 bg-surface-container rounded-lg shadow border border-outline-variant p-4">
+            <h2 class="text-sm font-semibold text-on-surface mb-3 pb-1 border-b border-outline-variant">Dirección</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                 <div>
-                    <p class="text-xs text-gray-500">Provincia</p>
-                    <p class="text-gray-800" th:text="${customer.address?.province ?: '-'}"></p>
+                    <p class="text-xs text-on-surface/60">Provincia</p>
+                    <p class="text-on-surface" th:text="${customer.address?.province ?: '-'}"></p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500">Ciudad</p>
-                    <p class="text-gray-800" th:text="${customer.address?.city ?: '-'}"></p>
+                    <p class="text-xs text-on-surface/60">Ciudad</p>
+                    <p class="text-on-surface" th:text="${customer.address?.city ?: '-'}"></p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500">Barrio</p>
-                    <p class="text-gray-800" th:text="${customer.address?.neighborhood ?: '-'}"></p>
+                    <p class="text-xs text-on-surface/60">Barrio</p>
+                    <p class="text-on-surface" th:text="${customer.address?.neighborhood ?: '-'}"></p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500">Calle</p>
-                    <p class="text-gray-800" th:text="|${customer.address?.street ?: '-'} ${customer.address?.number ?: ''}|"></p>
+                    <p class="text-xs text-on-surface/60">Calle</p>
+                    <p class="text-on-surface" th:text="|${customer.address?.street ?: '-'} ${customer.address?.number ?: ''}|"></p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500">Código Postal</p>
-                    <p class="text-gray-800" th:text="${customer.address?.postalCode ?: '-'}"></p>
+                    <p class="text-xs text-on-surface/60">Código Postal</p>
+                    <p class="text-on-surface" th:text="${customer.address?.postalCode ?: '-'}"></p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500">País</p>
-                    <p class="text-gray-800" th:text="${customer.address?.country ?: '-'}"></p>
+                    <p class="text-xs text-on-surface/60">País</p>
+                    <p class="text-on-surface" th:text="${customer.address?.country ?: '-'}"></p>
                 </div>
             </div>
         </div>
@@ -111,14 +96,14 @@
     <!-- Botones -->
     <div class="flex items-center gap-2 mt-4">
         <a th:href="@{/customer/edit/{id}(id=${customer.id})}"
-           class="border border-slate-300 hover:bg-slate-100 text-slate-700 px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5">
+           class="border border-outline hover:bg-surface-container hover:border-on-surface/20 text-on-surface px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
             Editar
         </a>
         <a th:href="@{/customer}"
-           class="text-gray-600 hover:text-gray-800 font-medium px-4 py-1.5 rounded-lg text-sm transition border border-gray-300 hover:bg-gray-50 ml-auto">
+           class="text-on-surface/60 hover:text-on-surface font-medium px-4 py-1.5 rounded-lg text-sm transition border border-outline hover:bg-surface-container hover:border-on-surface/20 ml-auto">
             Volver
         </a>
     </div>

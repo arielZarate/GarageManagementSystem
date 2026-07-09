@@ -1,11 +1,11 @@
 <div th:fragment="content">
     <div class="flex justify-between items-center mb-4">
         <div>
-            <h1 class="text-xl font-bold text-gray-800">Clientes</h1>
-            <p class="text-xs text-gray-500">Listado de clientes registrados</p>
+            <h1 class="text-xl font-bold text-on-surface">Clientes</h1>
+            <p class="text-xs text-on-surface/60">Listado de clientes registrados</p>
         </div>
         <a th:href="@{/customer/form}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5">
+           class="bg-primary hover:bg-primary/90 text-on-primary px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
@@ -17,29 +17,29 @@
     <div class="mb-4">
         <form th:action="@{/customer}" method="get" class="flex gap-2">
             <div class="relative flex-1 max-w-xs">
-                <svg class="w-4 h-4 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-on-surface/40 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
                 <input type="text" name="q" th:value="${searchQuery}"
                        placeholder="Buscar por DNI o CUIT..."
-                       class="w-full border border-gray-300 rounded-lg pl-8 pr-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg pl-8 pr-3 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
             </div>
             <button type="submit"
-                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition border border-gray-300">
+                    class="bg-surface-container-low hover:bg-surface-container text-on-surface px-3 py-1.5 rounded-lg text-sm font-medium transition border border-outline">
                 Buscar
             </button>
             <a th:href="@{/customer}" th:if="${searchQuery != null}"
-               class="text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg text-sm transition border border-gray-300 hover:bg-gray-50">
+               class="text-on-surface/60 hover:text-on-surface px-3 py-1.5 rounded-lg text-sm transition border border-outline hover:bg-surface-container-low">
                 Limpiar
             </a>
         </form>
     </div>
 
     <!-- Tabla responsive -->
-    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-x-auto">
-        <table class="w-full text-sm text-gray-700">
+    <div class="bg-surface-container rounded-lg shadow border border-outline-variant overflow-x-auto">
+        <table class="w-full text-sm text-on-surface">
             <thead>
-                <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold tracking-wider">
+                <tr class="bg-surface-container-low text-on-surface/60 uppercase text-xs font-semibold tracking-wider">
                     <th class="px-3 py-3 text-left">Código</th>
                     <th class="px-3 py-3 text-left">Nombre</th>
                     <th class="px-3 py-3 text-left">DNI</th>
@@ -49,10 +49,10 @@
                     <th class="px-3 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-outline-variant">
                 <tr th:each="c: ${customers}"
-                    class="hover:bg-gray-50 transition even:bg-gray-50/50">
-                    <td class="px-3 py-3 font-medium text-gray-900 font-mono text-xs" th:text="${c.customerCode}"></td>
+                    class="hover:bg-surface-container-low transition even:bg-surface-container-low/50">
+                    <td class="px-3 py-3 font-medium text-on-surface font-mono text-xs" th:text="${c.customerCode}"></td>
                     <td class="px-3 py-3" th:text="${c.firstName} + ' ' + ${c.lastName}"></td>
                     <td class="px-3 py-3" th:text="${c.dni}"></td>
                     <td class="px-3 py-3" th:text="${c.email}"></td>
@@ -73,7 +73,7 @@
                         <div class="flex items-center justify-center gap-1">
                             <!-- Ver detalle -->
                             <a th:href="@{/customer/detail/{id}(id=${c.id})}"
-                               class="p-1.5 rounded hover:bg-blue-100 text-blue-600 transition"
+                               class="p-1.5 rounded hover:bg-primary-container text-primary transition"
                                title="Ver detalle">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,7 +84,7 @@
                             </a>
                             <!-- Editar -->
                             <a th:href="@{/customer/edit/{id}(id=${c.id})}"
-                               class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition"
+                               class="p-1.5 rounded hover:bg-secondary-container text-secondary transition"
                                title="Editar">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,7 +96,7 @@
                 </tr>
                 <!-- Fila vacía -->
                 <tr th:if="${#lists.isEmpty(customers)}">
-                    <td colspan="7" class="px-3 py-12 text-center text-gray-400">
+                    <td colspan="7" class="px-3 py-12 text-center text-on-surface/40">
                         <p class="text-lg mb-1">No hay clientes registrados</p>
                         <p class="text-sm">Creá el primer cliente</p>
                     </td>
