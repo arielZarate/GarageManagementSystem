@@ -14,6 +14,8 @@ public interface CustomerService {
 
     Customer getCustomerByDni(String dni);
 
+    List<Customer> searchByDniOrCuit(String query);
+
     Customer updateCustomer(Customer customer);
 
     void toggleStatusCustomer(Long id);

@@ -49,6 +49,14 @@ public class CustomerAdapter implements CustomerProvider {
     }
 
     @Override
+    public List<Customer> searchByDniOrCuit(String query) {
+        return repository.searchByDniOrCuit(query)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public long countCustomers() {
         return repository.count();
     }

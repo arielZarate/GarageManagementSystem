@@ -42,6 +42,11 @@ public class CustomerUseCase implements CustomerService {
     }
 
     @Override
+    public List<Customer> searchByDniOrCuit(String query) {
+        return provider.searchByDniOrCuit(query);
+    }
+
+    @Override
     public Customer updateCustomer(Customer customer) {
         return provider.update(customer);
     }

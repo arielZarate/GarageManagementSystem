@@ -17,5 +17,7 @@ public interface CustomerProvider {
 
     List<Customer> findAll();
 
+    List<Customer> searchByDniOrCuit(String query);
+
     long countCustomers();
 }

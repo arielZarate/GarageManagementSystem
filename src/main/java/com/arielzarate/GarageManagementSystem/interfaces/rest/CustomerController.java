@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -29,26 +30,52 @@ public class CustomerController {
     private final CustomerDTOMapper mapper;
 
     @GetMapping
-    public String getCustomers(Model model) {
-        List<Customer> list = service.getCustomers();
+    public String getCustomers(@RequestParam(value = "q", required = false) String query, Model model) {
+        List<Customer> list;
+        if (query != null && !query.isBlank()) {
+            list = service.searchByDniOrCuit(query.trim());
+            model.addAttribute("searchQuery", query.trim());
+        } else {
+            list = service.getCustomers();
+        }
+        model.addAttribute("pageTitle", "Clientes");
+        model.addAttribute("content", "customer/list");
         model.addAttribute("customers", list);
-        return "customer/customerView";
+        return "layout/base";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        try {
+            Customer customer = service.getCustomerById(id);
+            model.addAttribute("pageTitle", "Detalle del Cliente");
+            model.addAttribute("content", "customer/detail");
+            model.addAttribute("customer", customer);
+            return "layout/base";
+        } catch (RuntimeException e) {
+            log.warn("Customer not found: {}", id);
+            return "redirect:/customer";
+        }
     }
 
     @GetMapping("/form")
     public String showForm(Model model) {
+        model.addAttribute("pageTitle", "Nuevo Cliente");
+        model.addAttribute("content", "customer/form");
         model.addAttribute("customerObject", new CustomerRequest());
         model.addAttribute("editMode", false);
-        return "customer/customerForm";
+        return "layout/base";
     }
 
     @PostMapping
     public String createCustomer(@Valid @ModelAttribute("customerObject") CustomerRequest request,
-                                 BindingResult result,
-                                 Model model) {
+                                  BindingResult result,
+                                  Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Nuevo Cliente");
+            model.addAttribute("content", "customer/form");
             model.addAttribute("editMode", false);
-            return "customer/customerForm";
+            return "layout/base";
         }
 
         Customer customer = mapper.toDomain(request);
@@ -63,9 +90,11 @@ public class CustomerController {
         try {
             Customer customer = service.getCustomerById(id);
             CustomerRequest request = mapper.toRequest(customer);
+            model.addAttribute("pageTitle", "Editar Cliente");
+            model.addAttribute("content", "customer/form");
             model.addAttribute("customerObject", request);
             model.addAttribute("editMode", true);
-            return "customer/customerForm";
+            return "layout/base";
         } catch (RuntimeException e) {
             log.warn("Customer not found for edit: {}", id);
             return "redirect:/customer";
@@ -74,11 +103,13 @@ public class CustomerController {
 
     @PostMapping("/update")
     public String updateCustomer(@Valid @ModelAttribute("customerObject") CustomerRequest request,
-                                 BindingResult result,
-                                 Model model) {
+                                  BindingResult result,
+                                  Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Editar Cliente");
+            model.addAttribute("content", "customer/form");
             model.addAttribute("editMode", true);
-            return "customer/customerForm";
+            return "layout/base";
         }
 
         Customer customer = mapper.toDomain(request);
@@ -89,24 +120,12 @@ public class CustomerController {
     }
 
     @PostMapping("/toggle/{id}")
-    public String toggleCustomer(@PathVariable Long id) {
+    public String toggleCustomer(@PathVariable Long id, HttpServletRequest request) {
         service.toggleStatusCustomer(id);
         log.info("Customer {} toggled", id);
-        return "redirect:/customer";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/customer");
     }
 
-    @GetMapping("/search")
-    public String searchByDni(@RequestParam("dni") String dni, Model model) {
-        try {
-            Customer customer = service.getCustomerByDni(dni);
-            model.addAttribute("customers", List.of(customer));
-            model.addAttribute("searchDni", dni);
-        } catch (RuntimeException e) {
-            log.warn("Customer not found by dni: {}", dni);
-            model.addAttribute("customers", List.of());
-            model.addAttribute("searchDni", dni);
-            model.addAttribute("notFound", true);
-        }
-        return "customer/customerView";
-    }
+
 }
