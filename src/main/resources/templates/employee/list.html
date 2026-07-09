@@ -1,8 +1,8 @@
 <div th:fragment="content">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Empleados</h1>
+        <h1 class="text-2xl font-bold text-on-surface">Empleados</h1>
         <a th:href="@{/employee/form}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+           class="bg-primary hover:bg-primary/90 text-on-primary px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
@@ -11,10 +11,10 @@
     </div>
 
     <!-- Tabla responsive -->
-    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-x-auto">
-        <table class="w-full text-sm text-gray-700">
+    <div class="bg-surface-container rounded-lg shadow border border-outline-variant overflow-x-auto">
+        <table class="w-full text-sm text-on-surface">
             <thead>
-                <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold tracking-wider">
+                <tr class="bg-surface-container-low text-on-surface/60 uppercase text-xs font-semibold tracking-wider">
                     <th class="px-3 py-3 text-left">Legajo</th>
                     <th class="px-3 py-3 text-left">Nombre</th>
                     <th class="px-3 py-3 text-left">CUIT</th>
@@ -25,16 +25,16 @@
                     <th class="px-3 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-outline-variant">
                 <tr th:each="employee: ${employees}"
-                    class="hover:bg-gray-50 transition even:bg-gray-50/50">
-                    <td class="px-3 py-3 font-medium text-gray-900" th:text="${employee.legajo}"></td>
+                    class="hover:bg-surface-container-low transition even:bg-surface-container-low/50">
+                    <td class="px-3 py-3 font-medium text-on-surface" th:text="${employee.legajo}"></td>
                     <td class="px-3 py-3" th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
                     <td class="px-3 py-3 font-mono text-xs" th:text="${employee.CUIT}"></td>
                     <td class="px-3 py-3" th:text="${employee.email}"></td>
                     <td class="px-3 py-3" th:text="${employee.phone}"></td>
                     <td class="px-3 py-3">
-                        <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded" th:text="${employee.role.displayName}"></span>
+                        <span class="bg-secondary-container text-on-secondary-container text-xs font-medium px-2 py-1 rounded" th:text="${employee.role.displayName}"></span>
                     </td>
                     <td class="px-3 py-3 text-center">
                         <span th:if="${employee.active}"
@@ -52,7 +52,7 @@
                         <div class="flex items-center justify-center gap-1">
                             <!-- Ver detalle -->
                             <a th:href="@{/employee/detail/{id}(id=${employee.id})}"
-                               class="p-1.5 rounded hover:bg-blue-100 text-blue-600 transition"
+                               class="p-1.5 rounded hover:bg-primary-container text-primary transition"
                                title="Ver detalle">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,7 +63,7 @@
                             </a>
                             <!-- Editar -->
                             <a th:href="@{/employee/edit/{id}(id=${employee.id})}"
-                               class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition"
+                               class="p-1.5 rounded hover:bg-secondary-container text-secondary transition"
                                title="Editar">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,7 +76,7 @@
                 </tr>
                 <!-- Fila vacía -->
                 <tr th:if="${#lists.isEmpty(employees)}">
-                    <td colspan="8" class="px-3 py-12 text-center text-gray-400">
+                    <td colspan="8" class="px-3 py-12 text-center text-on-surface/40">
                         <p class="text-lg mb-1">No hay empleados registrados</p>
                         <p class="text-sm">Creá el primer empleado</p>
                     </td>

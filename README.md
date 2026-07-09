@@ -40,6 +40,7 @@ The system allows:
 
 - Thymeleaf (server-side rendering)
 - Tailwind CSS (styling)
+- Material Design 3 Theme System (CSS custom properties)
 
 ### 🔹 Database
 
@@ -66,14 +67,16 @@ src/main/java/com/arielzarate/GarageManagementSystem/
 │   ├── errors/             # Error handling
 │   ├── middleware/         # Middleware (filters, interceptors)
 │   ├── rest/               # REST controllers (inbound adapters)
+│   │   ├── dto/            # Request/Response DTOs per entity
+│   │   └── mappers/        # DTO ↔ Domain MapStruct mappers
 │   └── security/           # Security config
 │
 └── infraestructure/
-    ├── adapters/
-    │   └── mappers/        # Domain ↔ DTO mappers
+    ├── adapters/           # Outbound adapter implementations
+    │   └── mappers/        # Domain ↔ JPA entity MapStruct mappers
     ├── config/             # Spring/application config
-    └── persistence/        # Outbound adapter implementation
-        ├── entities/       # JPA entities (@Entity, @Id, ...)
+    └── persistence/        # JPA persistence layer
+        ├── entities/       # JPA entities (@Entity, extends BaseEntity)
         ├── enums/          # JPA enums (Role, VehicleType, RepairStatus, QuoteStatus)
         ├── mappers/        # Domain ↔ Entity mapping
         └── repositories/   # Spring Data JPA repositories
@@ -82,13 +85,70 @@ src/main/java/com/arielzarate/GarageManagementSystem/
 ```
 src/main/resources
 │
-├── templates/              (Thymeleaf views)
+├── templates/
+│   ├── layout/             # base.html, fragments.html (navbar, sidebar, footer)
+│   ├── customer/           # list, detail, form
+│   ├── employee/           # list, detail, form
+│   ├── company/            # view, form
+│   └── index.html
 ├── static/
 │   ├── css/
+│   │   ├── input.css       # Tailwind source + theme variables
+│   │   └── output.css      # Compiled Tailwind
 │   └── js/
+│       └── darkMode-theme.js   # Theme + dark mode manager
 ├── application.yml
 └── application.properties
 ```
+
+---
+
+## 🎨 Theme System (Material Design 3)
+
+### 5 Color Themes
+
+All colors are defined as CSS custom properties (`--md-*`) in `input.css` and mapped to Tailwind utility classes via `@theme`.
+
+| Theme   | Class           | Primary    | Navbar (inverse-surface) | Description |
+|---------|-----------------|------------|--------------------------|-------------|
+| Azul    | `theme-azul`    | `#1976D2`  | `#0D47A1`                | Default, corporate blue |
+| Verde   | `theme-verde`   | `#B0FF42`  | `#33691E`                | Lime green |
+| Violeta | `theme-violeta` | `#9142FF`  | `#4527A0`                | Purple |
+| Naranja | `theme-naranja` | `#F57C00`  | `#BF360C`                | Warm orange |
+| Celeste | `theme-celeste` | `#42B0FF`  | `#0288D1`                | Sky blue |
+
+### Theme Tokens (CSS Variables)
+
+Each theme defines these tokens, usable as Tailwind classes:
+
+| CSS Variable          | Tailwind Class          | Usage                     |
+|-----------------------|-------------------------|---------------------------|
+| `--md-primary`        | `bg-primary` / `text-primary` | Buttons, links       |
+| `--md-on-primary`     | `text-on-primary`       | Text on primary buttons   |
+| `--md-primary-container` | `bg-primary-container` | Badges, hover backgrounds |
+| `--md-on-primary-container` | `text-on-primary-container` | Text on badges      |
+| `--md-secondary`      | `bg-secondary`          | Role badges, labels       |
+| `--md-surface`        | `bg-surface`            | Page background           |
+| `--md-surface-container` | `bg-surface-container` | Cards, tables, modals   |
+| `--md-inverse-surface` | `bg-inverse-surface`    | Navbar, sidebar, footer   |
+| `--md-on-surface`     | `text-on-surface`       | General text color        |
+| `--md-outline`        | `border-outline`        | Input borders             |
+| `--md-outline-variant` | `border-outline-variant` | Table borders, dividers  |
+
+### Dark Mode
+
+- Unified slate theme, independent of color theme
+- Controlled via `.dark` class on `<html>`
+- Toggle in navbar (moon/sun icon)
+- Persisted in `localStorage`
+- Dark mode CSS is defined last in `input.css` to override all themes
+
+### Theme Selector
+
+- Located in the **sidebar** under "Configuración → Temas"
+- Five clickable rows with colored dots
+- Active theme highlighted with border
+- Persisted in `localStorage`
 
 ---
 
@@ -114,7 +174,7 @@ Configuration for invoices/quotes (logo, business name, legal name, address, pho
 
 ### 🔸 EMPLOYEE (Usuario/Empleado)
 
-System users with roles. Legajo tracks all repairs performed.
+System users with roles. Legajo tracks all repairs performed. Active/inactive status managed via radio buttons in edit form.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -135,12 +195,12 @@ System users with roles. Legajo tracks all repairs performed.
 
 ### 🔸 CUSTOMER (Cliente)
 
-Vehicle owner/customer.
+Vehicle owner/customer. Active/inactive status managed via radio buttons in edit form.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | id | Long | Primary key (inherited) |
-| legajo | String | Customer ID (auto-generated, unique) |
+| customerCode | String | Customer ID (auto-generated, unique) |
 | firstName | String | First name |
 | lastName | String | Last name |
 | phone | String | Phone |
@@ -303,20 +363,17 @@ Purpose: Backup and data portability between locations.
 
 ### 🔷 General Layout
 
-#### HEADER
+#### HEADER (Navbar)
+- Hamburger menu (opens sidebar)
 - System name
+- Dark mode toggle
 - Logged user
-- Role
 
 #### SIDEBAR
-- Dashboard
-- Customers
-- Vehicles
-- Quotes (Presupuestos)
-- Repair Orders
-- Employees (Admin only)
-- Settings (Company config)
-- Public Status (Screen mode)
+- Navegación: Dashboard, Customers, Vehicles, Quotes, Repair Orders
+- Administración: Company config, Employees
+- Configuración: Themes (5 color options)
+- User profile
 
 #### MAIN CONTENT
 - Dynamic content per section
@@ -325,11 +382,15 @@ Purpose: Backup and data portability between locations.
 
 ## 🎨 Visual Style
 
-- Tailwind CSS
-- Professional admin panel
-- Neutral colors (gray, white, blue)
-- Soft shadows
-- Consistent buttons
+- Tailwind CSS with Material Design 3 theming
+- 5 color themes (Azul, Verde, Violeta, Naranja, Celeste)
+- Dark mode (unified slate theme)
+- Theme selector in sidebar (Configuración → Temas)
+- Color tokens mapped via CSS custom properties
+- Professional admin panel with consistent cards, shadows, and buttons
+- Fixed green/red badges for active/inactive status
+- Button hover effects: scale + background transitions
+- Radio buttons for status selection (custom styled with appearance-none)
 
 ---
 
@@ -359,7 +420,7 @@ spring:
     password: 1111
     hikari:
       minimum-idle: 5
-      maximum-pool-size: 20
+      maximum-idle: 20
       idle-timeout: 30000
       max-lifetime: 1800000
       connection-timeout: 30000
@@ -420,6 +481,8 @@ This project demonstrates:
 - Professional admin interface
 - Quote/budget generation
 - Real-time status tracking
+- Material Design 3 theming system
+- Dark mode implementation
 
 ---
 

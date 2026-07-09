@@ -1,1 +1,202 @@
 @import "tailwindcss";
+
+/* ============================================
+   Temas Material Design 3 para el sistema
+   - Cambia la clase en <html> para elegir tema
+   - Agrega clase .dark para modo oscuro (slate)
+   ============================================ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================
+   TOKENS DEL TEMA (mapean a clases Tailwind)
+   Se usa en HTML como: bg-primary, text-on-primary, border-outline, etc.
+   ============================================ */
+@theme {
+    --color-primary: var(--md-primary);                         /* bg-primary → fondo de botones principales, links */
+    --color-on-primary: var(--md-on-primary);                   /* text-on-primary → texto sobre botón primary */
+    --color-primary-container: var(--md-primary-container);     /* bg-primary-container → badges "Activo", hover suave */
+    --color-on-primary-container: var(--md-on-primary-container); /* text-on-primary-container → texto sobre badges */
+    --color-secondary: var(--md-secondary);                     /* bg-secondary → badges de roles, etiquetas secundarias */
+    --color-on-secondary: var(--md-on-secondary);               /* text-on-secondary → texto sobre secondary */
+    --color-secondary-container: var(--md-secondary-container); /* bg-secondary-container → fondo de etiquetas secundarias */
+    --color-on-secondary-container: var(--md-on-secondary-container); /* texto sobre secondary-container */
+    --color-surface: var(--md-surface);                         /* bg-surface → fondo general de la página (<body>) */
+    --color-surface-container: var(--md-surface-container);     /* bg-surface-container → fondo de cards, tablas, modales */
+    --color-surface-container-low: var(--md-surface-container-low); /* bg-surface-container-low → inputs, buscadores */
+    --color-on-surface: var(--md-on-surface);                   /* text-on-surface → color de texto general */
+    --color-inverse-surface: var(--md-inverse-surface);         /* bg-inverse-surface → navbar, sidebar, footer (fondo oscuro invertido) */
+    --color-inverse-on-surface: var(--md-inverse-on-surface);   /* text-inverse-on-surface → texto en navbar/sidebar/footer */
+    --color-error: var(--md-error);                             /* bg-error → botones de eliminar, estados críticos */
+    --color-on-error: var(--md-on-error);                       /* text-on-error → texto sobre fondo de error */
+    --color-error-container: var(--md-error-container);         /* bg-error-container → badges "Inactivo", errores suaves */
+    --color-on-error-container: var(--md-on-error-container);   /* text-on-error-container → texto sobre badge de error */
+    --color-outline: var(--md-outline);                         /* border-outline → bordes de inputs, botones secundarios */
+    --color-outline-variant: var(--md-outline-variant);         /* border-outline-variant → bordes de tabla, separadores */
+}
+
+/* ============================================
+   TEMA AZUL (default) — primary: #4253FF
+   ============================================ */
+
+:root,
+.theme-azul {
+    --md-primary: #1976D2;                  /* blue-700 — azul corporivo, oficina */
+    --md-on-primary: #FFFFFF;               /* blanco — texto sobre botón primary */
+    --md-primary-container: #BBDEFB;        /* blue-100 — badges, hover suave */
+    --md-on-primary-container: #0D47A1;     /* blue-900 — texto sobre primary-container */
+    --md-secondary: #42A5F5;                /* blue-400 — badges de roles */
+    --md-on-secondary: #FFFFFF;             /* blanco — texto sobre secondary */
+    --md-secondary-container: #C5E0F7;      /* celeste claro — fondo etiquetas */
+    --md-on-secondary-container: #0D47A1;   /* blue-900 — texto sobre etiquetas */
+    --md-surface: #f1f5f9;                  /* slate-100 — fondo de página */
+    --md-surface-container: #FFFFFF;         /* blanco — fondo cards/tablas */
+    --md-surface-container-low: #f8fafc;    /* slate-50 — fondo inputs */
+    --md-on-surface: #1A1C1E;               /* casi negro — texto general */
+    --md-inverse-surface: #0D47A1;          /* blue-900 — navbar/sidebar/footer */
+    --md-inverse-on-surface: #E8EAED;       /* casi blanco — texto en navbar */
+    --md-error: #D32F2F;                    /* rojo — botón eliminar */
+    --md-on-error: #FFFFFF;                 /* blanco — texto sobre error */
+    --md-error-container: #FFCDD2;          /* rojo claro — badge inactivo */
+    --md-on-error-container: #410002;       /* rojo oscuro — texto sobre badge error */
+    --md-outline: #90CAF9;                  /* blue-200 — borde inputs */
+    --md-outline-variant: #BBDEFB;          /* blue-100 — borde suave */
+}
+
+/* ============================================
+   TEMA VERDE — primary: #B0FF42
+   ============================================ */
+
+.theme-verde {
+    --md-primary: #B0FF42;                  /* lima vibrante — botones, links */
+    --md-on-primary: #1A2E00;               /* verde oscuro — texto sobre botón (contraste) */
+    --md-primary-container: #E5FFC5;        /* tono muy claro — badges, hover suave */
+    --md-on-primary-container: #1F3D00;     /* verde profundo — texto sobre badges */
+    --md-secondary: #8BC34A;                /* light-green-400 — badges de roles */
+    --md-on-secondary: #1A2E00;             /* verde oscuro — texto sobre secondary */
+    --md-secondary-container: #DCEDC8;      /* light-green-100 — fondo etiquetas */
+    --md-on-secondary-container: #33691E;   /* light-green-900 — texto sobre etiquetas */
+    --md-surface: #f1f5f9;                  /* slate-100 — fondo de página */
+    --md-surface-container: #FFFFFF;        /* blanco — fondo cards/tablas */
+    --md-surface-container-low: #f8fafc;    /* slate-50 — fondo inputs */
+    --md-on-surface: #1A1C1E;               /* casi negro — texto general */
+    --md-inverse-surface: #33691E;          /* verde oscuro — navbar/sidebar/footer */
+    --md-inverse-on-surface: #FFFFFF;       /* blanco — texto en navbar */
+    --md-error: #D32F2F;                    /* rojo — botón eliminar */
+    --md-on-error: #FFFFFF;                 /* blanco — texto sobre error */
+    --md-error-container: #FFCDD2;          /* rojo claro — badge inactivo */
+    --md-on-error-container: #410002;       /* rojo oscuro — texto sobre badge error */
+    --md-outline: #A5BFA5;                  /* verde grisáceo — borde inputs */
+    --md-outline-variant: #D5E0D5;          /* verde grisáceo claro — borde suave */
+}
+
+/* ============================================
+   TEMA VIOLETA — primary: #9142FF
+   ============================================ */
+
+.theme-violeta {
+    --md-primary: #9142FF;                  /* púrpura vibrante — botones, links */
+    --md-on-primary: #FFFFFF;               /* blanco — texto sobre botón primary */
+    --md-primary-container: #E8D5FF;        /* tono muy claro — badges, hover suave */
+    --md-on-primary-container: #2E0080;     /* púrpura profundo — texto sobre badges */
+    --md-secondary: #7E57C2;                /* deep-purple-400 — badges de roles */
+    --md-on-secondary: #FFFFFF;             /* blanco — texto sobre secondary */
+    --md-secondary-container: #D1C4E9;      /* deep-purple-100 — fondo etiquetas */
+    --md-on-secondary-container: #311B92;   /* deep-purple-900 — texto sobre etiquetas */
+    --md-surface: #f1f5f9;                  /* slate-100 — fondo de página */
+    --md-surface-container: #FFFFFF;        /* blanco — fondo cards/tablas */
+    --md-surface-container-low: #f8fafc;    /* slate-50 — fondo inputs */
+    --md-on-surface: #1A1C1E;               /* casi negro — texto general */
+    --md-inverse-surface: #4527A0;          /* púrpura oscuro — navbar/sidebar/footer */
+    --md-inverse-on-surface: #FFFFFF;       /* blanco — texto en navbar */
+    --md-error: #D32F2F;                    /* rojo — botón eliminar */
+    --md-on-error: #FFFFFF;                 /* blanco — texto sobre error */
+    --md-error-container: #FFCDD2;          /* rojo claro — badge inactivo */
+    --md-on-error-container: #410002;       /* rojo oscuro — texto sobre badge error */
+    --md-outline: #B39DDB;                  /* deep-purple-200 — borde inputs */
+    --md-outline-variant: #D1C4E9;          /* deep-purple-100 — borde suave */
+}
+
+/* ============================================
+   TEMA NARANJA — primary: #FF9142
+   ============================================ */
+
+.theme-naranja {
+    --md-primary: #F57C00;                  /* orange-700 — naranja más sobrio */
+    --md-on-primary: #FFFFFF;               /* blanco — texto sobre botón primary */
+    --md-primary-container: #FFE0B2;        /* orange-100 — badges, hover suave */
+    --md-on-primary-container: #3E1E00;     /* marrón oscuro — texto sobre badges */
+    --md-secondary: #FB8C00;                /* orange-600 — badges de roles */
+    --md-on-secondary: #FFFFFF;             /* blanco — texto sobre secondary */
+    --md-secondary-container: #FFE0B2;      /* orange-100 — fondo etiquetas */
+    --md-on-secondary-container: #BF360C;   /* deep-orange-900 — texto sobre etiquetas */
+    --md-surface: #f1f5f9;                  /* slate-100 — fondo de página */
+    --md-surface-container: #FFFFFF;        /* blanco — fondo cards/tablas */
+    --md-surface-container-low: #f8fafc;    /* slate-50 — fondo inputs */
+    --md-on-surface: #1A1C1E;               /* casi negro — texto general */
+    --md-inverse-surface: #BF360C;          /* deep-orange-900 — navbar/sidebar/footer */
+    --md-inverse-on-surface: #FFFFFF;       /* blanco — texto en navbar */
+    --md-error: #D32F2F;                    /* rojo — botón eliminar */
+    --md-on-error: #FFFFFF;                 /* blanco — texto sobre error */
+    --md-error-container: #FFCDD2;          /* rojo claro — badge inactivo */
+    --md-on-error-container: #410002;       /* rojo oscuro — texto sobre badge error */
+    --md-outline: #FFCC80;                  /* orange-200 — borde inputs */
+    --md-outline-variant: #FFE0B2;          /* orange-100 — borde suave */
+}
+
+/* ============================================
+   TEMA CELESTE — primary: #42B0FF
+   ============================================ */
+
+.theme-celeste {
+    --md-primary: #42B0FF;                  /* azul cielo — botones, links */
+    --md-on-primary: #FFFFFF;               /* blanco — texto sobre botón primary */
+    --md-primary-container: #D4EDFF;        /* tono muy claro — badges, hover suave */
+    --md-on-primary-container: #003A6B;     /* azul profundo — texto sobre badges */
+    --md-secondary: #29B6F6;                /* light-blue-400 — badges de roles */
+    --md-on-secondary: #FFFFFF;             /* blanco — texto sobre secondary */
+    --md-secondary-container: #B3E5FC;      /* light-blue-100 — fondo etiquetas */
+    --md-on-secondary-container: #01579B;   /* light-blue-900 — texto sobre etiquetas */
+    --md-surface: #f1f5f9;                  /* slate-100 — fondo de página */
+    --md-surface-container: #FFFFFF;        /* blanco — fondo cards/tablas */
+    --md-surface-container-low: #f8fafc;    /* slate-50 — fondo inputs */
+    --md-on-surface: #1A1C1E;               /* casi negro — texto general */
+    --md-inverse-surface: #0288D1;          /* light-blue-700 — navbar/sidebar/footer */
+    --md-inverse-on-surface: #FFFFFF;       /* blanco — texto en navbar */
+    --md-error: #D32F2F;                    /* rojo — botón eliminar */
+    --md-on-error: #FFFFFF;                 /* blanco — texto sobre error */
+    --md-error-container: #FFCDD2;          /* rojo claro — badge inactivo */
+    --md-on-error-container: #410002;       /* rojo oscuro — texto sobre badge error */
+    --md-outline: #81D4FA;                  /* light-blue-200 — borde inputs */
+    --md-outline-variant: #B3E5FC;          /* light-blue-100 — borde suave */
+}
+
+
+
+/* ============================================
+   MODO OSCURO (siempre slate, sin importar tema)
+   - VA AL FINAL para que sobreescriba a cualquier tema
+   ============================================ */
+
+.dark {
+    --md-primary: #e2e8f0;                  /* slate-200 — botón claro, se destaca sobre fondo oscuro */
+    --md-on-primary: #0f172a;               /* slate-900 — texto oscuro sobre botón claro */
+    --md-primary-container: #475569;        /* slate-600 — badges/hover en modo oscuro */
+    --md-on-primary-container: #e2e8f0;     /* slate-200 — texto claro sobre badge */
+    --md-secondary: #94a3b8;                /* slate-400 — color secundario más sobrio */
+    --md-on-secondary: #0f172a;             /* slate-900 — texto oscuro sobre secondary */
+    --md-secondary-container: #334155;      /* slate-700 — fondo etiquetas secundarias */
+    --md-on-secondary-container: #cbd5e1;   /* slate-300 — texto sobre secondary-container */
+    --md-surface: #0f172a;                  /* slate-900 — fondo de página */
+    --md-surface-container: #1e293b;        /* slate-800 — fondo de cards/tablas */
+    --md-surface-container-low: #151e34;    /* slate-850 — fondo de inputs */
+    --md-on-surface: #e2e8f0;               /* slate-200 — texto general */
+    --md-inverse-surface: #e2e8f0;          /* slate-200 — navbar/sidebar (inverso: claro) */
+    --md-inverse-on-surface: #1e293b;       /* slate-800 — texto en navbar */
+    --md-error: #ef9a9a;                    /* red-200 — botón eliminar */
+    --md-on-error: #601410;                 /* texto sobre botón error */
+    --md-error-container: #93000a;          /* red-900 — badge inactivo */
+    --md-on-error-container: #ffdad6;       /* red-50 — texto sobre badge error */
+    --md-outline: #5f6369;                  /* borde de inputs */
+    --md-outline-variant: #44474e;          /* borde suave de tablas */
+}

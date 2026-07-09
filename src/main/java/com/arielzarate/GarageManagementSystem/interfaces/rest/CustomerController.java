@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -118,14 +117,5 @@ public class CustomerController {
 
         return "redirect:/customer";
     }
-
-    @PostMapping("/toggle/{id}")
-    public String toggleCustomer(@PathVariable Long id, HttpServletRequest request) {
-        service.toggleStatusCustomer(id);
-        log.info("Customer {} toggled", id);
-        String referer = request.getHeader("Referer");
-        return "redirect:" + (referer != null ? referer : "/customer");
-    }
-
 
 }

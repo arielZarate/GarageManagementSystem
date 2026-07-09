@@ -50,12 +50,4 @@ public class CustomerUseCase implements CustomerService {
     public Customer updateCustomer(Customer customer) {
         return provider.update(customer);
     }
-
-    @Override
-    public void toggleStatusCustomer(Long id) {
-        Customer customer = this.getCustomerById(id);
-        customer.setActive(!Boolean.TRUE.equals(customer.getActive()));
-        log.info("Customer {} active status toggled to {}", id, customer.getActive());
-        provider.update(customer);
-    }
 }

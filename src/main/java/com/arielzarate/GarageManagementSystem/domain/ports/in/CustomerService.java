@@ -17,6 +17,4 @@ public interface CustomerService {
     List<Customer> searchByDniOrCuit(String query);
 
     Customer updateCustomer(Customer customer);
-
-    void toggleStatusCustomer(Long id);
 }

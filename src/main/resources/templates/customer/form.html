@@ -1,18 +1,18 @@
 <div th:fragment="content">
     <div class="flex items-center justify-between mb-4">
         <div>
-            <h1 class="text-xl font-bold text-gray-800" th:text="${editMode} ? 'Editar Cliente' : 'Nuevo Cliente'"></h1>
-            <p class="text-xs text-gray-500" th:text="${editMode} ? 'Modificá los datos del cliente' : 'Completá los datos del nuevo cliente'"></p>
+            <h1 class="text-xl font-bold text-on-surface" th:text="${editMode} ? 'Editar Cliente' : 'Nuevo Cliente'"></h1>
+            <p class="text-xs text-on-surface/60" th:text="${editMode} ? 'Modificá los datos del cliente' : 'Completá los datos del nuevo cliente'"></p>
         </div>
         <a th:href="@{/customer}"
-           class="text-gray-500 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition">
+           class="text-on-surface/60 hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-low transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </a>
     </div>
 
-    <div class="bg-white rounded-lg shadow border border-gray-200 p-4 md:p-5">
+    <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4 md:p-5">
         <form th:object="${customerObject}" method="post"
               th:action="${editMode} ? @{/customer/update} : @{/customer}"
               class="space-y-4">
@@ -21,119 +21,134 @@
 
             <!-- Errores globales -->
             <div th:if="${#fields.hasGlobalErrors()}"
-                 class="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg text-xs">
+                 class="bg-error-container border border-error-container text-on-error-container px-3 py-2 rounded-lg text-xs">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
 
             <!-- Datos personales -->
             <div>
-                <h2 class="text-sm font-semibold text-gray-700 mb-2 pb-1 border-b border-gray-200">Datos Personales</h2>
+                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Datos Personales</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Nombres</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Nombres</label>
                         <input type="text" th:field="*{firstName}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('firstName')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('firstName')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-error text-xs"></span>
                     </div>
                     <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Apellido</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Apellido</label>
                         <input type="text" th:field="*{lastName}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('lastName')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('lastName')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-error text-xs"></span>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">DNI</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">DNI</label>
                         <input type="text" th:field="*{dni}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('dni')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('dni')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-error text-xs"></span>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">CUIT</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">CUIT</label>
                         <input type="text" th:field="*{cuit}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('cuit')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('cuit')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-error text-xs"></span>
                     </div>
                 </div>
             </div>
 
             <!-- Contacto -->
             <div>
-                <h2 class="text-sm font-semibold text-gray-700 mb-2 pb-1 border-b border-gray-200">Contacto</h2>
+                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Contacto</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Email</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Email</label>
                         <input type="email" th:field="*{email}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('email')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('email')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-error text-xs"></span>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Teléfono</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Teléfono</label>
                         <input type="text" th:field="*{phone}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               th:classappend="${#fields.hasErrors('phone')} ? 'border-red-400' : ''">
-                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-red-500 text-xs"></span>
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                               th:classappend="${#fields.hasErrors('phone')} ? 'border-error' : ''">
+                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-error text-xs"></span>
                     </div>
                 </div>
             </div>
 
             <!-- Dirección -->
             <div>
-                <h2 class="text-sm font-semibold text-gray-700 mb-2 pb-1 border-b border-gray-200">Dirección</h2>
+                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Dirección</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Provincia</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Provincia</label>
                         <input type="text" th:field="*{province}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Ciudad</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Ciudad</label>
                         <input type="text" th:field="*{city}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Barrio</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Barrio</label>
                         <input type="text" th:field="*{neighborhood}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Calle</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Calle</label>
                         <input type="text" th:field="*{street}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">Número</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Número</label>
                         <input type="text" th:field="*{number}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">C.P.</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">C.P.</label>
                         <input type="text" th:field="*{postalCode}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-0.5">País</label>
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">País</label>
                         <input type="text" th:field="*{country}"
-                               class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div th:if="${editMode}">
+                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Estado</label>
+                        <div class="flex items-center gap-6 mt-0.5">
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" th:field="*{active}" th:value="true"
+                                       class="appearance-none w-4 h-4 rounded-full border-2 border-outline checked:border-green-500 checked:bg-green-500 focus:ring-2 focus:ring-green-500 transition-all">
+                                <span class="text-sm text-on-surface">Activo</span>
+                            </label>
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" th:field="*{active}" th:value="false"
+                                       class="appearance-none w-4 h-4 rounded-full border-2 border-outline checked:border-red-500 checked:bg-red-500 focus:ring-2 focus:ring-red-500 transition-all">
+                                <span class="text-sm text-on-surface">Inactivo</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Botones -->
-            <div class="flex items-center gap-2 pt-3 border-t border-gray-200">
+            <div class="flex items-center gap-2 pt-3 border-t border-outline-variant">
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-1.5 rounded-lg text-sm transition flex items-center gap-1.5">
+                        class="bg-primary hover:bg-primary/90 text-on-primary font-medium px-5 py-1.5 rounded-lg text-sm transition flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     <span th:text="${editMode} ? 'Actualizar' : 'Guardar'"></span>
                 </button>
                 <a th:href="@{/customer}"
-                   class="text-gray-600 hover:text-gray-900 font-medium px-4 py-1.5 rounded-lg text-sm transition border border-gray-300 hover:bg-gray-50">
+                   class="text-on-surface/60 hover:text-on-surface font-medium px-4 py-1.5 rounded-lg text-sm transition border border-outline hover:bg-surface-container hover:border-on-surface/20">
                     Cancelar
                 </a>
             </div>
