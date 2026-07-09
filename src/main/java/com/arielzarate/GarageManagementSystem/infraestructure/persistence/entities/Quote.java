@@ -33,7 +33,7 @@ public class Quote extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerEntity customer;
 
 
     @Enumerated(EnumType.STRING)

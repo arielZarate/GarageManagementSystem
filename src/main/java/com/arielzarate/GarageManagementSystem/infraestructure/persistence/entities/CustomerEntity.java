@@ -11,10 +11,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "customer")
-public class Customer extends BaseEntity {
+public class CustomerEntity extends BaseEntity {
 
     @Column(unique = true)
-    private String legajo;
+    private String customerCode;
 
     private String firstName;
 
@@ -24,8 +24,10 @@ public class Customer extends BaseEntity {
 
     private String email;
 
+    @Column(unique = true)
     private String cuit;
 
+    @Column(unique = true)
     private String dni;
 
     @Embedded

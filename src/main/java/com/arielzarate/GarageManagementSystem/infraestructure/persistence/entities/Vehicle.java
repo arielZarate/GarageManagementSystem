@@ -41,6 +41,6 @@ public class Vehicle extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerEntity customer;
 
 }

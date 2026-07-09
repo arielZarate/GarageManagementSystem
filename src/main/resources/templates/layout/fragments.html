@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body class="font-sans bg-gray-100 min-h-screen flex flex-col">
+
+<!-- ====== NAVBAR ====== -->
+<nav class="bg-gray-800 text-white h-14 flex items-center px-4 relative z-30" th:fragment="navbar">
+    <button class="text-white p-2 mr-3 focus:outline-none" onclick="toggleSidebar()" aria-label="Menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+    <div class="font-bold text-xl">
+        <a th:href="@{/}" class="text-white no-underline">Gestion de Taller</a>
+    </div>
+    <div class="flex-1"></div>
+    <!-- Perfil / Login placeholder -->
+    <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">
+        <span>Ariel</span>
+    </div>
+</nav>
+
+<!-- ====== SIDEBAR ====== -->
+<aside class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-50 transform -translate-x-full transition-transform duration-300 shadow-xl"
+       id="sidebar" th:fragment="sidebar">
+
+    <div class="p-6 border-b border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-300">Navegación</h2>
+    </div>
+
+    <nav class="p-4 space-y-1">
+        <a th:href="@{/customer}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Clientes
+        </a>
+        <a th:href="@{/vehicle}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Vehículos
+        </a>
+        <a th:href="@{/quote}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Presupuestos
+        </a>
+        <a th:href="@{/repair-order}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Órdenes de Reparación
+        </a>
+
+        <hr class="border-gray-700 my-4">
+
+        <p class="px-4 text-xs text-gray-500 uppercase tracking-wide">Administración</p>
+        <a th:href="@{/company}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Empresa
+        </a>
+        <a th:href="@{/employee}"
+           class="block px-4 py-2 rounded text-gray-300 hover:bg-gray-700 hover:text-white transition">
+           Empleados
+        </a>
+    </nav>
+
+    <!-- Perfil en sidebar (mobile) -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+        <div class="flex items-center gap-3 text-gray-400">
+            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm">A</div>
+            <div class="text-sm">
+                <p class="text-white font-medium">Admin</p>
+                <p class="text-xs">admin@taller.com</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ====== OVERLAY ====== -->
+<div class="fixed inset-0 bg-black/50 z-40 hidden" id="overlay" onclick="toggleSidebar()" th:fragment="overlay"></div>
+
+<!-- ====== FOOTER ====== -->
+<footer class="bg-gray-800 text-gray-400 text-center px-4 py-3 mt-auto text-sm" th:fragment="footer">
+    <p>&copy; 2026 Sistema de Gestión de Taller. Desarrollado por Ariel Zarate.</p>
+</footer>
+
+<!-- ====== SCRIPTS ====== -->
+<script th:fragment="scripts">
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('-translate-x-full');
+        sidebar.classList.toggle('translate-x-0');
+        overlay.classList.toggle('hidden');
+    }
+</script>
+
+</body>
+</html>

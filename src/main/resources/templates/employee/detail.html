@@ -1,0 +1,147 @@
+<div th:fragment="content">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <h1 class="text-xl font-bold text-gray-800">
+                <span th:text="${employee.firstName} + ' ' + ${employee.lastName}"></span>
+                <span class="text-gray-400 font-normal text-base" th:text="'(' + ${employee.legajo} + ')'"></span>
+            </h1>
+            <p class="text-xs text-gray-500">Detalle del empleado</p>
+        </div>
+<!--        <a th:href="@{/employee}"-->
+<!--           class="text-gray-500 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition">-->
+<!--            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+<!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>-->
+<!--            </svg>-->
+<!--        </a>-->
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Datos personales -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-4">
+            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Datos Personales</h2>
+            <dl class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Legajo</dt>
+                    <dd class="text-gray-800 font-medium" th:text="${employee.legajo}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">DNI</dt>
+                    <dd class="text-gray-800" th:text="${employee.dni}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">CUIT</dt>
+                    <dd class="text-gray-800 font-mono text-xs" th:text="${employee.CUIT}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Fecha de Nacimiento</dt>
+                    <dd class="text-gray-800" th:text="${employee.birthDate}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Fecha de Ingreso</dt>
+                    <dd class="text-gray-800" th:text="${employee.joinDate}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Estado</dt>
+                    <dd class="flex items-center gap-2">
+                        <span th:if="${employee.active}"
+                              class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                            Activo
+                        </span>
+                        <span th:unless="${employee.active}"
+                              class="inline-flex items-center gap-1 bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                            <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                            Inactivo
+                        </span>
+                        <form method="post" th:action="@{/employee/toggle/{id}(id=${employee.id})}" style="display:inline"  class="leading-none">
+                            <button type="submit"
+                                    th:classappend="${employee.active} ? 'hover:bg-red-100 text-red-500' : 'hover:bg-green-100 text-green-500'"
+                                    class="p-1 rounded transition"
+                                    th:title="${employee.active} ? 'Desactivar empleado' : 'Activar empleado'">
+                                <!-- Toggle ON (activo) -->
+                                <svg th:if="${employee.active}" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <rect x="1" y="5" width="22" height="14" rx="7"/>
+                                    <circle cx="17" cy="12" r="5" fill="currentColor"/>
+                                </svg>
+                                <!-- Toggle OFF (inactivo) -->
+                                <svg th:unless="${employee.active}" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <rect x="1" y="5" width="22" height="14" rx="7"/>
+                                    <circle cx="7" cy="12" r="5" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Role</dt>
+                    <dd class="text-gray-800">
+                        <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded" th:text="${employee.role.displayName}"></span>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Contacto -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-4">
+            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Contacto</h2>
+            <dl class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Email</dt>
+                    <dd class="text-gray-800" th:text="${employee.email}"></dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Teléfono</dt>
+                    <dd class="text-gray-800" th:text="${employee.phone}"></dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Dirección -->
+        <div class="md:col-span-2 bg-white rounded-lg shadow border border-gray-200 p-4">
+            <h2 class="text-sm font-semibold text-gray-700 mb-3 pb-1 border-b border-gray-200">Dirección</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                <div>
+                    <p class="text-xs text-gray-500">Provincia</p>
+                    <p class="text-gray-800" th:text="${employee.address?.province ?: '-'}"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Ciudad</p>
+                    <p class="text-gray-800" th:text="${employee.address?.city ?: '-'}"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Barrio</p>
+                    <p class="text-gray-800" th:text="${employee.address?.neighborhood ?: '-'}"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Calle</p>
+                    <p class="text-gray-800" th:text="|${employee.address?.street ?: '-'} ${employee.address?.number ?: ''}|"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Código Postal</p>
+                    <p class="text-gray-800" th:text="${employee.address?.postalCode ?: '-'}"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">País</p>
+                    <p class="text-gray-800" th:text="${employee.address?.country ?: '-'}"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div class="flex items-center gap-2 mt-4">
+        <a th:href="@{/employee/edit/{id}(id=${employee.id})}"
+           class="border border-slate-300 hover:bg-slate-100 text-slate-700 px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Editar
+        </a>
+        <a th:href="@{/employee}"
+           class="text-gray-600 hover:text-gray-800 font-medium px-4 py-1.5 rounded-lg text-sm transition border  border-gray-300 hover:bg-gray-50 ml-auto">
+            Volver
+        </a>
+    </div>
+</div>

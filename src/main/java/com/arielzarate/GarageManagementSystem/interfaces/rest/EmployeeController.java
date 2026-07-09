@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -26,29 +27,41 @@ public class EmployeeController {
     @GetMapping
     public String getEmployees(Model model) {
         List<Employee> list = service.getEmployees();
+        model.addAttribute("pageTitle", "Empleados");
+        model.addAttribute("content", "employee/list");
         model.addAttribute("employees", list);
-        return "employee/employeeView";
-
+        return "layout/base";
     }
 
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        Employee employee = service.getEmployeeById(id);
+        model.addAttribute("pageTitle", "Detalle de Empleado");
+        model.addAttribute("content", "employee/detail");
+        model.addAttribute("employee", employee);
+        return "layout/base";
+    }
 
     @GetMapping("/form")
     public String showForm(Model model) {
+        model.addAttribute("pageTitle", "Nuevo Empleado");
+        model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", new EmployeeRequest());
-        model.addAttribute("roles",Role.values()); //send list al front
+        model.addAttribute("roles", Role.values());
         model.addAttribute("editMode", false);
-        return "employee/employeeForm";
+        return "layout/base";
     }
-
 
     @PostMapping
     public String createEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
                                  BindingResult result,
                                  Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Nuevo Empleado");
+            model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("editMode", false);
-            return "employee/employeeForm";
+            return "layout/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -58,25 +71,28 @@ public class EmployeeController {
         return "redirect:/employee";
     }
 
-
     @GetMapping("/edit/{id}")
     public String showForm(Model model, @PathVariable Long id) {
         Employee e = service.getEmployeeById(id);
         EmployeeRequest request = mapper.toRequest(e);
 
+        model.addAttribute("pageTitle", "Editar Empleado");
+        model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", request);
         model.addAttribute("roles", Role.values());
         model.addAttribute("editMode", true);
-        return "employee/employeeForm";
+        return "layout/base";
     }
 
     @PostMapping("/update")
     public String updateEmployee(@Valid @ModelAttribute("employeeObject") EmployeeRequest request,
                                  BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Editar Empleado");
+            model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("editMode", true);
-            return "employee/employeeForm";
+            return "layout/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -85,10 +101,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/toggle/{id}")
-    public String toggleEmployee(@PathVariable Long id) {
+    public String toggleEmployee(@PathVariable Long id, HttpServletRequest request) {
         service.toggleStatusEmployee(id);
-        return "redirect:/employee";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/employee");
     }
-
-
 }
