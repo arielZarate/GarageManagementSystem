@@ -8,13 +8,11 @@ public interface CustomerService {
 
     Customer addCustomer(Customer customer);
 
-    List<Customer> getCustomers();
+    List<Customer> getCustomers(String query);
 
     Customer getCustomerById(Long id);
 
     Customer getCustomerByDni(String dni);
-
-    List<Customer> searchByDniOrCuit(String query);
 
     Customer updateCustomer(Customer customer);
 }

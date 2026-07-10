@@ -25,7 +25,11 @@ public class CustomerUseCase implements CustomerService {
     }
 
     @Override
-    public List<Customer> getCustomers() {
+    public List<Customer> getCustomers(String query) {
+        if (query != null && !query.isBlank()) {
+            return provider.searchByDniOrCuit(query.trim());
+        }
+
         return provider.findAll();
     }
 
@@ -41,10 +45,6 @@ public class CustomerUseCase implements CustomerService {
                 .orElseThrow(() -> new RuntimeException("Customer not found with dni: " + dni));
     }
 
-    @Override
-    public List<Customer> searchByDniOrCuit(String query) {
-        return provider.searchByDniOrCuit(query);
-    }
 
     @Override
     public Customer updateCustomer(Customer customer) {
