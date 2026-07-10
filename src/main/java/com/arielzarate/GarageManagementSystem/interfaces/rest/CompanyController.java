@@ -33,7 +33,7 @@ public class CompanyController {
         model.addAttribute("pageTitle", "Compañía");
         model.addAttribute("content", "company/view");
         model.addAttribute("company", mapper.toResponse(company));
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/new")
@@ -41,7 +41,7 @@ public class CompanyController {
         model.addAttribute("pageTitle", "Nueva Empresa");
         model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", new CompanyRequest());
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping
@@ -51,7 +51,7 @@ public class CompanyController {
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Nueva Empresa");
             model.addAttribute("content", "company/form");
-            return "layout/base";
+            return "fragments/base";
         }
 
         try {
@@ -64,7 +64,7 @@ public class CompanyController {
             result.reject("error.business", e.getMessage());
             model.addAttribute("pageTitle", "Nueva Empresa");
             model.addAttribute("content", "company/form");
-            return "layout/base";
+            return "fragments/base";
         }
     }
 
@@ -82,7 +82,7 @@ public class CompanyController {
         model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", request);
         model.addAttribute("editMode", true);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping("/update")
@@ -93,7 +93,7 @@ public class CompanyController {
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Editar Empresa");
             model.addAttribute("content", "company/form");
-            return "layout/base";
+            return "fragments/base";
         }
 
         try {
@@ -106,7 +106,7 @@ public class CompanyController {
             result.reject("error.business", e.getMessage());
             model.addAttribute("pageTitle", "Editar Empresa");
             model.addAttribute("content", "company/form");
-            return "layout/base";
+            return "fragments/base";
         }
     }
 

@@ -1,0 +1,12 @@
+<th:block th:fragment="scripts">
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+    <script th:src="@{/js/darkMode-theme.js}"></script>
+</th:block>

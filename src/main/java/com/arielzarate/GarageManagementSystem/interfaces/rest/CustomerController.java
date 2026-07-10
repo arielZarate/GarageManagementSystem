@@ -36,7 +36,7 @@ public class CustomerController {
         model.addAttribute("content", "customer/list");
         model.addAttribute("customers", service.getCustomers(query));
         model.addAttribute("searchQuery", query);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/detail/{id}")
@@ -46,7 +46,7 @@ public class CustomerController {
             model.addAttribute("pageTitle", "Detalle del Cliente");
             model.addAttribute("content", "customer/detail");
             model.addAttribute("customer", customer);
-            return "layout/base";
+            return "fragments/base";
         } catch (RuntimeException e) {
             log.warn("Customer not found: {}", id);
             return "redirect:/customer";
@@ -61,7 +61,7 @@ public class CustomerController {
         model.addAttribute("editMode", false);
         model.addAttribute("provinces", Province.values());
         model.addAttribute("countries", Country.values());
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping
@@ -72,7 +72,7 @@ public class CustomerController {
             model.addAttribute("pageTitle", "Nuevo Cliente");
             model.addAttribute("content", "customer/form");
             model.addAttribute("editMode", false);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Customer customer = mapper.toDomain(request);
@@ -93,7 +93,7 @@ public class CustomerController {
             model.addAttribute("editMode", true);
             model.addAttribute("provinces", Province.values());
             model.addAttribute("countries", Country.values());
-            return "layout/base";
+            return "fragments/base";
         } catch (RuntimeException e) {
             log.warn("Customer not found for edit: {}", id);
             return "redirect:/customer";
@@ -108,7 +108,7 @@ public class CustomerController {
             model.addAttribute("pageTitle", "Editar Cliente");
             model.addAttribute("content", "customer/form");
             model.addAttribute("editMode", true);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Customer customer = mapper.toDomain(request);

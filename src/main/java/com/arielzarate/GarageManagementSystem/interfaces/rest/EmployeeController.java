@@ -31,7 +31,7 @@ public class EmployeeController {
         model.addAttribute("pageTitle", "Empleados");
         model.addAttribute("content", "employee/list");
         model.addAttribute("employees", list);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/detail/{id}")
@@ -40,7 +40,7 @@ public class EmployeeController {
         model.addAttribute("pageTitle", "Detalle de Empleado");
         model.addAttribute("content", "employee/detail");
         model.addAttribute("employee", employee);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/form")
@@ -52,7 +52,7 @@ public class EmployeeController {
         model.addAttribute("provinces", Province.values());
         model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", false);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping
@@ -66,7 +66,7 @@ public class EmployeeController {
             model.addAttribute("provinces", Province.values());
             model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", false);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -88,7 +88,7 @@ public class EmployeeController {
         model.addAttribute("provinces", Province.values());
         model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", true);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping("/update")
@@ -101,7 +101,7 @@ public class EmployeeController {
             model.addAttribute("provinces", Province.values());
             model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", true);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Employee e = mapper.toDomain(request);

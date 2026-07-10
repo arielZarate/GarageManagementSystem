@@ -86,7 +86,8 @@ src/main/java/com/arielzarate/GarageManagementSystem/
 src/main/resources
 │
 ├── templates/
-│   ├── layout/             # base.html, fragments.html (navbar, sidebar, footer)
+│   ├── fragments/             # base.html (esqueleto)
+│   │   └── components/        # fragmentos reutilizables (navbar, sidebar, footer, etc.)
 │   ├── customer/           # list, detail, form
 │   ├── employee/           # list, detail, form
 │   ├── company/            # view, form
@@ -100,6 +101,87 @@ src/main/resources
 ├── application.yml
 └── application.properties
 ```
+
+---
+
+## 🧩 Template Layout System (Thymeleaf Fragments)
+
+### Arquitectura del Layout
+
+El sistema usa el patrón **"Layout Decorator"** con Thymeleaf:
+
+```
+                   ┌─────────────────────────────────────┐
+                   │          base.html (esqueleto)       │
+                   │  ┌─────────────────────────────────┐ │
+                   │  │  fragments.html :: navbar        │ │
+                   │  ├─────────────────────────────────┤ │
+                   │  │  fragments.html :: sidebar       │ │
+                   │  ├─────────────────────────────────┤ │
+                   │  │  fragments.html :: overlay       │ │
+                   │  ├─────────────────────────────────┤ │
+                   │  │  <div th:replace="~{${content}}">│ │
+                   │  │  ┌───────────────────────────┐   │ │
+                   │  │  │  customer/list.html       │   │ │
+                   │  │  │  (fragmento específico)   │   │ │
+                   │  │  └───────────────────────────┘   │ │
+                   │  ├─────────────────────────────────┤ │
+                   │  │  fragments.html :: footer        │ │
+                   │  ├─────────────────────────────────┤ │
+                   │  │  fragments.html :: scripts       │ │
+                   │  └─────────────────────────────────┘ │
+                   └─────────────────────────────────────┘
+```
+
+### Cómo funciona
+
+| Archivo | Rol | Contiene |
+|---------|-----|----------|
+| `fragments/base.html` | **Esqueleto** de toda la app | `<html>`, `<head>`, `<body>`, CSS global, y placeholders para navbar, sidebar, main content, footer, scripts |
+| `fragments/components/` | **Componentes reutilizables** | `navbar.html`, `sidebar.html`, `overlay.html`, `footer.html`, `scripts.html`, `darkMode.html`, `perfil.html` |
+| `customer/list.html` | **Contenido variable** de una página específica | Solo un `<div th:fragment="content">` con el HTML particular de esa vista |
+
+### Flujo de renderizado
+
+1. **El Controller** devuelve `"fragments/base"` y pasa en el modelo:
+   - `pageTitle` → título de la página
+   - `content` → ruta del fragmento a inyectar (ej: `"customer/list"`)
+   - Datos específicos de la vista (ej: `customers`, `searchQuery`)
+
+   ```java
+   @GetMapping
+   public String getCustomers(Model model) {
+       model.addAttribute("pageTitle", "Clientes");
+       model.addAttribute("content", "customer/list");
+       model.addAttribute("customers", service.getAll());
+       return "fragments/base";
+   }
+   ```
+
+2. **base.html** recibe el modelo y renderiza la estructura completa. La línea clave:
+   ```html
+   <div th:replace="~{${content}}"></div>
+   ```
+   Esto reemplaza ese `<div>` por el fragmento indicado en `content`.
+
+3. **El fragmento** (ej: `customer/list.html`) es solo el HTML específico de esa página, sin `<html>`, `<head>` ni `<body>`:
+   ```html
+   <div th:fragment="content">
+       <!-- contenido específico de la página -->
+   </div>
+   ```
+
+### Ventajas de este patrón
+
+- **No repetir estructura HTML**: el `<html>`, `<head>` y `<body>` están una sola vez en `base.html`
+- **Cambios globales**: modificar navbar, sidebar o footer se hace en un solo lugar (`fragments.html`)
+- **CSS global compartido**: todo el CSS (Tailwind) se carga en el `<head>` de `base.html` y aplica a todos los fragments
+- **Cero dependencias externas**: no necesita librerías como Thymeleaf Layout Dialect, usa solo `th:replace` nativo de Thymeleaf
+
+### Referencia oficial
+
+- [Thymeleaf - Template Layout (th:replace / th:fragment)](https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html#template-layout)
+- [Spring Boot - Serving Web Content](https://spring.io/guides/gs/serving-web-content/)
 
 ---
 
