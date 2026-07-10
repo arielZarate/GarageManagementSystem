@@ -3,6 +3,8 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 import com.arielzarate.GarageManagementSystem.domain.model.Employee;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.EmployeeService;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Country;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.employee.EmployeeRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.EmployeeDTOMapper;
 import jakarta.validation.Valid;
@@ -47,6 +49,8 @@ public class EmployeeController {
         model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", new EmployeeRequest());
         model.addAttribute("roles", Role.values());
+        model.addAttribute("provinces", Province.values());
+        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", false);
         return "layout/base";
     }
@@ -59,6 +63,8 @@ public class EmployeeController {
             model.addAttribute("pageTitle", "Nuevo Empleado");
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
+            model.addAttribute("provinces", Province.values());
+            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", false);
             return "layout/base";
         }
@@ -79,6 +85,8 @@ public class EmployeeController {
         model.addAttribute("content", "employee/form");
         model.addAttribute("employeeObject", request);
         model.addAttribute("roles", Role.values());
+        model.addAttribute("provinces", Province.values());
+        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", true);
         return "layout/base";
     }
@@ -90,6 +98,8 @@ public class EmployeeController {
             model.addAttribute("pageTitle", "Editar Empleado");
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
+            model.addAttribute("provinces", Province.values());
+            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", true);
             return "layout/base";
         }

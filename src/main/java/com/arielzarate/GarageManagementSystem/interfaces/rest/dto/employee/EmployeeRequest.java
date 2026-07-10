@@ -32,8 +32,8 @@ public class EmployeeRequest {
     private String birthDate;
 
     @NotBlank(message = "El CUIT es obligatorio")
-    @Pattern(regexp = "\\d{11}", message = "El CUIT debe tener 11 dígitos")
-    private String cuit ;
+    @Pattern(regexp = "\\d{11}|\\d{2}-\\d{8}-\\d", message = "El CUIT debe tener 11 dígitos (ej: 20-12345678-9)")
+    private String cuit;
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "Debe ser un email válido")

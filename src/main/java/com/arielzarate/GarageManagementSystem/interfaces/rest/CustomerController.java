@@ -2,6 +2,8 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 
 import com.arielzarate.GarageManagementSystem.domain.model.Customer;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CustomerService;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Country;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.customer.CustomerRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.CustomerDTOMapper;
 import jakarta.validation.Valid;
@@ -30,16 +32,10 @@ public class CustomerController {
 
     @GetMapping
     public String getCustomers(@RequestParam(value = "q", required = false) String query, Model model) {
-        List<Customer> list;
-        if (query != null && !query.isBlank()) {
-            list = service.searchByDniOrCuit(query.trim());
-            model.addAttribute("searchQuery", query.trim());
-        } else {
-            list = service.getCustomers();
-        }
         model.addAttribute("pageTitle", "Clientes");
         model.addAttribute("content", "customer/list");
-        model.addAttribute("customers", list);
+        model.addAttribute("customers", service.getCustomers(query));
+        model.addAttribute("searchQuery", query);
         return "layout/base";
     }
 
@@ -63,6 +59,8 @@ public class CustomerController {
         model.addAttribute("content", "customer/form");
         model.addAttribute("customerObject", new CustomerRequest());
         model.addAttribute("editMode", false);
+        model.addAttribute("provinces", Province.values());
+        model.addAttribute("countries", Country.values());
         return "layout/base";
     }
 
@@ -93,6 +91,8 @@ public class CustomerController {
             model.addAttribute("content", "customer/form");
             model.addAttribute("customerObject", request);
             model.addAttribute("editMode", true);
+            model.addAttribute("provinces", Province.values());
+            model.addAttribute("countries", Country.values());
             return "layout/base";
         } catch (RuntimeException e) {
             log.warn("Customer not found for edit: {}", id);
@@ -113,7 +113,7 @@ public class CustomerController {
 
         Customer customer = mapper.toDomain(request);
         service.updateCustomer(customer);
-        log.info("Customer updated");
+        log.info("Customer updated with id: {} ", customer.getId());
 
         return "redirect:/customer";
     }

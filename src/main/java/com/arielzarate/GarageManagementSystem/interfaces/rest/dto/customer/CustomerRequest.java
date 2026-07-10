@@ -18,6 +18,8 @@ public class CustomerRequest {
 
     private Long id;
 
+    private String customerCode;
+
     @NotBlank(message = "El nombre es obligatorio")
     private String firstName;
 
@@ -29,7 +31,7 @@ public class CustomerRequest {
     private String dni;
 
     @NotBlank(message = "El CUIT es obligatorio")
-    @Pattern(regexp = "\\d{11}", message = "El CUIT debe tener 11 dígitos")
+    @Pattern(regexp = "\\d{11}|\\d{2}-\\d{8}-\\d", message = "El CUIT debe tener 11 dígitos (ej: 20-12345678-9)")
     private String cuit;
 
     @NotBlank(message = "El email es obligatorio")
