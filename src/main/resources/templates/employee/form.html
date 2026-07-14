@@ -1,191 +1,222 @@
-<div th:fragment="content">
-    <div class="flex items-center justify-between mb-4">
-        <div>
-            <h1 class="text-xl font-bold text-on-surface" th:text="${editMode} ? 'Editar Empleado' : 'Nuevo Empleado'"></h1>
-            <p class="text-xs text-on-surface/60" th:text="${editMode} ? 'Modificá los datos del empleado' : 'Completá los datos del nuevo empleado'"></p>
-        </div>
-        <a th:href="@{/employee}"
-           class="text-on-surface/60 hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-low transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </a>
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-primary/80 dark:bg-slate-900/90 px-4 py-2 border-b border-outline-variant">
+        <h1 class="text-sm font-bold text-white" th:text="${editMode} ? 'Editar Empleado' : 'Nuevo Empleado'"></h1>
     </div>
 
-    <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4 md:p-5">
+    <!-- Body -->
+    <div class="p-4">
         <form th:object="${employeeObject}" method="post"
-              th:action="${editMode} ? @{/employee/update} : @{/employee}"
-              class="space-y-4">
+              th:action="${editMode} ? @{/employee/update} : @{/employee}">
 
             <input type="hidden" th:field="*{id}" th:if="${editMode}"/>
 
             <!-- Errores globales -->
             <div th:if="${#fields.hasGlobalErrors()}"
-                 class="bg-error-container border border-error-container text-on-error-container px-3 py-2 rounded-lg text-xs">
+                 class="bg-error-container border border-error-container text-on-error-container px-3 py-2 mb-3 text-xs">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
 
-            <!-- Datos personales -->
-            <div>
-                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Datos Personales</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Nombres</label>
-                        <input type="text" th:field="*{firstName}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('firstName')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-error text-xs"></span>
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Apellido</label>
-                        <input type="text" th:field="*{lastName}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('lastName')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">DNI</label>
-                        <input type="text" th:field="*{dni}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('dni')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">CUIT</label>
-                        <input type="text" th:field="*{cuit}" class="cuit-mask w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('cuit')} ? 'border-error' : ''"
-                               placeholder="XX-XXXXXXXX-X" maxlength="13">
-                        <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Nacimiento</label>
-                        <input type="date" th:field="*{birthDate}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Teléfono</label>
-                        <input type="text" th:field="*{phone}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('phone')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-error text-xs"></span>
-                    </div>
-                </div>
+            <div class="flex flex-wrap gap-4">
+
+                <!-- Datos personales -->
+                <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                    <legend class="text-xs font-semibold text-on-surface px-1">Datos Personales</legend>
+                    <table class="w-full text-xs">
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3 align-top">Nombres</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{firstName}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('firstName')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Apellido</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{lastName}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('lastName')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">DNI</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{dni}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('dni')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">CUIT</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{cuit}" class="cuit-mask w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('cuit')} ? 'border-error' : ''"
+                                       placeholder="XX-XXXXXXXX-X" maxlength="13">
+                                <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Nacimiento</td>
+                            <td class="py-1">
+                                <input type="date" th:field="*{birthDate}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Teléfono</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{phone}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('phone')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <!-- Contacto -->
+                <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                    <legend class="text-xs font-semibold text-on-surface px-1">Contacto</legend>
+                    <table class="w-full text-xs">
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3 align-top">Email</td>
+                            <td class="py-1">
+                                <input type="email" th:field="*{email}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Role</td>
+                            <td class="py-1">
+                                <select th:field="*{role}"
+                                        class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                        th:classappend="${#fields.hasErrors('role')} ? 'border-error' : ''">
+                                    <option value="">Seleccione...</option>
+                                    <option th:each="r: ${roles}" th:value="${r.name()}" th:text="${r.displayName}"></option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Contraseña</td>
+                            <td class="py-1">
+                                <input type="password" th:field="*{password}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                                <p th:if="${editMode}" class="text-[10px] text-on-surface/40 mt-0.5">Dejá vacío si no querés cambiarla</p>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <!-- Dirección -->
+                <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                    <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
+                    <table class="w-full text-xs">
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3 align-top">Provincia</td>
+                            <td class="py-1">
+                                <select th:field="*{province}"
+                                        class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                        th:classappend="${#fields.hasErrors('province')} ? 'border-error' : ''">
+                                    <option th:each="p : ${provinces}" th:value="${p.displayName}" th:text="${p.displayName}"></option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('province')}" th:errors="*{province}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Ciudad</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{city}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('city')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Barrio</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{neighborhood}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Calle</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{street}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                                       th:classappend="${#fields.hasErrors('street')} ? 'border-error' : ''">
+                                <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-error text-xs"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Número</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{number}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">C.P.</td>
+                            <td class="py-1">
+                                <input type="text" th:field="*{postalCode}"
+                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">País</td>
+                            <td class="py-1">
+                                <select th:field="*{country}"
+                                        class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                                    <option th:each="c : ${countries}" th:value="${c.displayName}" th:text="${c.displayName}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr th:if="${editMode}">
+                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Estado</td>
+                            <td class="py-1">
+                                <div class="flex items-center gap-4">
+                                    <label class="flex items-center gap-1 cursor-pointer">
+                                        <input type="radio" th:field="*{active}" th:value="true"
+                                               class="accent-green-500">
+                                        <span class="text-xs text-on-surface">Activo</span>
+                                    </label>
+                                    <label class="flex items-center gap-1 cursor-pointer">
+                                        <input type="radio" th:field="*{active}" th:value="false"
+                                               class="accent-red-500">
+                                        <span class="text-xs text-on-surface">Inactivo</span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
             </div>
 
-            <!-- Contacto -->
-            <div>
-                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Contacto</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Email</label>
-                        <input type="email" th:field="*{email}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('email')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Role</label>
-                        <select th:field="*{role}"
-                                class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                                th:classappend="${#fields.hasErrors('role')} ? 'border-error' : ''">
-                            <option value="">Seleccione...</option>
-                            <option th:each="r: ${roles}" th:value="${r.name()}" th:text="${r.displayName}"></option>
-                        </select>
-                        <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Contraseña</label>
-                        <input type="password" th:field="*{password}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                        <p th:if="${editMode}" class="text-[10px] text-on-surface/40 mt-0.5">Dejá vacío</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dirección -->
-            <div>
-                <h2 class="text-sm font-semibold text-on-surface mb-2 pb-1 border-b border-outline-variant">Dirección</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Provincia</label>
-                        <select th:field="*{province}"
-                                class="w-full bg-surface-container-low text-on-surface border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                                th:classappend="${#fields.hasErrors('province')} ? 'border-error' : ''">
-                            <option th:each="p : ${provinces}" th:value="${p.displayName}" th:text="${p.displayName}"></option>
-                        </select>
-                        <span th:if="${#fields.hasErrors('province')}" th:errors="*{province}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Ciudad</label>
-                        <input type="text" th:field="*{city}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('city')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Barrio</label>
-                        <input type="text" th:field="*{neighborhood}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Calle</label>
-                        <input type="text" th:field="*{street}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                               th:classappend="${#fields.hasErrors('street')} ? 'border-error' : ''">
-                        <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-error text-xs"></span>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Número</label>
-                        <input type="text" th:field="*{number}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">C.P.</label>
-                        <input type="text" th:field="*{postalCode}"
-                               class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface/40 border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">País</label>
-                        <select th:field="*{country}"
-                                class="w-full bg-surface-container-low text-on-surface border border-outline rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                            <option th:each="c : ${countries}" th:value="${c.displayName}" th:text="${c.displayName}"></option>
-                        </select>
-                    </div>
-                    <div th:if="${editMode}">
-                        <label class="block text-xs font-medium text-on-surface/60 mb-0.5">Estado</label>
-                        <div class="flex items-center gap-6 mt-0.5">
-                            <label class="flex items-center gap-1.5 cursor-pointer">
-                                <input type="radio" th:field="*{active}" th:value="true"
-                                       class="appearance-none w-4 h-4 rounded-full border-2 border-outline checked:border-green-500 checked:bg-green-500 focus:ring-2 focus:ring-green-500 transition-all">
-                                <span class="text-sm text-on-surface">Activo</span>
-                            </label>
-                            <label class="flex items-center gap-1.5 cursor-pointer">
-                                <input type="radio" th:field="*{active}" th:value="false"
-                                       class="appearance-none w-4 h-4 rounded-full border-2 border-outline checked:border-red-500 checked:bg-red-500 focus:ring-2 focus:ring-red-500 transition-all">
-                                <span class="text-sm text-on-surface">Inactivo</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="flex items-center gap-2 pt-3 border-t border-outline-variant">
+            <!-- Footer -->
+            <div class="flex items-center gap-2 pt-3 mt-4 border-t border-outline-variant">
                 <button type="submit"
-                        class="bg-primary hover:bg-primary/90 text-on-primary font-medium px-5 py-1.5 rounded-lg text-sm transition flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
+                        class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
                     <span th:text="${editMode} ? 'Actualizar' : 'Guardar'"></span>
                 </button>
                 <a th:href="@{/employee}"
-                   class="text-on-surface/60 hover:text-on-surface font-medium px-4 py-1.5 rounded-lg text-sm transition border border-outline hover:bg-surface-container hover:border-on-surface/20">
-                    Cancelar
+                   class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
+                    Volver
                 </a>
             </div>
 
         </form>
     </div>
+
+    <div class="bg-primary/80 dark:bg-slate-900/90" style="height: 20px"></div>
+
 </div>
 
 <script th:src="@{/js/cuit-mask.js}"></script>

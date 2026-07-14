@@ -1,117 +1,120 @@
-<div th:fragment="content">
-    <div class="flex items-center justify-between mb-4">
-        <div>
-            <h1 class="text-xl font-bold text-on-surface">Compañía</h1>
-            <p class="text-xs text-on-surface/60">Datos del taller</p>
-        </div>
-        <a th:href="@{/}"
-           class="text-on-surface/60 hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-low transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </a>
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-primary/80 dark:bg-slate-900/90 px-4 py-2 border-b border-outline-variant">
+        <h1 class="text-sm font-bold text-white">Compañía</h1>
     </div>
 
-    <div th:if="${company == null}" class="bg-surface-container rounded-lg shadow border border-outline-variant p-12 text-center">
-        <p class="text-on-surface/60 mb-4">No hay compañía registrada.</p>
-        <a th:href="@{/company/new}"
-           class="bg-primary hover:bg-primary/90 text-on-primary px-4 py-2 rounded-lg text-sm transition">
-            Crear Compañía
-        </a>
-    </div>
+    <!-- Body -->
+    <div class="p-4">
 
-    <div th:if="${company != null}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <!-- Datos de la Empresa -->
-        <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4">
-            <h2 class="text-sm font-semibold text-on-surface mb-3 pb-1 border-b border-outline-variant">Datos de la Empresa</h2>
-            <dl class="space-y-2 text-sm">
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Nombre Fantasía</dt>
-                    <dd class="text-on-surface font-medium" th:text="${company.businessName}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Razón Social</dt>
-                    <dd class="text-on-surface" th:text="${company.legalName}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">CUIT</dt>
-                    <dd class="text-on-surface font-mono text-xs" th:text="${company.cuit}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Teléfono</dt>
-                    <dd class="text-on-surface" th:text="${company.phone}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Email</dt>
-                    <dd class="text-on-surface" th:text="${company.email}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Horario</dt>
-                    <dd class="text-on-surface" th:text="${company.horario}"></dd>
-                </div>
-                <div class="flex justify-between" th:if="${company.logo}">
-                    <dt class="text-on-surface/60">Logo</dt>
-                    <dd class="text-on-surface text-xs text-right truncate max-w-[200px]" th:text="${company.logo}"></dd>
-                </div>
-            </dl>
+        <div th:if="${company == null}" class="text-center py-8">
+            <p class="text-on-surface/60 mb-4 text-sm">No hay compañía registrada.</p>
+            <a th:href="@{/company/new}"
+               class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
+                Crear Compañía
+            </a>
         </div>
 
-        <!-- Dirección -->
-        <div class="bg-surface-container rounded-lg shadow border border-outline-variant p-4">
-            <h2 class="text-sm font-semibold text-on-surface mb-3 pb-1 border-b border-outline-variant">Dirección</h2>
-            <dl class="space-y-2 text-sm">
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Provincia</dt>
-                    <dd class="text-on-surface" th:text="${company.address?.province ?: '-'}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Ciudad</dt>
-                    <dd class="text-on-surface" th:text="${company.address?.city ?: '-'}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Barrio</dt>
-                    <dd class="text-on-surface" th:text="${company.address?.neighborhood ?: '-'}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Calle</dt>
-                    <dd class="text-on-surface" th:text="|${company.address?.street ?: '-'} ${company.address?.number ?: ''}|"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">Código Postal</dt>
-                    <dd class="text-on-surface" th:text="${company.address?.postalCode ?: '-'}"></dd>
-                </div>
-                <div class="flex justify-between">
-                    <dt class="text-on-surface/60">País</dt>
-                    <dd class="text-on-surface" th:text="${company.address?.country ?: '-'}"></dd>
-                </div>
-            </dl>
+        <div th:if="${company != null}" class="flex flex-wrap gap-4">
+
+            <!-- Datos de la Empresa -->
+            <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                <legend class="text-xs font-semibold text-on-surface px-1">Datos de la Empresa</legend>
+                <table class="w-full text-xs">
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Nombre Fantasía</td>
+                        <td class="text-on-surface font-medium py-1" th:text="${company.businessName}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Razón Social</td>
+                        <td class="text-on-surface py-1" th:text="${company.legalName}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">CUIT</td>
+                        <td class="text-on-surface font-mono py-1 text-xs" th:text="${company.cuit}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Teléfono</td>
+                        <td class="text-on-surface py-1" th:text="${company.phone}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Email</td>
+                        <td class="text-on-surface py-1" th:text="${company.email}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Horario</td>
+                        <td class="text-on-surface py-1" th:text="${company.horario}"></td>
+                    </tr>
+                    <tr th:if="${company.logo}">
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Logo</td>
+                        <td class="text-on-surface py-1 text-xs truncate max-w-[200px]" th:text="${company.logo}"></td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <!-- Dirección -->
+            <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
+                <table class="w-full text-xs">
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Provincia</td>
+                        <td class="text-on-surface py-1" th:text="${company.address?.province ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Ciudad</td>
+                        <td class="text-on-surface py-1" th:text="${company.address?.city ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Barrio</td>
+                        <td class="text-on-surface py-1" th:text="${company.address?.neighborhood ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Calle</td>
+                        <td class="text-on-surface py-1" th:text="|${company.address?.street ?: '-'} ${company.address?.number ?: ''}|"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">C.P.</td>
+                        <td class="text-on-surface py-1" th:text="${company.address?.postalCode ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">País</td>
+                        <td class="text-on-surface py-1" th:text="${company.address?.country ?: '-'}"></td>
+                    </tr>
+                </table>
+            </fieldset>
+
         </div>
 
     </div>
 
-    <!-- Botones -->
-    <div class="flex items-center gap-2 mt-4">
-        <a th:href="@{/company/edit}"
-           class="border border-outline hover:bg-surface-container hover:border-on-surface/20 text-on-surface px-4 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-            </svg>
-            Editar
-        </a>
-        <form th:action="@{/company/delete}" method="post" class="inline">
-            <button type="submit"
-                    class="p-2 rounded-lg hover:bg-error-container text-error transition hover:scale-[1.1] active:scale-[0.95]"
-                    title="Eliminar compañía"
-                    onclick="return confirm('¿Eliminar la compañía?')">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                </svg>
-            </button>
-        </form>
-        <a th:href="@{/}"
-           class="text-on-surface/60 hover:text-on-surface font-medium px-4 py-1.5 rounded-lg text-sm transition border border-outline hover:bg-surface-container hover:border-on-surface/20 ml-auto">
-            Volver
-        </a>
+    <!-- Footer -->
+    <div class="px-4 pt-3 pb-6 border-t border-outline-variant flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a th:href="@{/company/edit}"
+               class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Editar
+                </span>
+            </a>
+            <form th:action="@{/company/delete}" method="post" class="inline">
+                <button type="submit"
+                        class="hover:bg-error hover:text-white text-error border border-error px-2 py-1 text-xs font-medium rounded-sm dark:hover:bg-slate-900 dark:hover:text-white"
+                        onclick="return confirm('¿Eliminar la compañía?')">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+            </form>
+            <a th:href="@{/}"
+               class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
+                Volver
+            </a>
+        </div>
     </div>
+    <div class="bg-primary/80 dark:bg-slate-900/90" style="height: 20px"></div>
+
 </div>
