@@ -35,6 +35,5 @@ public class AddressDTO {
     @Size(max = 10, message = "El código postal no puede exceder 10 caracteres")
     private String postalCode;
 
-    @Size(max = 50, message = "El país no puede exceder 50 caracteres")
-    private String country;
+    private String country = "Argentina";
 }

@@ -18,123 +18,40 @@
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
 
-            <div class="flex flex-wrap gap-4">
+            <div class="flex flex-wrap gap-3 items-start">
 
                 <!-- Datos de la Empresa -->
                 <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Datos de la Empresa</legend>
-                    <table class="w-full text-xs">
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3 align-top">Nombre Fantasía</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{businessName}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('businessName')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('businessName')}" th:errors="*{businessName}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Razón Social</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{legalName}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('legalName')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('legalName')}" th:errors="*{legalName}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">CUIT</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{cuit}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('cuit')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Teléfono</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{phone}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('phone')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Email</td>
-                            <td class="py-1">
-                                <input type="email" th:field="*{email}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('email')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Horario</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{horario}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Logo URL</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{logo}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
+                    <table class="w-full">
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Nombre Fantasía', field='businessName', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Razón Social', field='legalName', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInputCuit}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Teléfono', field='phone', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Email', field='email', type='email')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Horario', field='horario', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Logo URL', field='logo', type='text')}"></th:block>
                     </table>
                 </fieldset>
 
                 <!-- Dirección -->
                 <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
-                    <table class="w-full text-xs">
+                    <table class="w-full">
                         <th:block th:replace="~{fragments/components/UI/form-input :: formSelect(label='Provincia', field='address.province', listExpr='provinces', valueExpr='displayName', textExpr='displayName', emptyOption=false)}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Ciudad', field='address.city', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Barrio', field='address.neighborhood', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Calle', field='address.street', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Número', field='address.number', type='text')}"></th:block>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='C.P.', field='address.postalCode', type='text')}"></th:block>
                         <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Ciudad</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.city}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('address.city')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="text-error text-xs"></span>
+                            <td class="w-24 py-1 pr-2">
+                                <label class="text-xs text-on-surface/60">País</label>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Barrio</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.neighborhood}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Calle</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.street}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('address.street')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Número</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.number}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">C.P.</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.postalCode}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">País</td>
                             <td class="py-1">
                                 <input type="text" th:field="*{address.country}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none">
+                                       class="w-full border border-outline-variant bg-surface-container-low/50 text-on-surface/60 px-2 py-1 text-xs cursor-not-allowed select-none outline-none"
+                                       readonly unselectable="on" tabindex="-1">
                             </td>
                         </tr>
                     </table>
@@ -144,14 +61,8 @@
 
             <!-- Footer -->
             <div class="flex items-center gap-2 pt-3 mt-4 border-t border-outline-variant">
-                <button type="submit"
-                        class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
-                    <span th:text="${editMode} ? 'Actualizar' : 'Guardar'"></span>
-                </button>
-                <a th:href="${editMode} ? @{/company} : @{/}"
-                   class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
-                    Volver
-                </a>
+                <th:block th:replace="~{fragments/components/UI/button :: btnSubmit}"></th:block>
+                <th:block th:replace="~{fragments/components/UI/button :: btnBack(url=${editMode} ? '/company' : '/')}"></th:block>
             </div>
 
         </form>
