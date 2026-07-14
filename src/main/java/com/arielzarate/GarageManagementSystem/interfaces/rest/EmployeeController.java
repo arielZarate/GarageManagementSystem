@@ -3,7 +3,6 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 import com.arielzarate.GarageManagementSystem.domain.model.Employee;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.EmployeeService;
-import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Country;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.employee.EmployeeRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.EmployeeDTOMapper;
@@ -50,7 +49,6 @@ public class EmployeeController {
         model.addAttribute("employeeObject", new EmployeeRequest());
         model.addAttribute("roles", Role.values());
         model.addAttribute("provinces", Province.values());
-        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", false);
         return "fragments/base";
     }
@@ -64,7 +62,6 @@ public class EmployeeController {
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("provinces", Province.values());
-            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", false);
             return "fragments/base";
         }
@@ -86,7 +83,6 @@ public class EmployeeController {
         model.addAttribute("employeeObject", request);
         model.addAttribute("roles", Role.values());
         model.addAttribute("provinces", Province.values());
-        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", true);
         return "fragments/base";
     }
@@ -99,7 +95,6 @@ public class EmployeeController {
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("provinces", Province.values());
-            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", true);
             return "fragments/base";
         }

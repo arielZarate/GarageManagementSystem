@@ -50,5 +50,5 @@ public class CustomerRequest {
     private String street;
     private String number;
     private String postalCode;
-    private String country;
+    private String country = "Argentina";
 }

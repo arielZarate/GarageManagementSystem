@@ -2,7 +2,6 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 
 import com.arielzarate.GarageManagementSystem.domain.model.Customer;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CustomerService;
-import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Country;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.customer.CustomerRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.CustomerDTOMapper;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -60,7 +57,6 @@ public class CustomerController {
         model.addAttribute("customerObject", new CustomerRequest());
         model.addAttribute("editMode", false);
         model.addAttribute("provinces", Province.values());
-        model.addAttribute("countries", Country.values());
         return "fragments/base";
     }
 
@@ -92,7 +88,6 @@ public class CustomerController {
             model.addAttribute("customerObject", request);
             model.addAttribute("editMode", true);
             model.addAttribute("provinces", Province.values());
-            model.addAttribute("countries", Country.values());
             return "fragments/base";
         } catch (RuntimeException e) {
             log.warn("Customer not found for edit: {}", id);
