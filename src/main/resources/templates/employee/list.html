@@ -29,9 +29,15 @@
                         class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
                         <td class="px-3 py-2 font-medium text-on-surface" th:text="${employee.legajo}"></td>
                         <td class="px-3 py-2" th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
-                        <th:block th:replace="~{fragments/components/UI/list-input :: copyCell(value=${employee.CUIT}, title='Copiar CUIT')}"></th:block>
-                        <th:block th:replace="~{fragments/components/UI/list-input :: copyCell(value=${employee.email}, title='Copiar email')}"></th:block>
-                        <td class="px-3 py-2" th:text="${employee.phone}"></td>
+                        <td class="px-3 py-2">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${employee.CUIT}, title='Copiar CUIT')}"></th:block>
+                        </td>
+                        <td class="px-3 py-2">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${employee.email}, title='Copiar email')}"></th:block>
+                        </td>
+                        <td class="px-3 py-2">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${employee.phone}, title='Copiar teléfono')}"></th:block>
+                        </td>
                         <td class="px-3 py-2">
                             <span class="bg-secondary-container text-on-secondary-container text-xs font-medium px-2 py-1 rounded" th:text="${employee.role.displayName}"></span>
                         </td>

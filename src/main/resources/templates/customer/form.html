@@ -20,7 +20,7 @@
 
             <div class="flex flex-wrap gap-3 items-start">
                 <!-- Datos personales -->
-                <fieldset class="border border-outline-variant px-3 pt-2 pb-1 min-w-[280px] flex-1">
+                <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Datos Personales</legend>
                     <table class="w-full">
                         <th:block th:replace="~{fragments/components/UI/form-input :: formCode(label='Código', field='customerCode', editable=false)}"></th:block>
@@ -35,7 +35,7 @@
 
                 <div class="flex flex-col gap-3 flex-1 min-w-[280px]">
                     <!-- Contacto -->
-                    <fieldset class="border border-outline-variant px-3 pt-2 pb-1">
+                    <fieldset class="border border-outline-variant px-3 pt-2 pb-3">
                         <legend class="text-xs font-semibold text-on-surface px-1">Contacto</legend>
                         <table class="w-full">
                             <th:block
@@ -46,7 +46,7 @@
                     </fieldset>
 
                 <!-- Estado -->
-                <fieldset th:if="${editMode}" class="border border-outline-variant px-3 pt-2 pb-1">
+                <fieldset th:if="${editMode}" class="border border-outline-variant px-3 pt-2 pb-3">
                     <legend class="text-xs font-semibold text-on-surface px-1">Estado</legend>
                     <table class="w-full">
                         <th:block th:replace="~{fragments/components/UI/form-input :: statusRadio(field='active')}"></th:block>
@@ -55,7 +55,7 @@
                 </div>
 
                 <!-- Dirección -->
-                <fieldset class="border border-outline-variant px-3 pt-2 pb-1 flex-1 min-w-[280px]">
+                <fieldset class="border border-outline-variant px-3 pt-2 pb-3 flex-1 min-w-[280px]">
                     <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
                     <table class="w-full">
                         <th:block th:replace="~{fragments/components/UI/form-input :: formSelect(label='Provincia', field='province', listExpr='provinces', valueExpr='displayName', textExpr='displayName', emptyOption=false)}"></th:block>
