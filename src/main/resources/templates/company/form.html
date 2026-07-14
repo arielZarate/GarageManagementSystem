@@ -90,15 +90,7 @@
                 <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
                     <table class="w-full text-xs">
-                        <tr>
-                            <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3 align-top">Provincia</td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{address.province}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
-                                       th:classappend="${#fields.hasErrors('address.province')} ? 'border-error' : ''">
-                                <span th:if="${#fields.hasErrors('address.province')}" th:errors="*{address.province}" class="text-error text-xs"></span>
-                            </td>
-                        </tr>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formSelect(label='Provincia', field='address.province', listExpr='provinces', valueExpr='displayName', textExpr='displayName', emptyOption=false)}"></th:block>
                         <tr>
                             <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap align-top">Ciudad</td>
                             <td class="py-1">

@@ -16,36 +16,33 @@
             </a>
         </div>
 
-        <div th:if="${company != null}" class="flex flex-wrap gap-4">
+        <div th:if="${company != null}" class="flex flex-wrap gap-3">
 
             <!-- Datos de la Empresa -->
             <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                 <legend class="text-xs font-semibold text-on-surface px-1">Datos de la Empresa</legend>
                 <table class="w-full text-xs">
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Nombre Fantasía</td>
-                        <td class="text-on-surface font-medium py-1" th:text="${company.businessName}"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Razón Social</td>
-                        <td class="text-on-surface py-1" th:text="${company.legalName}"></td>
-                    </tr>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Nombre Fantasía', value=${company.businessName})}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Razón Social', value=${company.legalName})}"></th:block>
                     <tr>
                         <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">CUIT</td>
-                        <td class="text-on-surface font-mono py-1 text-xs" th:text="${company.cuit}"></td>
+                        <td class="text-on-surface font-mono py-1 text-xs">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${company.cuit}, title='Copiar CUIT')}"></th:block>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Teléfono</td>
-                        <td class="text-on-surface py-1" th:text="${company.phone}"></td>
+                        <td class="text-on-surface py-1">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${company.phone}, title='Copiar teléfono')}"></th:block>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Email</td>
-                        <td class="text-on-surface py-1" th:text="${company.email}"></td>
+                        <td class="text-on-surface py-1">
+                            <th:block th:replace="~{fragments/components/UI/list-input :: copyButton(value=${company.email}, title='Copiar email')}"></th:block>
+                        </td>
                     </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Horario</td>
-                        <td class="text-on-surface py-1" th:text="${company.horario}"></td>
-                    </tr>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Horario', value=${company.horario})}"></th:block>
                     <tr th:if="${company.logo}">
                         <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Logo</td>
                         <td class="text-on-surface py-1 text-xs truncate max-w-[200px]" th:text="${company.logo}"></td>
@@ -57,30 +54,12 @@
             <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                 <legend class="text-xs font-semibold text-on-surface px-1">Dirección</legend>
                 <table class="w-full text-xs">
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Provincia</td>
-                        <td class="text-on-surface py-1" th:text="${company.address?.province ?: '-'}"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Ciudad</td>
-                        <td class="text-on-surface py-1" th:text="${company.address?.city ?: '-'}"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Barrio</td>
-                        <td class="text-on-surface py-1" th:text="${company.address?.neighborhood ?: '-'}"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Calle</td>
-                        <td class="text-on-surface py-1" th:text="|${company.address?.street ?: '-'} ${company.address?.number ?: ''}|"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">C.P.</td>
-                        <td class="text-on-surface py-1" th:text="${company.address?.postalCode ?: '-'}"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">País</td>
-                        <td class="text-on-surface py-1" th:text="${company.address?.country ?: '-'}"></td>
-                    </tr>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Provincia', value=${company.address?.province ?: '-'})}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Ciudad', value=${company.address?.city ?: '-'})}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Barrio', value=${company.address?.neighborhood ?: '-'})}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='Calle', value=|${company.address?.street ?: '-'} ${company.address?.number ?: ''}|)}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='C.P.', value=${company.address?.postalCode ?: '-'})}"></th:block>
+                    <th:block th:replace="~{fragments/components/UI/detail-row :: detailRow(label='País', value=${company.address?.country ?: '-'})}"></th:block>
                 </table>
             </fieldset>
 
@@ -100,19 +79,8 @@
                     Editar
                 </span>
             </a>
-            <form th:action="@{/company/delete}" method="post" class="inline">
-                <button type="submit"
-                        class="hover:bg-error hover:text-white text-error border border-error px-2 py-1 text-xs font-medium rounded-sm dark:hover:bg-slate-900 dark:hover:text-white"
-                        onclick="return confirm('¿Eliminar la compañía?')">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                </button>
-            </form>
-            <a th:href="@{/}"
-               class="hover:bg-primary hover:text-white text-on-surface border border-outline-variant px-4 py-1 text-xs font-medium no-underline inline-block rounded-sm dark:hover:bg-slate-900 dark:hover:text-white">
-                Volver
-            </a>
+            <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/company/delete', msg='¿Eliminar la compañía?')}"></th:block>
+            <th:block th:replace="~{fragments/components/UI/button :: btnBack(url='/')}"></th:block>
         </div>
     </div>
     <div class="bg-primary/80 dark:bg-slate-900/90" style="height: 20px"></div>

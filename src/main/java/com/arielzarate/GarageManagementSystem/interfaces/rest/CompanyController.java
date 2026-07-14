@@ -1,6 +1,7 @@
 package com.arielzarate.GarageManagementSystem.interfaces.rest;
 
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CompanyService;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.address.AddressDTO;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.company.CompanyRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.CompanyDTOMapper;
@@ -41,6 +42,7 @@ public class CompanyController {
         model.addAttribute("pageTitle", "Nueva Empresa");
         model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", new CompanyRequest());
+        model.addAttribute("provinces", Province.values());
         return "fragments/base";
     }
 
@@ -51,6 +53,7 @@ public class CompanyController {
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Nueva Empresa");
             model.addAttribute("content", "company/form");
+            model.addAttribute("provinces", Province.values());
             return "fragments/base";
         }
 
@@ -64,6 +67,7 @@ public class CompanyController {
             result.reject("error.business", e.getMessage());
             model.addAttribute("pageTitle", "Nueva Empresa");
             model.addAttribute("content", "company/form");
+            model.addAttribute("provinces", Province.values());
             return "fragments/base";
         }
     }
@@ -82,6 +86,7 @@ public class CompanyController {
         model.addAttribute("content", "company/form");
         model.addAttribute("companyObject", request);
         model.addAttribute("editMode", true);
+        model.addAttribute("provinces", Province.values());
         return "fragments/base";
     }
 
@@ -93,6 +98,7 @@ public class CompanyController {
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Editar Empresa");
             model.addAttribute("content", "company/form");
+            model.addAttribute("provinces", Province.values());
             return "fragments/base";
         }
 
@@ -106,6 +112,7 @@ public class CompanyController {
             result.reject("error.business", e.getMessage());
             model.addAttribute("pageTitle", "Editar Empresa");
             model.addAttribute("content", "company/form");
+            model.addAttribute("provinces", Province.values());
             return "fragments/base";
         }
     }
