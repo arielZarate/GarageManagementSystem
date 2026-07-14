@@ -19,6 +19,8 @@ public class EmployeeRequest {
 
     private Long id;
 
+    private String legajo;
+
     @NotBlank(message = "El nombre es obligatorio")
     private String firstName;
 
@@ -65,6 +67,6 @@ public class EmployeeRequest {
     private String number;
   //  @NotBlank(message = "El código postal es obligatorio")
     private String postalCode;
-    private String country;
+    private String country = "Argentina";
 
 }

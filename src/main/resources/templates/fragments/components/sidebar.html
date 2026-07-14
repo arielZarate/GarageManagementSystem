@@ -1,43 +1,7 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/output.css}">
-</head>
-<body class="font-sans bg-surface min-h-screen flex flex-col">
-
-<!-- ====== NAVBAR ====== -->
-<nav class="bg-inverse-surface text-inverse-on-surface h-14 flex items-center px-4 relative z-30" th:fragment="navbar">
-    <button class="text-inverse-on-surface p-2 mr-3 focus:outline-none" onclick="toggleSidebar()" aria-label="Menú">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-    <div class="font-bold text-xl">
-        <a th:href="@{/}" class="text-inverse-on-surface no-underline">Gestion de Taller</a>
-    </div>
-    <div class="flex-1"></div>
-
-    <!--Toggle dark mode-->
-    <button id="darkToggle"
-            class="p-2 rounded hover:bg-inverse-on-surface/10 transition"
-            title="Modo oscuro">
-        <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-        </svg>
-        <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-        </svg>
-    </button>
-
-    <!-- Perfil / Login placeholder -->
-    <div class="w-8 h-8 bg-inverse-on-surface/20 rounded-full flex items-center justify-center text-sm font-semibold">
-        <span>Ariel</span>
-    </div>
-</nav>
 
 <!-- ====== SIDEBAR ====== -->
+
+<th:block th:fragment="sidebar">
 <aside class="fixed top-0 left-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 transform -translate-x-full transition-transform duration-300 shadow-xl"
        id="sidebar" th:fragment="sidebar">
 
@@ -48,19 +12,19 @@
     <nav class="p-4 space-y-1">
         <a th:href="@{/customer}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Clientes
+            Clientes
         </a>
         <a th:href="@{/vehicle}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Vehículos
+            Vehículos
         </a>
         <a th:href="@{/quote}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Presupuestos
+            Presupuestos
         </a>
         <a th:href="@{/repair-order}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Órdenes de Reparación
+            Órdenes de Reparación
         </a>
 
         <hr class="border-outline-variant my-4">
@@ -68,17 +32,18 @@
         <p class="px-4 text-xs text-inverse-on-surface/50 uppercase tracking-wide">Administración</p>
         <a th:href="@{/company}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Empresa
+            Empresa
         </a>
         <a th:href="@{/employee}"
            class="block px-4 py-2 rounded text-inverse-on-surface/70 hover:bg-inverse-on-surface/10 hover:text-inverse-on-surface transition">
-           Empleados
+            Empleados
         </a>
     </nav>
 
     <hr class="border-inverse-on-surface/20 my-4">
 
     <p class="px-4 text-xs text-inverse-on-surface/50 uppercase tracking-wide">Configuración</p>
+
     <nav class="p-4 space-y-1">
         <!-- Temas (colapsable) -->
         <button onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('-rotate-90')"
@@ -139,27 +104,4 @@
     </div>
 </aside>
 
-<!-- ====== OVERLAY ====== -->
-<div class="fixed inset-0 bg-black/50 z-40 hidden" id="overlay" onclick="toggleSidebar()" th:fragment="overlay"></div>
-
-<!-- ====== FOOTER ====== -->
-<footer class="bg-inverse-surface text-inverse-on-surface/60 text-center px-4 py-3 mt-auto text-sm" th:fragment="footer">
-    <p>&copy; 2026 Sistema de Gestión de Taller. Desarrollado por Ariel Zarate.</p>
-</footer>
-
-<!-- ====== SCRIPTS ====== -->
-<th:block th:fragment="scripts">
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            sidebar.classList.toggle('translate-x-0');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
-    <script th:src="@{/js/darkMode-theme.js}"></script>
 </th:block>
-
-</body>
-</html>

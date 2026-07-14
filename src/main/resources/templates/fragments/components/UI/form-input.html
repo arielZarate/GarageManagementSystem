@@ -1,0 +1,89 @@
+<th:block th:fragment="formInput(label, field, type)">
+    <tr>
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60" th:text="${label}"></label>
+        </td>
+        <td class="py-1">
+            <input th:type="${type}" th:field="*{__${field}__}"
+                   class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                   th:classappend="${#fields.hasErrors('__${field}__')} ? 'border-error' : ''">
+            <span th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="text-error text-xs"></span>
+        </td>
+    </tr>
+</th:block>
+
+
+
+<th:block th:fragment="formInputCuit">
+    <tr>
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60">CUIT</label>
+        </td>
+        <td class="py-1">
+            <input type="text" th:field="*{cuit}"
+                   class="cuit-mask w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                   th:classappend="${#fields.hasErrors('cuit')} ? 'border-error' : ''"
+                   placeholder="XX-XXXXXXXX-X" maxlength="13">
+            <span th:if="${#fields.hasErrors('cuit')}" th:errors="*{cuit}"
+                   class="text-error text-xs"></span>
+        </td>
+    </tr>
+
+</th:block>
+
+
+<!--status radio-->
+<th:block th:fragment="statusRadio(field)">
+    <tr>
+        <td class="py-1">
+            <label class="inline-flex items-center gap-1.5 text-xs text-on-surface/60 cursor-pointer mr-3">
+                <input type="radio" th:field="*{__${field}__}" th:value="true" class="accent-green-500">
+                Activo
+            </label>
+            <label class="inline-flex items-center gap-1.5 text-xs text-on-surface/60 cursor-pointer">
+                <input type="radio" th:field="*{__${field}__}" th:value="false" class="accent-red-500">
+                Inactivo
+            </label>
+        </td>
+    </tr>
+</th:block>
+
+
+<!--select generico-->
+<th:block th:fragment="formSelect(label, field, listExpr, valueExpr, textExpr, emptyOption)">
+    <tr>
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60" th:text="${label}"></label>
+        </td>
+        <td class="py-1">
+            <select th:field="*{__${field}__}"
+                    class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                    th:classappend="${#fields.hasErrors('__${field}__')} ? 'border-error' : ''">
+                <option value="" th:if="${emptyOption}">Seleccione...</option>
+                <option th:each="item : ${__${listExpr}__}" th:value="${item.__${valueExpr}__}" th:text="${item.__${textExpr}__}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="text-error text-xs"></span>
+        </td>
+    </tr>
+</th:block>
+
+
+<!--codigo/legajo: solo en editMode, readonly por defecto, editable solo si editable=true-->
+<th:block th:fragment="formCode(label, field, editable)">
+    <tr th:if="${editMode}">
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60" th:text="${label}"></label>
+        </td>
+        <td class="py-1">
+            <input type="text" th:field="*{__${field}__}"
+                   th:classappend="${editable} ? 'border border-outline-variant bg-surface-container-low text-on-surface' : 'border border-outline-variant bg-surface-container-low/50 text-on-surface/60 cursor-not-allowed select-none outline-none'"
+                   class="w-full px-2 py-1 text-xs font-mono focus:border-on-surface focus:outline-none"
+                   th:readonly="${!editable}"
+                   th:tabindex="${!editable} ? -1 : null"
+                   th:attr="unselectable=${!editable} ? 'on' : null">
+        </td>
+    </tr>
+</th:block>
+
+
+

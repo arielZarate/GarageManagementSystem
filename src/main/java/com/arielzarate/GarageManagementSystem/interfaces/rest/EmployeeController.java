@@ -3,7 +3,6 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest;
 import com.arielzarate.GarageManagementSystem.domain.model.Employee;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.Role;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.EmployeeService;
-import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Country;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.constants.Province;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.employee.EmployeeRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.EmployeeDTOMapper;
@@ -31,7 +30,7 @@ public class EmployeeController {
         model.addAttribute("pageTitle", "Empleados");
         model.addAttribute("content", "employee/list");
         model.addAttribute("employees", list);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/detail/{id}")
@@ -40,7 +39,7 @@ public class EmployeeController {
         model.addAttribute("pageTitle", "Detalle de Empleado");
         model.addAttribute("content", "employee/detail");
         model.addAttribute("employee", employee);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @GetMapping("/form")
@@ -50,9 +49,8 @@ public class EmployeeController {
         model.addAttribute("employeeObject", new EmployeeRequest());
         model.addAttribute("roles", Role.values());
         model.addAttribute("provinces", Province.values());
-        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", false);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping
@@ -64,9 +62,8 @@ public class EmployeeController {
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("provinces", Province.values());
-            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", false);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Employee e = mapper.toDomain(request);
@@ -86,9 +83,8 @@ public class EmployeeController {
         model.addAttribute("employeeObject", request);
         model.addAttribute("roles", Role.values());
         model.addAttribute("provinces", Province.values());
-        model.addAttribute("countries", Country.values());
         model.addAttribute("editMode", true);
-        return "layout/base";
+        return "fragments/base";
     }
 
     @PostMapping("/update")
@@ -99,9 +95,8 @@ public class EmployeeController {
             model.addAttribute("content", "employee/form");
             model.addAttribute("roles", Role.values());
             model.addAttribute("provinces", Province.values());
-            model.addAttribute("countries", Country.values());
             model.addAttribute("editMode", true);
-            return "layout/base";
+            return "fragments/base";
         }
 
         Employee e = mapper.toDomain(request);

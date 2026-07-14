@@ -1,0 +1,17 @@
+<th:block th:fragment="navbar">
+<nav class="bg-inverse-surface text-inverse-on-surface h-14 flex items-center px-4 relative z-30" th:fragment="navbar">
+    <button class="text-inverse-on-surface p-2 mr-3 focus:outline-none" onclick="toggleSidebar()" aria-label="Menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+    <div class="font-bold text-xl">
+        <a th:href="@{/}" class="text-inverse-on-surface no-underline">Gestion de Taller</a>
+    </div>
+    <div class="flex-1"></div>
+
+    <div th:replace="~{fragments/components/darkMode :: darkMode}"></div>
+    <div th:replace="~{fragments/components/perfil :: perfil}"></div>
+
+</nav>
+</th:block>

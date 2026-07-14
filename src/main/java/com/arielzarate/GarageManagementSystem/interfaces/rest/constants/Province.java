@@ -2,12 +2,12 @@ package com.arielzarate.GarageManagementSystem.interfaces.rest.constants;
 
 public enum Province {
 
+    CORDOBA("Córdoba"),
     BUENOS_AIRES("Buenos Aires"),
     CABA("CABA"),
     CATAMARCA("Catamarca"),
     CHACO("Chaco"),
     CHUBUT("Chubut"),
-    CORDOBA("Córdoba"),
     CORRIENTES("Corrientes"),
     ENTRE_RIOS("Entre Ríos"),
     FORMOSA("Formosa"),

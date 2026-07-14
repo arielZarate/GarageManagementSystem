@@ -7,15 +7,15 @@
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
 <body class="font-sans bg-surface min-h-screen flex flex-col">
-    <div th:replace="~{layout/fragments :: navbar}"></div>
-    <div th:replace="~{layout/fragments :: sidebar}"></div>
-    <div th:replace="~{layout/fragments :: overlay}"></div>
+    <div th:replace="~{fragments/components/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/components/sidebar :: sidebar}"></div>
+    <div th:replace="~{fragments/components/overlay :: overlay}"></div>
 
     <main class="flex-1 p-8 max-w-6xl mx-auto w-full">
         <div th:replace="~{${content}}"></div>
     </main>
 
-    <div th:replace="~{layout/fragments :: footer}"></div>
-    <div th:replace="~{layout/fragments :: scripts}"></div>
+    <div th:replace="~{fragments/components/footer :: footer}"></div>
+    <div th:replace="~{fragments/components/scripts :: scripts}"></div>
 </body>
 </html>

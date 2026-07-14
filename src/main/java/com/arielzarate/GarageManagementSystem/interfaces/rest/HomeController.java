@@ -9,8 +9,9 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("pageTitle", "Dashboard");
+        model.addAttribute("pageTitle", "Pagina Principal");
+        /*** load principal page*/
         model.addAttribute("content", "index");
-        return "layout/base";
+        return "fragments/base";
     }
 }
