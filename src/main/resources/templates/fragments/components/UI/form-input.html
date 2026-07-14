@@ -47,3 +47,22 @@
         </td>
     </tr>
 </th:block>
+
+
+<!--select generico-->
+<th:block th:fragment="formSelect(label, field, listExpr, valueExpr, textExpr, emptyOption)">
+    <tr>
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60" th:text="${label}"></label>
+        </td>
+        <td class="py-1">
+            <select th:field="*{__${field}__}"
+                    class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs focus:border-on-surface focus:outline-none"
+                    th:classappend="${#fields.hasErrors('__${field}__')} ? 'border-error' : ''">
+                <option value="" th:if="${emptyOption}">Seleccione...</option>
+                <option th:each="item : ${__${listExpr}__}" th:value="${item.__${valueExpr}__}" th:text="${item.__${textExpr}__}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="text-error text-xs"></span>
+        </td>
+    </tr>
+</th:block>

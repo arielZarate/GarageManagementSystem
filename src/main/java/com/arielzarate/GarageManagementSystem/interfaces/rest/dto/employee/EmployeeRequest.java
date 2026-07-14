@@ -65,6 +65,6 @@ public class EmployeeRequest {
     private String number;
   //  @NotBlank(message = "El código postal es obligatorio")
     private String postalCode;
-    private String country;
+    private String country = "Argentina";
 
 }
