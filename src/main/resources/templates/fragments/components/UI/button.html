@@ -27,3 +27,15 @@
             </span>
     </a>
 </th:block>
+
+
+<!---new of list-->
+<th:block th:fragment="btnNew(baseUrl)">
+<a th:href="@{__${baseUrl}__}"
+   class="bg-primary text-on-primary border border-outline-variant px-2 py-1 rounded-sm no-underline inline-block hover:bg-primary/80">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m-4-4h8"/>
+    </svg>
+</a>
+</th:block>

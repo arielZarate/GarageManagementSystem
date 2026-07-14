@@ -66,3 +66,21 @@
         </td>
     </tr>
 </th:block>
+
+
+<!--codigo/legajo: solo en editMode, readonly por defecto, editable solo si editable=true-->
+<th:block th:fragment="formCode(label, field, editable)">
+    <tr th:if="${editMode}">
+        <td class="w-24 py-1 pr-2">
+            <label class="text-xs text-on-surface/60" th:text="${label}"></label>
+        </td>
+        <td class="py-1">
+            <input type="text" th:field="*{__${field}__}"
+                   th:classappend="${editable} ? 'border border-outline-variant bg-surface-container-low text-on-surface' : 'border border-outline-variant bg-surface-container-low/50 text-on-surface/60 cursor-not-allowed select-none outline-none'"
+                   class="w-full px-2 py-1 text-xs font-mono focus:border-on-surface focus:outline-none"
+                   th:readonly="${!editable}"
+                   th:tabindex="${!editable} ? -1 : null"
+                   th:attr="unselectable=${!editable} ? 'on' : null">
+        </td>
+    </tr>
+</th:block>

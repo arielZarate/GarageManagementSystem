@@ -23,15 +23,7 @@
                 <fieldset class="border border-outline-variant px-3 pt-2 pb-1 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Datos Personales</legend>
                     <table class="w-full">
-                        <tr th:if="${editMode}">
-                            <td class="w-24 py-1 pr-2">
-                                <label class="text-xs text-on-surface/60">Código</label>
-                            </td>
-                            <td class="py-1">
-                                <input type="text" th:field="*{customerCode}"
-                                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1 text-xs font-mono focus:border-on-surface focus:outline-none">
-                            </td>
-                        </tr>
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formCode(label='Código', field='customerCode', editable=false)}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Nombres', field='firstName', type='text')}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Apellido', field='lastName', type='text')}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='DNI', field='dni', type='text')}"></th:block>

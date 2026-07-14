@@ -24,6 +24,7 @@
                 <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
                     <legend class="text-xs font-semibold text-on-surface px-1">Datos Personales</legend>
                     <table class="w-full">
+                        <th:block th:replace="~{fragments/components/UI/form-input :: formCode(label='Legajo', field='legajo', editable=false)}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Nombres', field='firstName', type='text')}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='Apellido', field='lastName', type='text')}"></th:block>
                         <th:block th:replace="~{fragments/components/UI/form-input :: formInput(label='DNI', field='dni', type='text')}"></th:block>

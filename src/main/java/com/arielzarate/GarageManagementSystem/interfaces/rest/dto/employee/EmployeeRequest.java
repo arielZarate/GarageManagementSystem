@@ -19,6 +19,8 @@ public class EmployeeRequest {
 
     private Long id;
 
+    private String legajo;
+
     @NotBlank(message = "El nombre es obligatorio")
     private String firstName;
 
