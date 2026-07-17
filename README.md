@@ -292,6 +292,35 @@ Vehicle owner/customer. Active/inactive status managed via radio buttons in edit
 | address | AddressEmbeddable | Full address |
 | active | Boolean | Active/inactive |
 
+### 🔸 BRAND (Marca)
+
+Vehicle brands (VW, Ford, Yamaha, etc.). Simple catalog with no detail page — edits happen inline in the table.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Long | Primary key (inherited) |
+| name | String | Brand name (unique, capitalized on save, uppercased on display) |
+
+### 🔸 MODEL (Modelo)
+
+Vehicle models per brand (Gol, Ranger, Fazer, etc.).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Long | Primary key (inherited) |
+| name | String | Model name |
+| brand | Brand | Parent brand |
+
+### 🔸 VERSION (Versión)
+
+Vehicle version per model (1.6, Sport, S, etc.).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Long | Primary key (inherited) |
+| name | String | Version name |
+| model | Model | Parent model |
+
 ### 🔸 VEHICLE
 
 Registered vehicle in the system.
@@ -300,12 +329,13 @@ Registered vehicle in the system.
 |-------|------|-------------|
 | id | Long | Primary key (inherited) |
 | licensePlate | String | License plate (unique) |
-| brand | String | Brand (VW, Ford, Yamaha) |
-| model | String | Model (Gol, Ranger, Fazer) |
+| brand | Brand | Brand (VW, Ford, Yamaha) — FK to brand table |
+| model | Model | Model (Gol, Ranger, Fazer) — FK to model table |
+| version | Version | Version (1.6, Sport, S) — FK to version table |
 | year | Integer | Year |
-| version | String | Version (1.6, Sport, S) |
 | vehicleType | VehicleType (enum) | CAR, MOTORCYCLE, TRUCK |
 | color | String | Color |
+| fuelType | FuelType (enum) | GASOLINE, DIESEL, ELECTRIC, HYBRID |
 | kilometers | Integer | Current km |
 | chassisNumber | String | Chassis number (VIN) |
 | engineNumber | String | Engine number |
@@ -537,6 +567,22 @@ server:
 - **Domain models** have zero framework annotations (no `@Entity`, no `@Spring`).
 - **Ports** define contracts: inbound (use cases) and outbound (repositories).
 - **Infrastructure** adapters implement outbound ports and map between domain ↔ JPA entities.
+
+---
+
+## 📋 Changelog
+
+### 2026-07-14
+- **StringCapitalize**: Fixed potential crash on empty words with `.filter()`, method keeps first-letter-uppercase rest-lowercase logic
+- **Brand display**: Brand names are uppercased in `getBrands()` and `getBrandById()` for consistent display while keeping `capitalize` format in DB
+- **Brand list/detail templates**: Reverted unnecessary CSS `uppercase` classes (handled in service layer instead)
+- **README**: Added Brand, Model, Version entities and updated Vehicle entity schema
+
+### Pendiente (próxima sesión)
+- **Brand simplificado**: eliminar detail.html, eliminar form.html, hacer edición inline en la lista (al tocar editar la celda nombre se vuelve input, al guardar se envía POST inline). Nuevo: fila con input vacío al inicio. Sin ID visible, sin código de marca.
+- **Index → link a Brands**: las cards de vehículos en el index deben tener un enlace a la gestión de marcas
+- **Index de vehículos**: está pendiente/roto, revisar
+- **Vehicle**: `brandName` en domain model → `brand` en entity (naming mismatch)
 
 ---
 

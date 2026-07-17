@@ -1,0 +1,21 @@
+<form id="brandFormId" th:action="@{/brand}" method="post" class="space-y-4">
+    <input type="hidden" id="brandId" name="id" value="">
+    <input type="hidden" id="createBrandUrl" th:value="@{/brand}">
+    <input type="hidden" id="updateBrandUrl" th:value="@{/brand/update}">
+    <div>
+        <label class="block text-xs text-on-surface/60 mb-1">Nombre</label>
+        <input type="text" id="brandName" name="name" required
+               class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+               placeholder="Ej: Honda">
+    </div>
+    <div class="flex items-center gap-2 justify-end pt-2 border-t border-outline-variant">
+        <button type="button" onclick="closeModal('modal-brand')"
+                class="border border-outline-variant text-on-surface px-4 py-1 text-xs rounded-sm hover:bg-surface-container-low">
+            Cancelar
+        </button>
+        <button type="submit" id="brandSubmitBtn"
+                class="bg-primary text-on-primary px-4 py-1 text-xs rounded-sm hover:bg-primary/80">
+            Guardar
+        </button>
+    </div>
+</form>
