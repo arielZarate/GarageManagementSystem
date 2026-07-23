@@ -34,6 +34,14 @@
                     <td class="px-3 py-2 text-center">
                         <div class="flex items-center justify-center gap-1">
                             <th:block th:replace="~{fragments/components/UI/button :: btnEditInline(dataId=${b.id}, dataName=${b.name})}"></th:block>
+                            <!--icon  models-->
+                            <a th:href="@{/brand/__${b.id}__/models}"
+                               class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Modelos">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                            </a>
+                            <!--end icon-->
                             <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/brand/' + ${b.id} + '/delete', msg='¿Eliminar marca?')}"></th:block>
                         </div>
                     </td>

@@ -16,4 +16,6 @@ public enum VehicleType {
     VehicleType(String displayName) {
         this.displayName = displayName;
     }
+
+
 }

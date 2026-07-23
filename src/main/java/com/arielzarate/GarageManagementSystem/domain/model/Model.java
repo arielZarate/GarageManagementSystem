@@ -3,7 +3,7 @@ package com.arielzarate.GarageManagementSystem.domain.model;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
 import lombok.*;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Setter
 @Getter
