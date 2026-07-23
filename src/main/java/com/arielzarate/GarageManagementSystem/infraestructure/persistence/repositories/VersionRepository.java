@@ -8,4 +8,6 @@ import java.util.List;
 public interface VersionRepository extends JpaRepository<VersionEntity, Long> {
 
     List<VersionEntity> findByModelId(Long modelId);
+
+    List<VersionEntity> findByModelIdIn(List<Long> modelIds);
 }
