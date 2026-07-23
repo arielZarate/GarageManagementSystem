@@ -1,5 +1,7 @@
 package com.arielzarate.GarageManagementSystem.application.services;
 
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationError;
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationErrorException;
 import com.arielzarate.GarageManagementSystem.domain.model.Company;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CompanyService;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.CompanyProvider;
@@ -40,8 +42,12 @@ public class CompanyUseCase implements CompanyService {
     }
 
     private void validateBusinessRules(Company company) {
-        CUITValidator.validate(company.getCuit());
-        EmailValidator.validate(company.getEmail());
-        PhoneValidator.validate(company.getPhone());
+        try {
+            CUITValidator.validate(company.getCuit());
+            EmailValidator.validate(company.getEmail());
+            PhoneValidator.validate(company.getPhone());
+        } catch (IllegalArgumentException e) {
+            throw new ApplicationErrorException(ApplicationError.badRequest(e.getMessage()));
+        }
     }
 }

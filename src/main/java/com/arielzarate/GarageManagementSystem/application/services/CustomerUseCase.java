@@ -1,5 +1,7 @@
 package com.arielzarate.GarageManagementSystem.application.services;
 
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationError;
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationErrorException;
 import com.arielzarate.GarageManagementSystem.domain.model.Customer;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.CustomerService;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.CustomerProvider;
@@ -19,6 +21,18 @@ public class CustomerUseCase implements CustomerService {
 
     @Override
     public Customer addCustomer(Customer customer) {
+        if (customer.getFirstName() == null || customer.getFirstName().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El nombre no puede estar vacío."));
+        }
+        if (customer.getLastName() == null || customer.getLastName().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El apellido no puede estar vacío."));
+        }
+        if (customer.getDni() == null || customer.getDni().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El DNI/CUIT no puede estar vacío."));
+        }
+        if (customer.getPhone() == null || customer.getPhone().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El teléfono no puede estar vacío."));
+        }
         customer.setCustomerCode(CodeGenerator.generateCustomer(provider::countCustomers));
         customer.setActive(true);
         return provider.create(customer);
@@ -36,18 +50,30 @@ public class CustomerUseCase implements CustomerService {
     @Override
     public Customer getCustomerById(Long id) {
         return provider.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationError.notFoundError("Cliente no encontrado con el id: " + id)));
     }
 
     @Override
     public Customer getCustomerByDni(String dni) {
         return provider.findByDni(dni)
-                .orElseThrow(() -> new RuntimeException("Customer not found with dni: " + dni));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationError.notFoundError("Cliente no encontrado con el DNI: " + dni)));
     }
 
 
     @Override
     public Customer updateCustomer(Customer customer) {
+        if (customer.getFirstName() == null || customer.getFirstName().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El nombre no puede estar vacío."));
+        }
+        if (customer.getLastName() == null || customer.getLastName().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El apellido no puede estar vacío."));
+        }
+        if (customer.getDni() == null || customer.getDni().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El DNI/CUIT no puede estar vacío."));
+        }
+        if (customer.getPhone() == null || customer.getPhone().isBlank()) {
+            throw new ApplicationErrorException(ApplicationError.badRequest("El teléfono no puede estar vacío."));
+        }
         return provider.update(customer);
     }
 }
