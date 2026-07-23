@@ -1,0 +1,42 @@
+<th:block th:fragment="alert">
+    <style>
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        .toast { animation: slideIn .3s ease-out; }
+        .toast.hiding { animation: slideOut .3s ease-in; }
+    </style>
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-2 w-72">
+        <div th:if="${errorMsg != null and !errorMsg.isEmpty()}"
+             class="toast bg-red-50 border-l-4 border-red-400 text-red-700 p-3 text-xs rounded shadow-lg flex items-center justify-between gap-4">
+            <span th:text="${errorMsg}"></span>
+            <button type="button" class="font-bold text-lg leading-none hover:opacity-70" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        <div th:if="${successMsg != null and !successMsg.isEmpty()}"
+             class="toast bg-green-50 border-l-4 border-green-400 text-green-700 p-3 text-xs rounded shadow-lg flex items-center justify-between gap-4">
+            <span th:text="${successMsg}"></span>
+            <button type="button" class="font-bold text-lg leading-none hover:opacity-70" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        <div th:if="${warningMsg != null and !warningMsg.isEmpty()}"
+             class="toast bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 p-3 text-xs rounded shadow-lg flex items-center justify-between gap-4">
+            <span th:text="${warningMsg}"></span>
+            <button type="button" class="font-bold text-lg leading-none hover:opacity-70" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        <div th:if="${infoMsg != null and !infoMsg.isEmpty()}"
+             class="toast bg-blue-50 border-l-4 border-blue-400 text-blue-700 p-3 text-xs rounded shadow-lg flex items-center justify-between gap-4">
+            <span th:text="${infoMsg}"></span>
+            <button type="button" class="font-bold text-lg leading-none hover:opacity-70" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('#toast-container .toast').forEach(function(t) {
+                setTimeout(function() {
+                    if (t && t.parentNode) {
+                        t.classList.add('hiding');
+                        setTimeout(function() { if (t && t.parentNode) t.remove(); }, 300);
+                    }
+                }, 4000);
+            });
+        });
+    </script>
+</th:block>

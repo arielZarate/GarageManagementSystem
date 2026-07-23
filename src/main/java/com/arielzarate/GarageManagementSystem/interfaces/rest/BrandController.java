@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @AllArgsConstructor
@@ -30,24 +31,28 @@ public class BrandController {
     }
 
     @PostMapping
-    public String createBrand(@RequestParam("name") String name) {
+    public String createBrand(@RequestParam("name") String name, RedirectAttributes redirectAttributes) {
         service.addBrand(name);
         log.info("Brand created: {}", name);
+        redirectAttributes.addFlashAttribute("successMsg", "Marca creada exitosamente");
         return "redirect:/brand";
     }
 
     @PostMapping("/update")
     public String updateBrand(@RequestParam("id") Long id,
-                               @RequestParam("name") String name) {
+                               @RequestParam("name") String name,
+                               RedirectAttributes redirectAttributes) {
         service.updateBrand(id, name);
         log.info("Brand updated: {} -> {}", id, name);
+        redirectAttributes.addFlashAttribute("successMsg", "Marca actualizada exitosamente");
         return "redirect:/brand";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBrand(@PathVariable Long id) {
+    public String deleteBrand(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         service.deleteBrand(id);
         log.info("Brand deleted: {}", id);
+        redirectAttributes.addFlashAttribute("infoMsg", "Marca eliminada exitosamente");
         return "redirect:/brand";
     }
 }

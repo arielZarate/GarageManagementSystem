@@ -30,7 +30,7 @@
                 <tbody>
                 <tr th:each="b : ${brands}"
                     class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
-                    <td class="px-3 py-2" th:text="${b.name}"></td>
+                    <td class="px-3 py-2" th:text="${#strings.toUpperCase(b.name)}"></td>
                     <td class="px-3 py-2 text-center">
                         <div class="flex items-center justify-center gap-1">
                             <th:block th:replace="~{fragments/components/UI/button :: btnEditInline(dataId=${b.id}, dataName=${b.name})}"></th:block>
@@ -50,10 +50,9 @@
         </div>
     </div>
 
+
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='modal-brand', title='Nueva Marca', content='brand/createForm')}"></th:block>
+
+    <script th:src="@{/js/edit.js}"></script>
+    <script th:src="@{/js/modal-form.js}"></script>
 </div>
-
-<th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='modal-brand', title='Nueva Marca', content='brand/createForm')}"></th:block>
-
-
-<script th:src="@{/js/edit.js}"></script>
-<script th:src="@{/js/modal-form.js}"></script>
