@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -45,8 +44,10 @@ public class ModelController {
         model.addAttribute("selectedType", vehicleType);
         model.addAttribute("vehicleTypes", VehicleType.values());
 
-        Map<Long, List<Version>> versionsByModel = models.stream()
-                .collect(Collectors.toMap(Model::getId, m -> versionService.getVersionsByModel(m.getId())));
+        List<Long> modelIds = models.stream().map(Model::getId).toList();
+        Map<Long, List<Version>> versionsByModel = modelIds.isEmpty()
+                ? Map.of()
+                : versionService.getVersionsByModels(modelIds);
         model.addAttribute("versionsByModel", versionsByModel);
         return "fragments/base";
     }

@@ -15,5 +15,7 @@ public interface VersionProvider {
 
     List<Version> findByModelId(Long modelId);
 
+    List<Version> findByModelIdIn(List<Long> modelIds);
+
     void deleteById(Long id);
 }

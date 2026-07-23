@@ -13,6 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -54,6 +56,13 @@ public class VersionUseCase implements VersionService {
     @Override
     public List<Version> getVersionsByModel(Long modelId) {
         return provider.findByModelId(modelId);
+    }
+
+    @Override
+    public Map<Long, List<Version>> getVersionsByModels(List<Long> modelIds) {
+        return provider.findByModelIdIn(modelIds)
+                .stream()
+                .collect(Collectors.groupingBy(v -> v.getModel().getId()));
     }
 
     @Override

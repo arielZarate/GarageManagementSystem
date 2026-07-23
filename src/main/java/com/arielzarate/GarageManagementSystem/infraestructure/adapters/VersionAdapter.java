@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -44,6 +45,14 @@ public class VersionAdapter implements VersionProvider {
     @Override
     public List<Version> findByModelId(Long modelId) {
         return repository.findByModelId(modelId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Version> findByModelIdIn(List<Long> modelIds) {
+        return repository.findByModelIdIn(modelIds)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
