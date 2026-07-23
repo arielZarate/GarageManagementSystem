@@ -1,0 +1,95 @@
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-primary/80 px-4 py-2 border-b border-outline-variant flex items-center justify-between">
+        <h1 class="text-sm font-bold text-white">
+            <span th:text="${vehicle.licensePlate}"></span>
+            <span class="text-white/60 font-normal" th:text="'(' + ${vehicle.brandName} + ' ' + ${vehicle.modelName} + ')'"></span>
+        </h1>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4">
+
+        <div class="flex flex-wrap gap-4">
+
+            <!-- Datos del vehículo -->
+            <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                <legend class="text-xs font-semibold text-on-surface px-1">Datos del Vehículo</legend>
+                <table class="w-full text-xs">
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Patente</td>
+                        <td class="text-on-surface font-medium py-1" th:text="${vehicle.licensePlate}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Marca</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.brandName}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Modelo</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.modelName}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Versión</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.versionName ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Año</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.year}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Tipo</td>
+                        <td class="py-1">
+                            <span class="rounded-full px-2 py-0.5 text-xs"
+                                  th:classappend="${vehicle.vehicleType == 'Auto'} ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'"
+                                  th:text="${vehicle.vehicleType}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Color</td>
+                        <td class="text-on-surface py-1">
+                            <span th:if="${vehicle.color}" class="inline-block w-3 h-3 rounded-full border border-outline-variant align-middle mr-1"
+                                  th:style="'background-color: ' + ${vehicle.color.toLowerCase()}"></span>
+                            <span th:text="${vehicle.color ?: '-'}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">Combustible</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.fuelType ?: '-'}"></td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <!-- Especificaciones técnicas -->
+            <fieldset class="border border-outline-variant px-3 pt-2 pb-3 min-w-[280px] flex-1">
+                <legend class="text-xs font-semibold text-on-surface px-1">Especificaciones</legend>
+                <table class="w-full text-xs">
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap w-1/3">Kilómetros</td>
+                        <td class="text-on-surface py-1" th:text="${vehicle.kilometers != null ? vehicle.kilometers + ' km' : '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">N° Chasis</td>
+                        <td class="text-on-surface font-mono py-1" th:text="${vehicle.chassisNumber ?: '-'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-on-surface/60 py-1 pr-3 whitespace-nowrap">N° Motor</td>
+                        <td class="text-on-surface font-mono py-1" th:text="${vehicle.engineNumber ?: '-'}"></td>
+                    </tr>
+                </table>
+            </fieldset>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="px-4 pt-3 pb-6 border-t border-outline-variant flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <th:block th:replace="~{fragments/components/UI/button :: btnEdit(baseUrl='/vehicle/edit', id=${vehicle.id})}"></th:block>
+            <th:block th:replace="~{fragments/components/UI/button :: btnBack(url='/vehicle')}"></th:block>
+        </div>
+    </div>
+    <div class="bg-primary/80" style="height: 20px"></div>
+
+</div>

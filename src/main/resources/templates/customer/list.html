@@ -12,10 +12,10 @@
 
         <!-- Buscador -->
         <th:block
-                th:replace="~{fragments/components/search :: searchInput(baseUrl='/customer', placeholder='Buscar por DNI o CUIT...', query='searchQuery')}"></th:block>
+                th:replace="~{fragments/components/search :: searchInput(baseUrl='/customer', placeholder='Buscar por DNI, nombre o apellido...', query='searchQuery')}"></th:block>
 
         <!-- Tabla -->
-        <div class="border border-outline-variant overflow-x-auto">
+        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-340px)]">
             <table class="w-full text-xs text-on-surface">
                 <thead>
                 <tr class="bg-surface-container-low text-on-surface/60 uppercase font-semibold">
@@ -58,6 +58,9 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Paginación -->
+        <th:block th:replace="~{fragments/components/pagination :: pagination(baseUrl='/customer', currentPage=${currentPage}, totalPages=${totalPages}, searchQuery=${searchQuery}, pageSize=${pageSize})}"></th:block>
     </div>
 
 </div>

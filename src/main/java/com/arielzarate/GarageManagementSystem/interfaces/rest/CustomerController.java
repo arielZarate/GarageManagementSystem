@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -27,12 +33,38 @@ public class CustomerController {
     private final CustomerService service;
     private final CustomerDTOMapper mapper;
 
+    @GetMapping("/search")
+    @ResponseBody
+    public List<java.util.Map<String, Object>> searchCustomers(@RequestParam("q") String query) {
+        return service.getCustomers(query).stream()
+                .map(c -> java.util.Map.<String, Object>of(
+                        "id", c.getId(),
+                        "label", (c.getLastName() != null ? c.getLastName() + ", " : "") +
+                                 (c.getFirstName() != null ? c.getFirstName() : "") +
+                                 (c.getDni() != null ? " (" + c.getDni() + ")" : "")
+                ))
+                .toList();
+    }
+
+
+    /**
+     * list clients
+     * **/
     @GetMapping
-    public String getCustomers(@RequestParam(value = "q", required = false) String query, Model model) {
+    public String getCustomers(@RequestParam(value = "q", required = false) String query,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "20") int size,
+                               Model model) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Customer> customerPage = service.getCustomersPage(query, pageRequest);
         model.addAttribute("pageTitle", "Clientes");
         model.addAttribute("content", "customer/list");
-        model.addAttribute("customers", service.getCustomers(query));
+        model.addAttribute("customers", customerPage.getContent());
+        model.addAttribute("currentPage", customerPage.getNumber());
+        model.addAttribute("totalPages", customerPage.getTotalPages());
+        model.addAttribute("totalItems", customerPage.getTotalElements());
         model.addAttribute("searchQuery", query);
+        model.addAttribute("pageSize", size);
         return "fragments/base";
     }
 

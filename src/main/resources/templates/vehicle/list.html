@@ -1,0 +1,90 @@
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-surface-container px-4 py-2 border-b border-outline-variant flex items-center justify-between">
+        <h1 class="text-sm font-bold text-on-surface">Vehículos</h1>
+        <th:block th:replace="~{fragments/components/UI/button :: btnNew(baseUrl='/vehicle/form')}"></th:block>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4">
+
+        <!-- Buscador -->
+        <th:block th:replace="~{fragments/components/search :: searchInput(baseUrl='/vehicle', placeholder='Buscar por patente...', query='searchQuery')}"></th:block>
+
+        <!-- Filtrar por tipo -->
+        <div class="mb-4 flex items-center gap-2 flex-wrap">
+            <label class="text-xs text-on-surface/60">Filtrar por tipo:</label>
+            <a th:href="@{/vehicle}"
+               class="text-xs px-3 py-1 rounded-sm border border-outline-variant hover:bg-surface-container-low"
+               th:classappend="${selectedType == null} ? 'bg-primary text-on-primary' : 'text-on-surface'">
+                Todos
+            </a>
+            <a th:each="vt : ${vehicleTypes}"
+               th:href="@{/vehicle(type=${vt})}"
+               class="text-xs px-3 py-1 rounded-sm border border-outline-variant hover:bg-surface-container-low"
+               th:classappend="${selectedType == vt} ? 'bg-primary text-on-primary' : 'text-on-surface'"
+               th:text="${vt.displayName}">
+            </a>
+        </div>
+
+        <!-- Tabla -->
+        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-340px)]">
+            <table class="w-full text-xs text-on-surface">
+                <thead>
+                <tr class="bg-surface-container-low text-on-surface/60 uppercase font-semibold">
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Patente</th>
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Marca</th>
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Modelo</th>
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Versión</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Año</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Tipo</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${vehicles}"
+                    class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
+                    <td class="px-2 py-2 font-medium" th:text="${v.licensePlate}"></td>
+                    <td class="px-2 py-2" th:text="${v.brandName}"></td>
+                    <td class="px-2 py-2" th:text="${v.modelName}"></td>
+                    <td class="px-2 py-2" th:text="${v.versionName ?: '-'}"></td>
+                    <td class="px-2 py-2 text-center" th:text="${v.year}"></td>
+                    <td class="px-2 py-2 text-center">
+                        <span class="rounded-full px-2 py-0.5 text-xs"
+                              th:classappend="${v.vehicleType == 'Auto'} ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'"
+                              th:text="${v.vehicleType}"></span>
+                    </td>
+                    <td class="px-2 py-2 text-center">
+                        <div class="flex items-center justify-center gap-0.5">
+                            <a th:href="@{/vehicle/detail/__${v.id}__}"
+                               class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Ver detalle">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </a>
+                            <a th:href="@{/vehicle/edit/__${v.id}__}"
+                               class="p-1.5 rounded hover:bg-secondary-container text-secondary transition" title="Editar">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </a>
+                            <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/vehicle/' + ${v.id} + '/delete', msg='¿Eliminar vehículo?')}"></th:block>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Fila vacía -->
+                <tr th:if="${#lists.isEmpty(vehicles)}">
+                    <td colspan="7" class="px-3 py-12 text-center text-on-surface/40">
+                        <p class="text-sm mb-1">No hay vehículos registrados</p>
+                        <p class="text-xs">Creá el primer vehículo</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal-form.js}"></script>
+</div>
