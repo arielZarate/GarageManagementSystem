@@ -1,6 +1,6 @@
 package com.arielzarate.GarageManagementSystem.interfaces.errors;
 
-import com.arielzarate.GarageManagementSystem.interfaces.errors.exceptions.ApplicationErrorException;
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationErrorException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

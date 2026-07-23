@@ -11,7 +11,9 @@ import com.arielzarate.GarageManagementSystem.infraestructure.persistence.reposi
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -74,6 +76,20 @@ public class ModelAdapter implements ModelProvider {
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public long countByBrandId(Long brandId) {
+        return repository.countByBrandId(brandId);
+    }
+
+    @Override
+    public Map<Long, Long> countModelsGroupedByBrand() {
+        Map<Long, Long> result = new HashMap<>();
+        for (Object[] row : repository.countModelsGroupedByBrand()) {
+            result.put((Long) row[0], (Long) row[1]);
+        }
+        return result;
     }
 
     @Override

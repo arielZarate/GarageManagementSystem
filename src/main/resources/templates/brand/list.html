@@ -19,7 +19,7 @@
         <th:block th:replace="~{fragments/components/search :: searchInput(baseUrl='/brand', placeholder='Buscar por nombre...', query='searchQuery')}"></th:block>
 
         <!-- Tabla -->
-        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
+        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-320px)]">
             <table class="w-full text-xs text-on-surface">
                 <thead>
                 <tr class="bg-surface-container-low text-on-surface/60 uppercase font-semibold">
@@ -31,7 +31,11 @@
                 <tbody>
                 <tr th:each="b : ${brands}"
                     class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
-                    <td class="px-2 py-2" th:text="${#strings.toUpperCase(b.name)}"></td>
+                    <td class="px-2 py-2 flex items-center gap-1.5">
+                        <span th:if="${brandsWithModels.get(b.id)}" class="inline-block w-2 h-2 bg-green-500 rounded-full shrink-0" title="Tiene modelos"></span>
+                        <span th:unless="${brandsWithModels.get(b.id)}" class="inline-block w-2 h-2 bg-gray-300 rounded-full shrink-0" title="Sin modelos"></span>
+                        <span th:text="${#strings.toUpperCase(b.name)}"></span>
+                    </td>
                     <td class="px-2 py-2 text-center">
                         <div class="flex items-center justify-center gap-0.5">
                             <th:block th:replace="~{fragments/components/UI/button :: btnEditInline(dataId=${b.id}, dataName=${b.name})}"></th:block>
@@ -41,11 +45,12 @@
                     <td class="px-2 py-2 text-center">
                         <div class="flex items-center justify-center gap-0.5">
                             <a th:href="@{/brand/__${b.id}__/models}"
-                               class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Ver modelos">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                               class="flex items-center gap-1 p-1.5 rounded hover:bg-primary-container text-primary transition underline underline-offset-2" title="Ver modelos">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6"/>
                                 </svg>
+                                <span class="text-xs">Ver modelos</span>
                             </a>
                         </div>
                     </td>

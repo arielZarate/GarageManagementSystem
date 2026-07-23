@@ -1,4 +1,4 @@
-package com.arielzarate.GarageManagementSystem.interfaces.errors.model;
+package com.arielzarate.GarageManagementSystem.application.errors;
 
 public record ApplicationError(
     int status,
