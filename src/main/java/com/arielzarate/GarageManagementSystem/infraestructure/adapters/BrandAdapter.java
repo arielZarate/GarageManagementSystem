@@ -25,11 +25,14 @@ public class BrandAdapter implements BrandProvider {
     }
 
     @Override
-    public Brand update(Long id, String name) {
-        BrandEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
-        entity.setName(name);
-        return mapper.toDomain(repository.save(entity));
+    public Optional<Brand> update(Long id, String name) {
+         return repository.findById(id)
+                         .map(
+                                 entity-> {
+                                     entity.setName(name);
+                                     return mapper.toDomain(repository.save(entity));
+                                 });
+
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface BrandProvider {
 
     Brand create(String name);
 
-    Brand update(Long id, String name);
+    Optional<Brand> update(Long id, String name);
 
     Optional<Brand> findById(Long id);
 

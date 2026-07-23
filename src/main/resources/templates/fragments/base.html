@@ -15,6 +15,12 @@
         <div th:replace="~{${content}}"></div>
     </main>
 
+    <!--alerts for system-->
+    <div th:replace="~{fragments/components/UI/alert :: alert}"></div>
+
+    <!--confirm modal-->
+    <div th:replace="~{fragments/components/UI/confirm-modal :: confirmModal}"></div>
+
     <div th:replace="~{fragments/components/footer :: footer}"></div>
     <div th:replace="~{fragments/components/scripts :: scripts}"></div>
 </body>

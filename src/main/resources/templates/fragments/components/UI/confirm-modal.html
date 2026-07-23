@@ -1,0 +1,52 @@
+<th:block th:fragment="confirmModal">
+    <div id="confirm-modal"
+         class="fixed inset-0 z-50 hidden"
+         role="dialog">
+        <div class="fixed inset-0 bg-black/50"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="relative bg-surface-container rounded-lg shadow-xl w-[280px] z-10">
+                <div class="p-6 text-center">
+                    <div class="mx-auto mb-4 h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-sm font-bold text-on-surface mb-2" id="confirm-title">Confirmar</h3>
+                    <p class="text-xs text-on-surface/60 mb-6" id="confirm-msg">¿Estás seguro?</p>
+                    <div class="flex items-center justify-center gap-3">
+                        <button type="button" onclick="closeModal('confirm-modal')"
+                                class="border border-outline-variant text-on-surface px-4 py-1.5 text-xs rounded-sm hover:bg-surface-container-low">
+                            Cancelar
+                        </button>
+                        <button type="button" id="confirm-btn"
+                                 class="bg-error text-white px-4 py-1.5 text-xs rounded-sm hover:bg-error/80">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pendingForm = null;
+
+        function confirmDelete(btn) {
+            pendingForm = btn.closest('form');
+            const msg = pendingForm.getAttribute('data-msg') || '¿Estás seguro?';
+            document.getElementById('confirm-msg').textContent = msg;
+            document.getElementById('confirm-title').textContent = 'Confirmar eliminación';
+            openModal('confirm-modal');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('confirm-btn').addEventListener('click', function() {
+                if (pendingForm) {
+                    pendingForm.submit();
+                    pendingForm = null;
+                }
+                closeModal('confirm-modal');
+            });
+        });
+    </script>
+</th:block>

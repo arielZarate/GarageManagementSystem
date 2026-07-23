@@ -1,10 +1,10 @@
-<form id="brandFormId" th:action="@{/brand}" method="post" class="space-y-4">
+<form id="brandForm" th:action="@{/brand}" method="post" class="space-y-4">
     <input type="hidden" id="brandId" name="id" value="">
     <input type="hidden" id="createBrandUrl" th:value="@{/brand}">
     <input type="hidden" id="updateBrandUrl" th:value="@{/brand/update}">
     <div>
         <label class="block text-xs text-on-surface/60 mb-1">Nombre</label>
-        <input type="text" id="brandName" name="name" required
+        <input type="text" id="brandName" name="name"
                class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
                placeholder="Ej: Honda">
     </div>
