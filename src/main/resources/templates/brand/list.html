@@ -19,36 +19,40 @@
         <th:block th:replace="~{fragments/components/search :: searchInput(baseUrl='/brand', placeholder='Buscar por nombre...', query='searchQuery')}"></th:block>
 
         <!-- Tabla -->
-        <div class="border border-outline-variant overflow-x-auto">
+        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
             <table class="w-full text-xs text-on-surface">
                 <thead>
                 <tr class="bg-surface-container-low text-on-surface/60 uppercase font-semibold">
-                    <th class="px-3 py-2 text-left border-b border-outline-variant">Nombre</th>
-                    <th class="px-3 py-2 text-center border-b border-outline-variant">Acciones</th>
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Nombre</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Acciones</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Modelos</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="b : ${brands}"
                     class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
-                    <td class="px-3 py-2" th:text="${#strings.toUpperCase(b.name)}"></td>
-                    <td class="px-3 py-2 text-center">
-                        <div class="flex items-center justify-center gap-1">
+                    <td class="px-2 py-2" th:text="${#strings.toUpperCase(b.name)}"></td>
+                    <td class="px-2 py-2 text-center">
+                        <div class="flex items-center justify-center gap-0.5">
                             <th:block th:replace="~{fragments/components/UI/button :: btnEditInline(dataId=${b.id}, dataName=${b.name})}"></th:block>
-                            <!--icon  models-->
+                            <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/brand/' + ${b.id} + '/delete', msg='¿Eliminar marca?')}"></th:block>
+                        </div>
+                    </td>
+                    <td class="px-2 py-2 text-center">
+                        <div class="flex items-center justify-center gap-0.5">
                             <a th:href="@{/brand/__${b.id}__/models}"
-                               class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Modelos">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                               class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Ver modelos">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6"/>
                                 </svg>
                             </a>
-                            <!--end icon-->
-                            <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/brand/' + ${b.id} + '/delete', msg='¿Eliminar marca?')}"></th:block>
                         </div>
                     </td>
                 </tr>
                 <!-- Fila vacía -->
                 <tr th:if="${#lists.isEmpty(brands)}">
-                    <td colspan="2" class="px-3 py-12 text-center text-on-surface/40">
+                    <td colspan="3" class="px-3 py-12 text-center text-on-surface/40">
                         <p class="text-sm mb-1">No hay marcas registradas</p>
                         <p class="text-xs">Creá la primera marca</p>
                     </td>

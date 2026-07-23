@@ -1,0 +1,19 @@
+<form id="versionForm" method="post" class="space-y-4">
+    <input type="hidden" id="versionId" name="id" value="">
+    <div>
+        <label class="block text-xs text-on-surface/60 mb-1">Nombre de la versión</label>
+        <input type="text" id="versionName" name="name"
+               class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+               placeholder="Ej: EX-S">
+    </div>
+    <div class="flex items-center gap-2 justify-end pt-2 border-t border-outline-variant">
+        <button type="button" onclick="closeModal('modal-version')"
+                class="border border-outline-variant text-on-surface px-4 py-1 text-xs rounded-sm hover:bg-surface-container-low">
+            Cancelar
+        </button>
+        <button type="submit" id="versionSubmitBtn"
+                class="bg-primary text-on-primary px-4 py-1 text-xs rounded-sm hover:bg-primary/80">
+            Guardar
+        </button>
+    </div>
+</form>

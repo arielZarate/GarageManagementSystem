@@ -1,0 +1,252 @@
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-surface-container px-4 py-2 border-b border-outline-variant flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <!--icon '<' -->
+            <a th:href="@{/brand}"
+               class="text-on-surface/60 hover:text-on-surface transition p-1 rounded hover:bg-surface-container-low">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <h1 class="text-sm font-bold text-on-surface" th:text="'Modelos - ' + ${brand.name}"></h1>
+        </div>
+
+        <!--button create model-->
+        <button onclick="openCreateModelModal()"
+                class="bg-primary text-on-primary border border-outline-variant px-2 py-1 rounded-sm hover:bg-primary/80">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m-4-4h8"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4">
+
+        <!-- Filter type -->
+        <div class="mb-4 flex items-center gap-2">
+            <label class="text-xs text-on-surface/60">Filtrar por tipo:</label>
+            <a th:href="@{/brand/__${brand.id}__/models}"
+               class="text-xs px-3 py-1 rounded-sm border border-outline-variant hover:bg-surface-container-low"
+               th:classappend="${selectedType == null} ? 'bg-primary text-on-primary' : 'text-on-surface'">
+                Todos
+            </a>
+            <a th:each="vt : ${vehicleTypes}"
+               th:href="@{/brand/__${brand.id}__/models(type=${vt})}"
+               class="text-xs px-3 py-1 rounded-sm border border-outline-variant hover:bg-surface-container-low"
+               th:classappend="${selectedType == vt} ? 'bg-primary text-on-primary' : 'text-on-surface'"
+               th:text="${vt.displayName}">
+            </a>
+        </div>
+
+        <!-- Table -->
+        <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
+            <table class="w-full text-xs text-on-surface">
+                <thead>
+                <tr class="bg-surface-container-low text-on-surface/60 uppercase font-semibold">
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Nombre</th>
+                    <th class="px-2 py-2 text-left border-b border-outline-variant">Tipo</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Acciones</th>
+                    <th class="px-2 py-2 text-center border-b border-outline-variant">Versiones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="m : ${models}"
+                    class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
+                    <td class="px-2 py-2" th:text="${m.name}"></td>
+                    <td class="px-2 py-2">
+                        <span class="rounded-full px-2 py-0.5 text-xs"
+                              th:classappend="${m.vehicleType.name() == 'CAR'} ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'"
+                              th:text="${m.vehicleType.displayName}"></span>
+                    </td>
+                    <td class="px-2 py-2 text-center">
+                        <div class="flex items-center justify-center gap-0.5">
+                            <!--edit modelo-->
+                            <button type="button"
+                                    th:attr="data-id=${m.id}, data-name=${m.name}, data-type=${m.vehicleType}"
+                                    onclick="editModelFunction(this)"
+                                    class="p-1.5 rounded hover:bg-secondary-container text-secondary transition" title="Editar modelo">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+
+                            <th:block th:replace="~{fragments/components/UI/button :: btnDelete(actionUrl='/brand/' + ${brand.id} + '/models/' + ${m.id} + '/delete', msg='¿Eliminar modelo?')}"></th:block>
+                        </div>
+                    </td>
+
+                    <!-- Versiones -->
+                    <td class="px-2 py-2 text-center">
+                        <div class="flex items-center justify-center gap-0.5">
+                            <input type="hidden" th:id="'createVersionUrl-' + ${m.id}"
+                                   th:value="@{/model/__${m.id}__/versions}">
+                            <input type="hidden" th:id="'updateVersionUrl-' + ${m.id}"
+                                   th:value="@{/model/__${m.id}__/versions/update}">
+                            <input type="hidden" th:id="'deleteVersionBaseUrl-' + ${m.id}"
+                                   th:value="@{/model/__${m.id}__/versions/}">
+
+                            <select th:id="'versionSelect-' + ${m.id}"
+                                    th:attr="data-model-id=${m.id}"
+                                    onchange="onVersionSelect(this)"
+                                    class="border border-outline-variant bg-surface-container-low text-on-surface px-1.5 py-1 text-xs rounded focus:border-on-surface focus:outline-none min-w-[100px]">
+                                <option th:if="${#lists.isEmpty(versionsByModel.get(m.id))}" value="" selected>Versiones</option>
+                                <option th:each="v : ${versionsByModel.get(m.id)}"
+                                        th:value="${v.id}" th:text="${v.name}"></option>
+                            </select>
+
+                            <!-- crear version -->
+                            <button type="button"
+                                    th:attr="data-model-id=${m.id}"
+                                    onclick="openCreateVersionModal(this)"
+                                    class="p-1.5 rounded hover:bg-primary-container text-primary transition" title="Agregar versión">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m-4-4h8"/>
+                                </svg>
+                            </button>
+
+                            <!-- editar version -->
+                            <button type="button"
+                                    th:id="'editVersionBtn-' + ${m.id}"
+                                    th:attr="data-model-id=${m.id}"
+                                    onclick="openEditVersionModal(this)"
+                                    class="p-1.5 rounded hover:bg-secondary-container transition
+                                           text-on-surface/30 cursor-not-allowed"
+                                    title="Seleccioná una versión para editar">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+
+                            <!-- eliminar version -->
+                            <form th:id="'deleteVersionForm-' + ${m.id}" method="post" class="inline"
+                                  th:attr="data-msg='¿Eliminar versión?'">
+                                <button type="button"
+                                        onclick="confirmDelete(this)"
+                                        class="p-1.5 rounded hover:bg-error hover:text-white transition
+                                               text-on-surface/30 cursor-not-allowed border-0"
+                                        title="Seleccioná una versión para eliminar">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Fila vacía -->
+                <tr th:if="${#lists.isEmpty(models)}">
+                    <td colspan="4" class="px-3 py-12 text-center text-on-surface/40">
+                        <p class="text-sm mb-1">No hay modelos registrados</p>
+                        <p class="text-xs">Creá el primer modelo para esta marca</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Modelo -->
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='modal-model', title='Nuevo Modelo', content='model/createForm')}"></th:block>
+
+    <!-- Modal Versión -->
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='modal-version', title='Nueva Versión', content='version/createForm')}"></th:block>
+
+    <script th:src="@{/js/modal-form.js}"></script>
+    <script>
+        // ---- Modelo ----
+        function openCreateModelModal() {
+            const form = document.getElementById('modelForm');
+            form.reset();
+            form.action = document.getElementById('createModelUrl').value;
+            document.getElementById('modelSubmitBtn').textContent = 'Guardar';
+            document.querySelector('#modal-model h2').textContent = 'Nuevo Modelo';
+            openModal('modal-model');
+        }
+
+        function editModelFunction(btn) {
+            const id = btn.getAttribute('data-id');
+            const name = btn.getAttribute('data-name');
+            const type = btn.getAttribute('data-type');
+            const form = document.getElementById('modelForm');
+            document.getElementById('modelId').value = id;
+            document.getElementById('modelName').value = name;
+            document.getElementById('modelVehicleType').value = type;
+            form.action = document.getElementById('updateModelUrl').value;
+            document.getElementById('modelSubmitBtn').textContent = 'Actualizar';
+            document.querySelector('#modal-model h2').textContent = 'Editar Modelo';
+            openModal('modal-model');
+        }
+
+        // ---- Versión ----
+        const selectedVersion = {};
+
+        function onVersionSelect(select) {
+            const modelId = select.getAttribute('data-model-id');
+            const versionId = select.value;
+            const editBtn = document.getElementById('editVersionBtn-' + modelId);
+            const deleteForm = document.getElementById('deleteVersionForm-' + modelId);
+            const deleteBtn = deleteForm.querySelector('button');
+
+            if (versionId) {
+                selectedVersion[modelId] = versionId;
+                // Activar editar
+                editBtn.className = 'p-1.5 rounded hover:bg-secondary-container text-secondary transition';
+                editBtn.setAttribute('title', 'Editar versión');
+                // Activar eliminar
+                deleteBtn.className = 'p-1.5 rounded hover:bg-error hover:text-white text-error transition border border-error';
+                deleteBtn.setAttribute('title', 'Eliminar versión');
+                deleteForm.action = document.getElementById('deleteVersionBaseUrl-' + modelId).value + versionId + '/delete';
+            } else {
+                delete selectedVersion[modelId];
+                // Desactivar editar
+                editBtn.className = 'p-1.5 rounded hover:bg-secondary-container transition text-on-surface/30 cursor-not-allowed';
+                editBtn.setAttribute('title', 'Seleccioná una versión para editar');
+                // Desactivar eliminar
+                deleteBtn.className = 'p-1.5 rounded hover:bg-error hover:text-white transition text-on-surface/30 cursor-not-allowed border-0';
+                deleteBtn.setAttribute('title', 'Seleccioná una versión para eliminar');
+            }
+        }
+
+        function openCreateVersionModal(btn) {
+            const modelId = btn.getAttribute('data-model-id');
+            const form = document.getElementById('versionForm');
+            form.reset();
+            document.getElementById('versionId').value = '';
+            form.action = document.getElementById('createVersionUrl-' + modelId).value;
+            document.getElementById('versionSubmitBtn').textContent = 'Guardar';
+            document.querySelector('#modal-version h2').textContent = 'Nueva Versión';
+            openModal('modal-version');
+        }
+
+        function openEditVersionModal(btn) {
+            const modelId = btn.getAttribute('data-model-id');
+            const versionId = selectedVersion[modelId];
+            if (!versionId) return;
+
+            const select = document.getElementById('versionSelect-' + modelId);
+            const option = select.querySelector('option[value="' + versionId + '"]');
+            const versionName = option ? option.textContent : '';
+
+            const form = document.getElementById('versionForm');
+            form.reset();
+            document.getElementById('versionId').value = versionId;
+            document.getElementById('versionName').value = versionName;
+            form.action = document.getElementById('updateVersionUrl-' + modelId).value;
+            document.getElementById('versionSubmitBtn').textContent = 'Actualizar';
+            document.querySelector('#modal-version h2').textContent = 'Editar Versión';
+            openModal('modal-version');
+        }
+        // Inicializar selects que ya tienen versión preseleccionada
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('select[id^="versionSelect-"]').forEach(function(select) {
+                if (select.value) {
+                    onVersionSelect(select);
+                }
+            });
+        });
+    </script>
+</div>

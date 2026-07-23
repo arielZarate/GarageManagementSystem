@@ -1,0 +1,29 @@
+<form id="modelForm" th:action="@{/brand/__${brand.id}__/models}" method="post" class="space-y-4">
+    <input type="hidden" id="modelId" name="id" value="">
+    <input type="hidden" id="createModelUrl" th:value="@{/brand/__${brand.id}__/models}">
+    <input type="hidden" id="updateModelUrl" th:value="@{/brand/__${brand.id}__/models/update}">
+    <div>
+        <label class="block text-xs text-on-surface/60 mb-1">Nombre del modelo</label>
+        <input type="text" id="modelName" name="name"
+               class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+               placeholder="Ej: Civic">
+    </div>
+    <div>
+        <label class="block text-xs text-on-surface/60 mb-1">Tipo de vehículo</label>
+        <select id="modelVehicleType" name="vehicleType"
+                class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
+            <option value="" th:text="'Seleccionar...'"></option>
+            <option th:each="vt : ${vehicleTypes}" th:value="${vt}" th:text="${vt.displayName}"></option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2 justify-end pt-2 border-t border-outline-variant">
+        <button type="button" onclick="closeModal('modal-model')"
+                class="border border-outline-variant text-on-surface px-4 py-1 text-xs rounded-sm hover:bg-surface-container-low">
+            Cancelar
+        </button>
+        <button type="submit" id="modelSubmitBtn"
+                class="bg-primary text-on-primary px-4 py-1 text-xs rounded-sm hover:bg-primary/80">
+            Guardar
+        </button>
+    </div>
+</form>
