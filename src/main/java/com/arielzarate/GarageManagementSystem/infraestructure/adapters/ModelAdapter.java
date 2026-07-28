@@ -83,14 +83,6 @@ public class ModelAdapter implements ModelProvider {
         return repository.countByBrandId(brandId);
     }
 
-    @Override
-    public Map<Long, Long> countModelsGroupedByBrand() {
-        Map<Long, Long> result = new HashMap<>();
-        for (Object[] row : repository.countModelsGroupedByBrand()) {
-            result.put((Long) row[0], (Long) row[1]);
-        }
-        return result;
-    }
 
     @Override
     public void deleteById(Long id) {

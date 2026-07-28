@@ -1,0 +1,185 @@
+<div th:fragment="content" class="border border-outline-variant bg-surface-container rounded-md overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-surface-container px-4 py-2 border-b border-outline-variant flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a th:href="@{/vehicle}"
+               class="text-on-surface/60 hover:text-on-surface transition p-1 rounded hover:bg-surface-container-low">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <h1 class="text-sm font-bold text-on-surface" th:text="${vehicle.id == null ? 'Nuevo Vehículo' : 'Editar Vehículo'}"></h1>
+        </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4">
+
+        <form th:action="${vehicle.id == null} ? @{/vehicle} : @{/vehicle/update}"
+              th:object="${vehicle}"
+              method="post"
+              class="space-y-4 max-w-2xl">
+
+            <input type="hidden" th:field="*{id}">
+            <!--new  hidden-->
+            <input type="hidden" id="vehicleType" name="vehicleType" th:value="*{vehicleType}">
+            <input type="hidden" id="initialBrandId" th:value="*{brandId}">
+            <input type="hidden" id="initialModelId" th:value="*{modelId}">
+            <input type="hidden" id="initialVersionId" th:value="*{versionId}">
+
+            <!-- Patente y Tipo (filtro) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Patente *</label>
+                    <input type="text" th:field="*{licensePlate}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Ej: ABC123">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Tipo *</label>
+                    <select id="typeFilter"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
+                        <option value="">Seleccionar...</option>
+                        <option th:each="vt : ${vehicleTypes}"
+                                th:value="${vt}"
+                                th:text="${vt.displayName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Marca, Modelo, Versión (cascada) -->
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Marca *</label>
+                        <button type="button" id="quickBrandBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear marca nueva">+</button>
+                    </div>
+                    <select th:field="*{brandId}"
+                            id="brandId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Modelo *</label>
+                        <button type="button" id="quickModelBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear modelo nuevo">+</button>
+                    </div>
+                    <select th:field="*{modelId}"
+                            id="modelId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Versión</label>
+                        <button type="button" id="quickVersionBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear versión nueva">+</button>
+                    </div>
+                    <select th:field="*{versionId}"
+                            id="versionId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Año -->
+            <div class="grid grid-cols-1 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Año</label>
+                    <input type="number" th:field="*{year}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Ej: 2020">
+                </div>
+            </div>
+
+            <!-- Color y Combustible -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Color</label>
+                    <input type="text" th:field="*{color}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Ej: Rojo">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Combustible</label>
+                    <select th:field="*{fuelType}"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
+                        <option value="">Seleccionar...</option>
+                        <option th:each="ft : ${fuelTypes}"
+                                th:value="${ft}"
+                                th:text="${ft.displayName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KM, Chasis, Motor -->
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Kilómetros</label>
+                    <input type="number" th:field="*{kilometers}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Ej: 50000">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">N° Chasis</label>
+                    <input type="text" th:field="*{chassisNumber}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Número de chasis">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">N° Motor</label>
+                    <input type="text" th:field="*{engineNumber}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Número de motor">
+                </div>
+            </div>
+
+            <!-- Client (autocomplete) -->
+            <div>
+                <label class="block text-xs text-on-surface/60 mb-1">Cliente</label>
+                <input type="hidden" th:field="*{customerId}" id="customerId">
+                <div class="relative">
+                    <input type="text" id="customerSearch"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Buscá por apellido, nombre o DNI..."
+                           autocomplete="off">
+                    <div id="customerResults"
+                         class="absolute z-50 w-full mt-0.5 border border-outline-variant bg-surface-container rounded shadow-lg hidden max-h-48 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <input type="hidden" id="customerSearchUrl" th:value="@{/customer/search}">
+
+            <!-- Botones -->
+            <div class="flex items-center gap-2 justify-end pt-4 border-t border-outline-variant">
+                <a th:href="@{/vehicle}"
+                   class="border border-outline-variant text-on-surface px-4 py-1.5 text-xs rounded-sm hover:bg-surface-container-low">
+                    Cancelar
+                </a>
+                <button type="submit"
+                        class="bg-primary text-on-primary px-4 py-1.5 text-xs rounded-sm hover:bg-primary/80">
+                    <span th:text="${vehicle.id == null} ? 'Guardar' : 'Actualizar'"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Quick-create modals (FUERA del form principal) -->
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-brand-modal', title='Nueva Marca', content='vehicle/quickBrandForm')}"></th:block>
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-model-modal', title='Nuevo Modelo', content='vehicle/quickModelForm')}"></th:block>
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-version-modal', title='Nueva Versión', content='vehicle/quickVersionForm')}"></th:block>
+
+    <script th:src="@{/js/modal-form.js}"></script>
+</div>

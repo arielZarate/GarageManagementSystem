@@ -1,0 +1,91 @@
+package com.arielzarate.GarageManagementSystem.infraestructure.adapters;
+
+import com.arielzarate.GarageManagementSystem.domain.model.Vehicle;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
+import com.arielzarate.GarageManagementSystem.domain.ports.out.VehicleProvider;
+import com.arielzarate.GarageManagementSystem.infraestructure.adapters.mappers.VehicleMapper;
+import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.*;
+import com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories.*;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+@Component
+@AllArgsConstructor
+public class VehicleAdapter implements VehicleProvider {
+
+    private final VehicleRepository repository;
+    private final BrandRepository brandRepository;
+    private final ModelRepository modelRepository;
+    private final VersionRepository versionRepository;
+    private final CustomerRepository customerRepository;
+    private final VehicleMapper mapper;
+
+    @Override
+    public Vehicle create(Vehicle vehicle) {
+        BrandEntity brand = brandRepository.findById(vehicle.getBrand().getId()).get();
+        ModelEntity model = modelRepository.findById(vehicle.getModel().getId()).get();
+        VersionEntity version = vehicle.getVersion() != null
+                ? versionRepository.findById(vehicle.getVersion().getId()).get()
+                : null;
+        CustomerEntity customer = vehicle.getCustomerId() != null
+                ? customerRepository.findById(vehicle.getCustomerId()).get()
+                : null;
+
+        var entity = mapper.toEntity(vehicle, brand, model, version, customer);
+        return mapper.toDomain(repository.save(entity));
+    }
+
+    @Override
+    public Optional<Vehicle> update(Vehicle vehicle) {
+        return repository.findById(vehicle.getId())
+                .map(existing -> {
+                    BrandEntity brand = brandRepository.findById(vehicle.getBrand().getId()).get();
+                    ModelEntity model = modelRepository.findById(vehicle.getModel().getId()).get();
+                   // vehicle.setVehicleType(model.getVehicleType());
+                    VersionEntity version = vehicle.getVersion() != null
+                            ? versionRepository.findById(vehicle.getVersion().getId()).get()
+                            : null;
+                    CustomerEntity customer = vehicle.getCustomerId() != null
+                            ? customerRepository.findById(vehicle.getCustomerId()).get()
+                            : null;
+
+                    var entity = mapper.toEntity(vehicle, brand, model, version, customer);
+                    entity.setId(existing.getId());
+                    return mapper.toDomain(repository.save(entity));
+                });
+    }
+
+    @Override
+    public Optional<Vehicle> findById(Long id) {
+        return repository.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public Page<Vehicle> searchByLicensePlateOrDNI(String query, Pageable pageable) {
+        return repository.searchByLicensePlateOrDNI(query,pageable)
+                .map(mapper::toDomain);
+    }
+
+
+    @Override
+    public Page<Vehicle> findByVehicleType(VehicleType type,Pageable pageable) {
+        return repository.findByVehicleType(type,pageable)
+                .map(mapper::toDomain);
+
+    }
+
+    @Override
+    public Page<Vehicle> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+}

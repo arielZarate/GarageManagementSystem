@@ -21,7 +21,6 @@ public class BrandController {
         model.addAttribute("pageTitle", "Marcas");
         model.addAttribute("content", "brand/list");
         model.addAttribute("brands", service.getBrands(query));
-        model.addAttribute("brandsWithModels", service.getBrandsWithModelsStatus(query));
         model.addAttribute("searchQuery", query);
         return "fragments/base";
     }

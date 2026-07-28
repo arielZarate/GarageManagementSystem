@@ -8,6 +8,8 @@ import com.arielzarate.GarageManagementSystem.domain.ports.out.CustomerProvider;
 import com.arielzarate.GarageManagementSystem.domain.services.CodeGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,10 +43,21 @@ public class CustomerUseCase implements CustomerService {
     @Override
     public List<Customer> getCustomers(String query) {
         if (query != null && !query.isBlank()) {
-            return provider.searchByDniOrCuit(query.trim());
+            return provider.searchByDniOrNameOrLastName(query.trim());
         }
 
         return provider.findAll();
+    }
+
+    /**
+     * list clients card
+     * */
+    @Override
+    public Page<Customer> getCustomersPage(String query, Pageable pageable) {
+        if (query != null && !query.isBlank()) {
+            return provider.searchByDniOrNameOrLastName(query.trim(), pageable);
+        }
+        return provider.findAll(pageable);
     }
 
     @Override

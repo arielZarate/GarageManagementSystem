@@ -17,6 +17,10 @@ public interface ModelRepository extends JpaRepository<ModelEntity, Long> {
 
     long countByBrandId(Long brandId);
 
-    @Query("SELECT m.brand.id, COUNT(m) FROM ModelEntity m GROUP BY m.brand.id")
+    @Query("""
+           SELECT m.brand.id, COUNT(m) 
+           FROM ModelEntity m 
+           GROUP BY m.brand.id 
+           """)
     List<Object[]> countModelsGroupedByBrand();
 }

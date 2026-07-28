@@ -1,24 +1,18 @@
-package com.arielzarate.GarageManagementSystem.domain.model;
+package com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle;
 
 import com.arielzarate.GarageManagementSystem.domain.model.enums.FuelType;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Vehicle {
-
+@Data
+public class VehicleRequest {
     private Long id;
     private String licensePlate;
-    private Brand brand;
-    private Model model;
+    private Long brandId;
+    private Long modelId;
+    private Long versionId;
     private Integer year;
-    private Version version;
+    private VehicleType vehicleType;
     private String color;
     private FuelType fuelType;
     private Integer kilometers;

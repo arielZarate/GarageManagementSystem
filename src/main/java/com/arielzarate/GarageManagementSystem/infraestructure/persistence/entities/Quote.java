@@ -28,7 +28,7 @@ public class Quote extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 
 
     @ManyToOne

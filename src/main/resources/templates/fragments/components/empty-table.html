@@ -1,0 +1,6 @@
+<th:block th:fragment="emptyRow(message,submessage)">
+    <td colspan="999" class="px-3 py-12 text-center text-on-surface/40">
+        <p class="text-sm mb-1" th:text="${message}"></p>
+        <p class="text-xs" th:if="${submessage != null}" th:text="${submessage}"></p>
+    </td>
+</th:block>

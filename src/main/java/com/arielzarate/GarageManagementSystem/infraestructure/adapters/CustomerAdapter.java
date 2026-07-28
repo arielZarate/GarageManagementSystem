@@ -6,6 +6,8 @@ import com.arielzarate.GarageManagementSystem.infraestructure.adapters.mappers.C
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.CustomerEntity;
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories.CustomerRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -49,11 +51,23 @@ public class CustomerAdapter implements CustomerProvider {
     }
 
     @Override
-    public List<Customer> searchByDniOrCuit(String query) {
-        return repository.searchByDniOrCuit(query)
+    public Page<Customer> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Customer> searchByDniOrNameOrLastName(String query) {
+        return repository.searchByDniOrNameOrLastName(query)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Page<Customer> searchByDniOrNameOrLastName(String query, Pageable pageable) {
+        return repository.searchByDniOrNameOrLastName(query, pageable)
+                .map(mapper::toDomain);
     }
 
     @Override

@@ -36,19 +36,15 @@ public class ModelController {
         List<Model> models = service.getModels(brandId, vehicleType);
         model.addAttribute("pageTitle", "Modelos");
         model.addAttribute("content", "model/list");
-        model.addAttribute("brand", brandService.getBrands(null).stream()
-                .filter(b -> b.getId().equals(brandId))
-                .findFirst()
-                .orElse(null));
+        model.addAttribute("brand", brandService.getBrandById(brandId));
         model.addAttribute("models", models);
         model.addAttribute("selectedType", vehicleType);
         model.addAttribute("vehicleTypes", VehicleType.values());
 
         List<Long> modelIds = models.stream().map(Model::getId).toList();
-        Map<Long, List<Version>> versionsByModel = modelIds.isEmpty()
+        model.addAttribute("versionsByModel", modelIds.isEmpty()
                 ? Map.of()
-                : versionService.getVersionsByModels(modelIds);
-        model.addAttribute("versionsByModel", versionsByModel);
+                : versionService.getVersionsByModels(modelIds));
         return "fragments/base";
     }
 

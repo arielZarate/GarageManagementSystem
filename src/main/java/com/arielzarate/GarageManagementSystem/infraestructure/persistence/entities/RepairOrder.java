@@ -26,7 +26,7 @@ public class RepairOrder extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
