@@ -1,8 +1,10 @@
 package com.arielzarate.GarageManagementSystem.interfaces.rest;
 
 import com.arielzarate.GarageManagementSystem.domain.model.Vehicle;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.FuelType;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.VehicleService;
+import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest;
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.VehicleDTOMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/vehicle")
 public class VehicleController {
 
-    private final VehicleService service;
+    private final VehicleService vehicleService;
     private final VehicleDTOMapper mapper;
 
     @GetMapping
@@ -26,7 +28,8 @@ public class VehicleController {
                               Model model) {
         model.addAttribute("pageTitle", "Vehículos");
         model.addAttribute("content", "vehicle/list");
-        model.addAttribute("vehicles", service.getVehicles(query, type).stream()
+        model.addAttribute("vehicles", vehicleService.getVehicles(query, type)
+                .stream()
                 .map(mapper::toResponse)
                 .toList());
         model.addAttribute("vehicleTypes", VehicleType.values());
@@ -39,7 +42,7 @@ public class VehicleController {
     public String getVehicleDetail(@PathVariable Long id, Model model) {
         model.addAttribute("pageTitle", "Detalle del Vehículo");
         model.addAttribute("content", "vehicle/detail");
-        model.addAttribute("vehicle", mapper.toResponse(service.getVehicleById(id)));
+        model.addAttribute("vehicle", mapper.toResponse(vehicleService.getVehicleById(id)));
         return "fragments/base";
     }
 
@@ -47,23 +50,45 @@ public class VehicleController {
     public String newVehicleForm(Model model) {
         model.addAttribute("pageTitle", "Nuevo Vehículo");
         model.addAttribute("content", "vehicle/form");
-        model.addAttribute("vehicle", new com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest());
+        model.addAttribute("vehicle", new VehicleRequest());
         model.addAttribute("vehicleTypes", VehicleType.values());
-        model.addAttribute("fuelTypes", com.arielzarate.GarageManagementSystem.domain.model.enums.FuelType.values());
+        model.addAttribute("fuelTypes", FuelType.values());
         return "fragments/base";
     }
 
+
+
+
+    /***
+     *
+     * Se debe limpiar estoo porque esta sobrecargado
+     * */
     @GetMapping("/edit/{id}")
     public String editVehicleForm(@PathVariable Long id, Model model) {
-        Vehicle vehicle = service.getVehicleById(id);
-        com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest request = new com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest();
+        Vehicle vehicle = vehicleService.getVehicleById(id);
+        VehicleRequest request = new VehicleRequest();
         request.setId(vehicle.getId());
         request.setLicensePlate(vehicle.getLicensePlate());
-        if (vehicle.getBrandName() != null) request.setBrandId(vehicle.getBrandName().getId());
-        if (vehicle.getModelName() != null) request.setModelId(vehicle.getModelName().getId());
-        if (vehicle.getVersionName() != null) request.setVersionId(vehicle.getVersionName().getId());
+        
+        Long brandId = null;
+        Long modelId = null;
+        
+        if (vehicle.getBrand() != null) {
+            brandId = vehicle.getBrand().getId();
+            request.setBrandId(brandId);
+        }
+        if (vehicle.getModel() != null) {
+            modelId = vehicle.getModel().getId();
+            request.setModelId(modelId);
+        }
+        if (vehicle.getVersion() != null) {
+            request.setVersionId(vehicle.getVersion().getId());
+        }
+        
         request.setYear(vehicle.getYear());
-        request.setVehicleType(vehicle.getVehicleType());
+        if (vehicle.getModel() != null) {
+            request.setVehicleType(vehicle.getModel().getVehicleType());
+        }
         request.setColor(vehicle.getColor());
         request.setFuelType(vehicle.getFuelType());
         request.setKilometers(vehicle.getKilometers());
@@ -75,23 +100,23 @@ public class VehicleController {
         model.addAttribute("content", "vehicle/form");
         model.addAttribute("vehicle", request);
         model.addAttribute("vehicleTypes", VehicleType.values());
-        model.addAttribute("fuelTypes", com.arielzarate.GarageManagementSystem.domain.model.enums.FuelType.values());
+        model.addAttribute("fuelTypes", FuelType.values());
         return "fragments/base";
     }
 
     @PostMapping
-    public String createVehicle(@ModelAttribute com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest request,
+    public String createVehicle(@ModelAttribute VehicleRequest request,
                                 RedirectAttributes redirectAttributes) {
-        service.addVehicle(mapper.toDomain(request));
+        vehicleService.addVehicle(mapper.toDomain(request));
         log.info("Vehicle created: {}", request.getLicensePlate());
         redirectAttributes.addFlashAttribute("successMsg", "Vehículo creado exitosamente");
         return "redirect:/vehicle";
     }
 
     @PostMapping("/update")
-    public String updateVehicle(@ModelAttribute com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.VehicleRequest request,
+    public String updateVehicle(@ModelAttribute VehicleRequest request,
                                 RedirectAttributes redirectAttributes) {
-        service.updateVehicle(mapper.toDomain(request));
+        vehicleService.updateVehicle(mapper.toDomain(request));
         log.info("Vehicle updated: {}", request.getId());
         redirectAttributes.addFlashAttribute("successMsg", "Vehículo actualizado exitosamente");
         return "redirect:/vehicle";
@@ -99,7 +124,7 @@ public class VehicleController {
 
     @PostMapping("/{id}/delete")
     public String deleteVehicle(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        service.deleteVehicle(id);
+        vehicleService.deleteVehicle(id);
         log.info("Vehicle deleted: {}", id);
         redirectAttributes.addFlashAttribute("infoMsg", "Vehículo eliminado exitosamente");
         return "redirect:/vehicle";

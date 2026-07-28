@@ -18,20 +18,19 @@ public class VehicleDTOMapper {
         if (request.getBrandId() != null) {
             Brand brand = new Brand();
             brand.setId(request.getBrandId());
-            vehicle.setBrandName(brand);
+            vehicle.setBrand(brand);
         }
         if (request.getModelId() != null) {
             Model model = new Model();
             model.setId(request.getModelId());
-            vehicle.setModelName(model);
+            vehicle.setModel(model);
         }
         if (request.getVersionId() != null) {
             Version version = new Version();
             version.setId(request.getVersionId());
-            vehicle.setVersionName(version);
+            vehicle.setVersion(version);
         }
         vehicle.setYear(request.getYear());
-        vehicle.setVehicleType(request.getVehicleType());
         vehicle.setColor(request.getColor());
         vehicle.setFuelType(request.getFuelType());
         vehicle.setKilometers(request.getKilometers());
@@ -45,11 +44,11 @@ public class VehicleDTOMapper {
         return VehicleResponse.builder()
                 .id(vehicle.getId())
                 .licensePlate(vehicle.getLicensePlate())
-                .brandName(vehicle.getBrandName() != null ? vehicle.getBrandName().getName() : null)
-                .modelName(vehicle.getModelName() != null ? vehicle.getModelName().getName() : null)
-                .versionName(vehicle.getVersionName() != null ? vehicle.getVersionName().getName() : null)
+                .brandName(vehicle.getBrand() != null ? vehicle.getBrand().getName() : null)
+                .modelName(vehicle.getModel() != null ? vehicle.getModel().getName() : null)
+                .versionName(vehicle.getVersion() != null ? vehicle.getVersion().getName() : null)
                 .year(vehicle.getYear())
-                .vehicleType(vehicle.getVehicleType() != null ? vehicle.getVehicleType().getDisplayName() : null)
+                .vehicleType(vehicle.getModel() != null ? vehicle.getModel().getVehicleType().getDisplayName() : null)
                 .color(vehicle.getColor())
                 .fuelType(vehicle.getFuelType() != null ? vehicle.getFuelType().getDisplayName() : null)
                 .kilometers(vehicle.getKilometers())

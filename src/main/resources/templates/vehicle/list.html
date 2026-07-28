@@ -9,10 +9,10 @@
     <!-- Body -->
     <div class="p-4">
 
-        <!-- Buscador -->
+        <!-- Search -->
         <th:block th:replace="~{fragments/components/search :: searchInput(baseUrl='/vehicle', placeholder='Buscar por patente...', query='searchQuery')}"></th:block>
 
-        <!-- Filtrar por tipo -->
+        <!-- Filter for type -->
         <div class="mb-4 flex items-center gap-2 flex-wrap">
             <label class="text-xs text-on-surface/60">Filtrar por tipo:</label>
             <a th:href="@{/vehicle}"
@@ -28,7 +28,7 @@
             </a>
         </div>
 
-        <!-- Tabla -->
+        <!-- Table -->
         <div class="border border-outline-variant overflow-x-auto overflow-y-auto max-h-[calc(100vh-340px)]">
             <table class="w-full text-xs text-on-surface">
                 <thead>
@@ -74,7 +74,7 @@
                         </div>
                     </td>
                 </tr>
-                <!-- Fila vacía -->
+                <!-- File empty -->
                 <tr th:if="${#lists.isEmpty(vehicles)}">
                     <td colspan="7" class="px-3 py-12 text-center text-on-surface/40">
                         <p class="text-sm mb-1">No hay vehículos registrados</p>

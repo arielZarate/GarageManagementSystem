@@ -17,11 +17,11 @@ public class VehicleMapper {
         Vehicle domain = new Vehicle();
         domain.setId(entity.getId());
         domain.setLicensePlate(entity.getLicensePlate());
-        domain.setBrandName(brandMapper.toDomain(entity.getBrand()));
-        domain.setModelName(modelMapper.toDomain(entity.getModel()));
-        domain.setVersionName(versionMapper.toDomain(entity.getVersion()));
+        domain.setBrand(brandMapper.toDomain(entity.getBrand()));
+        domain.setModel(modelMapper.toDomain(entity.getModel()));
+        domain.setVersion(versionMapper.toDomain(entity.getVersion()));
         domain.setYear(entity.getYear());
-        domain.setVehicleType(entity.getVehicleType());
+        //domain.setVehicleType(entity.getVehicleType());
         domain.setColor(entity.getColor());
         domain.setFuelType(entity.getFuelType());
         domain.setKilometers(entity.getKilometers());
@@ -46,7 +46,7 @@ public class VehicleMapper {
         entity.setModel(model);
         entity.setVersion(version);
         entity.setYear(domain.getYear());
-        entity.setVehicleType(domain.getVehicleType());
+      //  entity.setVehicleType(domain.getVehicleType());
         entity.setColor(domain.getColor());
         entity.setFuelType(domain.getFuelType());
         entity.setKilometers(domain.getKilometers());

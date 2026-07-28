@@ -15,11 +15,11 @@ public class Vehicle {
 
     private Long id;
     private String licensePlate;
-    private Brand brandName;
-    private Model modelName;
+    private Brand brand;
+    private Model model;
     private Integer year;
-    private Version versionName;
-    private VehicleType vehicleType;
+    private Version version;
+    //private VehicleType vehicleType;  // no se saca dejar comentado
     private String color;
     private FuelType fuelType;
     private Integer kilometers;

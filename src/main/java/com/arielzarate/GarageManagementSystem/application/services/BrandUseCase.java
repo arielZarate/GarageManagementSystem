@@ -1,18 +1,20 @@
 package com.arielzarate.GarageManagementSystem.application.services;
 
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationError;
+import com.arielzarate.GarageManagementSystem.application.errors.ApplicationErrorException;
 import com.arielzarate.GarageManagementSystem.domain.model.Brand;
+import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
 import com.arielzarate.GarageManagementSystem.domain.ports.in.BrandService;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.BrandProvider;
 import com.arielzarate.GarageManagementSystem.domain.ports.out.ModelProvider;
 import com.arielzarate.GarageManagementSystem.domain.services.StringCapitalize;
-import com.arielzarate.GarageManagementSystem.application.errors.ApplicationErrorException;
-import com.arielzarate.GarageManagementSystem.application.errors.ApplicationError;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,18 @@ public class BrandUseCase implements BrandService {
         } catch (DataIntegrityViolationException e) {
             throw new ApplicationErrorException(ApplicationError.conflict("Ya existe una marca con el nombre: " + name));
         }
+    }
+
+
+    /**
+     * return brand for VehicleType
+     * **/
+    @Override
+    public List<Brand> getBrandsByVehicleType(VehicleType type) {
+        Map<Long, Brand> unique = new LinkedHashMap<>();
+        modelProvider.findByVehicleType(type)
+                .forEach(m -> unique.putIfAbsent(m.getBrand().getId(), m.getBrand()));
+        return List.copyOf(unique.values());
     }
 
     @Override

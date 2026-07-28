@@ -27,15 +27,15 @@ public class VehicleUseCase implements VehicleService {
         if (vehicle.getLicensePlate() == null || vehicle.getLicensePlate().isBlank()) {
             throw new ApplicationErrorException(ApplicationError.badRequest("La patente no puede estar vacía."));
         }
-        if (vehicle.getBrandName() == null || vehicle.getBrandName().getId() == null) {
+        if (vehicle.getBrand() == null || vehicle.getBrand().getId() == null) {
             throw new ApplicationErrorException(ApplicationError.badRequest("Debe seleccionar una marca."));
         }
-        if (vehicle.getModelName() == null || vehicle.getModelName().getId() == null) {
+        if (vehicle.getModel() == null || vehicle.getModel().getId() == null) {
             throw new ApplicationErrorException(ApplicationError.badRequest("Debe seleccionar un modelo."));
         }
-        if (vehicle.getYear() == null) {
-            throw new ApplicationErrorException(ApplicationError.badRequest("El año no puede estar vacío."));
-        }
+//        if (vehicle.getYear() == null) {
+//            throw new ApplicationErrorException(ApplicationError.badRequest("El año no puede estar vacío."));
+//        }
 
         try {
             return provider.create(vehicle);
@@ -58,10 +58,10 @@ public class VehicleUseCase implements VehicleService {
         if (vehicle.getLicensePlate() == null || vehicle.getLicensePlate().isBlank()) {
             throw new ApplicationErrorException(ApplicationError.badRequest("La patente no puede estar vacía."));
         }
-        if (vehicle.getBrandName() == null || vehicle.getBrandName().getId() == null) {
+        if (vehicle.getBrand() == null || vehicle.getBrand().getId() == null) {
             throw new ApplicationErrorException(ApplicationError.badRequest("Debe seleccionar una marca."));
         }
-        if (vehicle.getModelName() == null || vehicle.getModelName().getId() == null) {
+        if (vehicle.getModel() == null || vehicle.getModel().getId() == null) {
             throw new ApplicationErrorException(ApplicationError.badRequest("Debe seleccionar un modelo."));
         }
 

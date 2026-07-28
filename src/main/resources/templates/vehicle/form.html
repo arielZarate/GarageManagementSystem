@@ -22,57 +22,70 @@
               class="space-y-4 max-w-2xl">
 
             <input type="hidden" th:field="*{id}">
+            <!--new  hidden-->
+            <input type="hidden" id="vehicleType" name="vehicleType" th:value="*{vehicleType}">
+            <input type="hidden" id="initialBrandId" th:value="*{brandId}">
+            <input type="hidden" id="initialModelId" th:value="*{modelId}">
+            <input type="hidden" id="initialVersionId" th:value="*{versionId}">
 
-            <!-- Patente -->
-            <div>
-                <label class="block text-xs text-on-surface/60 mb-1">Patente *</label>
-                <input type="text" th:field="*{licensePlate}"
-                       class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
-                       placeholder="Ej: ABC123" required>
-            </div>
-
-            <!-- Marca, Modelo, Versión -->
-            <div class="grid grid-cols-3 gap-3">
-                <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Marca *</label>
-                    <select th:field="*{brandId}"
-                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
-                        <option value="">Seleccionar...</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Modelo *</label>
-                    <select th:field="*{modelId}"
-                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
-                        <option value="">Seleccionar...</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Versión</label>
-                    <select th:field="*{versionId}"
-                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
-                        <option value="">Seleccionar...</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Año y Tipo -->
+            <!-- Patente y Tipo (filtro) -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Año *</label>
-                    <input type="number" th:field="*{year}"
+                    <label class="block text-xs text-on-surface/60 mb-1">Patente *</label>
+                    <input type="text" th:field="*{licensePlate}"
                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
-                           placeholder="Ej: 2020" required>
+                           placeholder="Ej: ABC123">
                 </div>
                 <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Tipo de vehículo</label>
-                    <select th:field="*{vehicleType}"
+                    <label class="block text-xs text-on-surface/60 mb-1">Tipo *</label>
+                    <select id="typeFilter"
                             class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded">
                         <option value="">Seleccionar...</option>
                         <option th:each="vt : ${vehicleTypes}"
                                 th:value="${vt}"
                                 th:text="${vt.displayName}"></option>
                     </select>
+                </div>
+            </div>
+
+            <!-- Marca, Modelo, Versión (cascada) -->
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Marca *</label>
+                    <select th:field="*{brandId}"
+                            id="brandId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Modelo *</label>
+                    <select th:field="*{modelId}"
+                            id="modelId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Versión</label>
+                    <select th:field="*{versionId}"
+                            id="versionId"
+                            class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                            disabled>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Año -->
+            <div class="grid grid-cols-1 gap-3">
+                <div>
+                    <label class="block text-xs text-on-surface/60 mb-1">Año</label>
+                    <input type="number" th:field="*{year}"
+                           class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
+                           placeholder="Ej: 2020">
                 </div>
             </div>
 
@@ -118,7 +131,7 @@
                 </div>
             </div>
 
-            <!-- Cliente (autocomplete) -->
+            <!-- Client (autocomplete) -->
             <div>
                 <label class="block text-xs text-on-surface/60 mb-1">Cliente</label>
                 <input type="hidden" th:field="*{customerId}" id="customerId">
@@ -134,65 +147,6 @@
 
             <input type="hidden" id="customerSearchUrl" th:value="@{/customer/search}">
 
-            <script>
-                const customerInput = document.getElementById('customerSearch');
-                const customerResults = document.getElementById('customerResults');
-                const customerIdInput = document.getElementById('customerId');
-                const customerSearchUrl = document.getElementById('customerSearchUrl').value;
-                let selectedCustomerId = customerIdInput.value;
-                let searchTimeout = null;
-
-                customerInput.addEventListener('input', function() {
-                    const q = this.value.trim();
-                    if (q.length < 2) {
-                        customerResults.classList.add('hidden');
-                        return;
-                    }
-
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        fetch(customerSearchUrl + '?q=' + encodeURIComponent(q))
-                            .then(r => r.json())
-                            .then(data => {
-                                customerResults.innerHTML = '';
-                                if (data.length === 0) {
-                                    customerResults.innerHTML = '<div class="px-2 py-2 text-xs text-on-surface/40">Sin resultados</div>';
-                                } else {
-                                    data.forEach(c => {
-                                        const div = document.createElement('div');
-                                        div.className = 'px-2 py-1.5 text-xs text-on-surface hover:bg-surface-container-low cursor-pointer border-b border-outline-variant/30';
-                                        div.textContent = c.label;
-                                        div.dataset.id = c.id;
-                                        div.addEventListener('click', function() {
-                                            customerInput.value = this.textContent;
-                                            selectedCustomerId = this.dataset.id;
-                                            customerIdInput.value = this.dataset.id;
-                                            customerResults.classList.add('hidden');
-                                        });
-                                        customerResults.appendChild(div);
-                                    });
-                                }
-                                customerResults.classList.remove('hidden');
-                            });
-                    }, 300);
-                });
-
-                // Cerrar al hacer clic fuera
-                document.addEventListener('click', function(e) {
-                    if (!e.target.closest('#customerSearch') && !e.target.closest('#customerResults')) {
-                        customerResults.classList.add('hidden');
-                    }
-                });
-
-                // Si perdió el foco sin seleccionar, limpiar
-                customerInput.addEventListener('blur', function() {
-                    setTimeout(() => {
-                        if (!customerIdInput.value) {
-                            customerInput.value = '';
-                        }
-                    }, 200);
-                });
-            </script>
 
             <!-- Botones -->
             <div class="flex items-center gap-2 justify-end pt-4 border-t border-outline-variant">
@@ -207,5 +161,4 @@
             </div>
         </form>
     </div>
-
 </div>

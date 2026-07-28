@@ -25,10 +25,11 @@ public class VehicleAdapter implements VehicleProvider {
 
     @Override
     public Vehicle create(Vehicle vehicle) {
-        BrandEntity brand = brandRepository.findById(vehicle.getBrandName().getId()).get();
-        ModelEntity model = modelRepository.findById(vehicle.getModelName().getId()).get();
-        VersionEntity version = vehicle.getVersionName() != null
-                ? versionRepository.findById(vehicle.getVersionName().getId()).get()
+        BrandEntity brand = brandRepository.findById(vehicle.getBrand().getId()).get();
+        ModelEntity model = modelRepository.findById(vehicle.getModel().getId()).get();
+        //vehicle.setVehicleType(model.getVehicleType());
+        VersionEntity version = vehicle.getVersion() != null
+                ? versionRepository.findById(vehicle.getVersion().getId()).get()
                 : null;
         CustomerEntity customer = vehicle.getCustomerId() != null
                 ? customerRepository.findById(vehicle.getCustomerId()).get()
@@ -42,10 +43,11 @@ public class VehicleAdapter implements VehicleProvider {
     public Optional<Vehicle> update(Vehicle vehicle) {
         return repository.findById(vehicle.getId())
                 .map(existing -> {
-                    BrandEntity brand = brandRepository.findById(vehicle.getBrandName().getId()).get();
-                    ModelEntity model = modelRepository.findById(vehicle.getModelName().getId()).get();
-                    VersionEntity version = vehicle.getVersionName() != null
-                            ? versionRepository.findById(vehicle.getVersionName().getId()).get()
+                    BrandEntity brand = brandRepository.findById(vehicle.getBrand().getId()).get();
+                    ModelEntity model = modelRepository.findById(vehicle.getModel().getId()).get();
+                   // vehicle.setVehicleType(model.getVehicleType());
+                    VersionEntity version = vehicle.getVersion() != null
+                            ? versionRepository.findById(vehicle.getVersion().getId()).get()
                             : null;
                     CustomerEntity customer = vehicle.getCustomerId() != null
                             ? customerRepository.findById(vehicle.getCustomerId()).get()

@@ -6,7 +6,15 @@
     <title th:text="${pageTitle}">Gestion de Taller</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
+
+
+
 <body class="font-sans bg-surface min-h-screen flex flex-col">
+
+<script>
+    console.log("BASE");
+</script>
+
     <div th:replace="~{fragments/components/navbar :: navbar}"></div>
     <div th:replace="~{fragments/components/sidebar :: sidebar}"></div>
     <div th:replace="~{fragments/components/overlay :: overlay}"></div>
