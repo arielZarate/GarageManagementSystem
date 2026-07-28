@@ -10,43 +10,38 @@ import org.springframework.data.repository.query.Param;
 
 public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
 
-
-    /**
-     LEFT JOIN FETCH v.brand b
-     LEFT JOIN FETCH v.model m
-     LEFT JOIN FETCH v.version ve
-     * */
+    @Override
+    @Query("""
+        SELECT DISTINCT v FROM VehicleEntity v
+        LEFT JOIN FETCH v.brand
+        LEFT JOIN FETCH v.model
+        LEFT JOIN FETCH v.version
+        LEFT JOIN FETCH v.customer
+    """)
+    Page<VehicleEntity> findAll(Pageable pageable);
 
     @Query("""
         SELECT DISTINCT v 
         FROM VehicleEntity v
-        LEFT JOIN v.customer c
+        LEFT JOIN FETCH v.brand
+        LEFT JOIN FETCH v.model
+        LEFT JOIN FETCH v.version
+        LEFT JOIN FETCH v.customer c
         WHERE v.licensePlate LIKE CONCAT('%', :query, '%')
-        OR  c.dni LIKE CONCAT('%', :query , '%')
-        OR c.firstName LIKE CONCAT('%', :query, '%')                                                                                                                                      \s
-        OR c.lastName LIKE CONCAT('%', :query, '%')     
+        OR c.dni LIKE CONCAT('%', :query, '%')
+        OR c.firstName LIKE CONCAT('%', :query, '%')
+        OR c.lastName LIKE CONCAT('%', :query, '%')
     """)
     Page<VehicleEntity> searchByLicensePlateOrDNI(@Param("query") String query, Pageable pageable);
 
-
-    /**
-     @Query("""
-     SELECT DISTINCT v FROM VehicleEntity v
-     LEFT JOIN FETCH v.brand b
-     LEFT JOIN FETCH v.model m
-     LEFT JOIN FETCH v.version ve
-     LEFT JOIN FETCH v.customer c
-     JOIN v.model mo
-     WHERE mo.vehicleType = :type
-     """)
-     * */
-
     @Query("""
-          SELECT DISTINCT v FROM VehicleEntity v
-          JOIN  v.model m 
-          WHERE m.vehicleType = :type         
-                            
-         """)
-    Page <VehicleEntity> findByVehicleType(@Param("type") VehicleType type, Pageable pageable);
+        SELECT DISTINCT v FROM VehicleEntity v
+        LEFT JOIN FETCH v.brand
+        LEFT JOIN FETCH v.model m
+        LEFT JOIN FETCH v.version
+        LEFT JOIN FETCH v.customer
+        WHERE m.vehicleType = :type
+    """)
+    Page<VehicleEntity> findByVehicleType(@Param("type") VehicleType type, Pageable pageable);
 
 }

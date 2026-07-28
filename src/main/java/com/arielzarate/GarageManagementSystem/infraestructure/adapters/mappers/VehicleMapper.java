@@ -17,9 +17,9 @@ public class VehicleMapper {
         Vehicle domain = new Vehicle();
         domain.setId(entity.getId());
         domain.setLicensePlate(entity.getLicensePlate());
-        domain.setBrand(brandMapper.toDomain(entity.getBrand()));
-        domain.setModel(modelMapper.toDomain(entity.getModel()));
-        domain.setVersion(versionMapper.toDomain(entity.getVersion()));
+        domain.setBrand(entity.getBrand() != null ? brandMapper.toDomain(entity.getBrand()) : null);
+        domain.setModel(entity.getModel() != null ? modelMapper.toDomain(entity.getModel()) : null);
+        domain.setVersion(entity.getVersion() != null ? versionMapper.toDomain(entity.getVersion()) : null);
         domain.setYear(entity.getYear());
         //domain.setVehicleType(entity.getVehicleType());
         domain.setColor(entity.getColor());

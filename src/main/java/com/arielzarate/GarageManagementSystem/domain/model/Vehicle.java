@@ -19,7 +19,6 @@ public class Vehicle {
     private Model model;
     private Integer year;
     private Version version;
-    //private VehicleType vehicleType;  // no se saca dejar comentado
     private String color;
     private FuelType fuelType;
     private Integer kilometers;

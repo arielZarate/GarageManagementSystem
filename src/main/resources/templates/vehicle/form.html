@@ -51,7 +51,12 @@
             <!-- Marca, Modelo, Versión (cascada) -->
             <div class="grid grid-cols-3 gap-3">
                 <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Marca *</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Marca *</label>
+                        <button type="button" id="quickBrandBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear marca nueva">+</button>
+                    </div>
                     <select th:field="*{brandId}"
                             id="brandId"
                             class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
@@ -60,7 +65,12 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Modelo *</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Modelo *</label>
+                        <button type="button" id="quickModelBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear modelo nuevo">+</button>
+                    </div>
                     <select th:field="*{modelId}"
                             id="modelId"
                             class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
@@ -69,7 +79,12 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-on-surface/60 mb-1">Versión</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-on-surface/60">Versión</label>
+                        <button type="button" id="quickVersionBtn"
+                                class="w-4 h-4 flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs leading-none hover:bg-primary/20 transition disabled:opacity-30"
+                                disabled title="Crear versión nueva">+</button>
+                    </div>
                     <select th:field="*{versionId}"
                             id="versionId"
                             class="w-full border border-outline-variant bg-surface-container-low text-on-surface px-2 py-1.5 text-xs focus:border-on-surface focus:outline-none rounded"
@@ -147,7 +162,6 @@
 
             <input type="hidden" id="customerSearchUrl" th:value="@{/customer/search}">
 
-
             <!-- Botones -->
             <div class="flex items-center gap-2 justify-end pt-4 border-t border-outline-variant">
                 <a th:href="@{/vehicle}"
@@ -161,4 +175,11 @@
             </div>
         </form>
     </div>
+
+    <!-- Quick-create modals (FUERA del form principal) -->
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-brand-modal', title='Nueva Marca', content='vehicle/quickBrandForm')}"></th:block>
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-model-modal', title='Nuevo Modelo', content='vehicle/quickModelForm')}"></th:block>
+    <th:block th:replace="~{fragments/components/UI/modal :: modal(modalId='quick-version-modal', title='Nueva Versión', content='vehicle/quickVersionForm')}"></th:block>
+
+    <script th:src="@{/js/modal-form.js}"></script>
 </div>

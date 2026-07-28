@@ -149,9 +149,170 @@ if (!typeFilter || !brandSelect || !modelSelect || !versionSelect || !vehicleTyp
                             });
                     });
             })
-            .catch(function (err) { console.error('Error restaurando modo edición:', err); });
+            .catch(function (err) { console.error('Error restaurando modo edición:', err); })
+            .finally(function () {
+                if (typeof updateQuickButtons === 'function') updateQuickButtons();
+            });
     })();
 
+}
+
+// ---------------------------------------------------------------------------
+// Quick-create: modales inline para marca, modelo, versión
+// ---------------------------------------------------------------------------
+var quickBrandBtn = document.getElementById('quickBrandBtn');
+var quickModelBtn = document.getElementById('quickModelBtn');
+var quickVersionBtn = document.getElementById('quickVersionBtn');
+
+if (typeFilter && quickBrandBtn && quickModelBtn && quickVersionBtn) {
+
+    function updateQuickButtons() {
+        var type = typeFilter.value;
+        var brand = brandSelect.value;
+        var model = modelSelect.value;
+        quickBrandBtn.disabled = !type;
+        quickModelBtn.disabled = !type || !brand;
+        quickVersionBtn.disabled = !type || !brand || !model;
+    }
+
+    // Sync button state on cascade changes
+    typeFilter.addEventListener('change', updateQuickButtons);
+    brandSelect.addEventListener('change', updateQuickButtons);
+    modelSelect.addEventListener('change', updateQuickButtons);
+
+    // Open modals
+    quickBrandBtn.addEventListener('click', function () { openModal('quick-brand-modal'); });
+    quickModelBtn.addEventListener('click', function () { openModal('quick-model-modal'); });
+    quickVersionBtn.addEventListener('click', function () { openModal('quick-version-modal'); });
+
+    // ── Quick Brand ──────────────────────────────────────────
+    document.getElementById('quickBrandForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('quickBrandName').value.trim();
+        if (!name) return;
+
+        var btn = document.getElementById('quickBrandSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+
+        fetch('/api/vehicle/brand/quick', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name })
+        })
+        .then(function (r) {
+            if (!r.ok) throw new Error('Error HTTP: ' + r.status);
+            return r.json();
+        })
+        .then(function (brand) {
+            // Add option and select it
+            var opt = document.createElement('option');
+            opt.value = brand.id;
+            opt.textContent = brand.name;
+            brandSelect.appendChild(opt);
+            brandSelect.value = brand.id;
+            // Trigger model load
+            brandSelect.dispatchEvent(new Event('change'));
+            closeModal('quick-brand-modal');
+            document.getElementById('quickBrandForm').reset();
+        })
+        .catch(function (err) {
+            console.error('Error creando marca:', err);
+            alert('Error al crear la marca');
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Guardar';
+        });
+    });
+
+    // ── Quick Model ──────────────────────────────────────────
+    document.getElementById('quickModelForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('quickModelName').value.trim();
+        if (!name) return;
+
+        var btn = document.getElementById('quickModelSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+
+        fetch('/api/vehicle/model/quick', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                brandId: parseInt(brandSelect.value),
+                vehicleType: typeFilter.value
+            })
+        })
+        .then(function (r) {
+            if (!r.ok) throw new Error('Error HTTP: ' + r.status);
+            return r.json();
+        })
+        .then(function (model) {
+            var opt = document.createElement('option');
+            opt.value = model.id;
+            opt.textContent = model.name;
+            modelSelect.appendChild(opt);
+            modelSelect.value = model.id;
+            modelSelect.dispatchEvent(new Event('change'));
+            closeModal('quick-model-modal');
+            document.getElementById('quickModelForm').reset();
+        })
+        .catch(function (err) {
+            console.error('Error creando modelo:', err);
+            alert('Error al crear el modelo');
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Guardar';
+        });
+    });
+
+    // ── Quick Version ────────────────────────────────────────
+    document.getElementById('quickVersionForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('quickVersionName').value.trim();
+        if (!name) return;
+
+        var btn = document.getElementById('quickVersionSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+
+        fetch('/api/vehicle/version/quick', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                modelId: parseInt(modelSelect.value)
+            })
+        })
+        .then(function (r) {
+            if (!r.ok) throw new Error('Error HTTP: ' + r.status);
+            return r.json();
+        })
+        .then(function (version) {
+            var opt = document.createElement('option');
+            opt.value = version.id;
+            opt.textContent = version.name;
+            versionSelect.appendChild(opt);
+            versionSelect.value = version.id;
+            // No need to trigger change — last level
+            closeModal('quick-version-modal');
+            document.getElementById('quickVersionForm').reset();
+        })
+        .catch(function (err) {
+            console.error('Error creando versión:', err);
+            alert('Error al crear la versión');
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Guardar';
+        });
+    });
+
+    // Initial button state (create mode: all disabled until type selected)
+    updateQuickButtons();
 }
 
 // ---------------------------------------------------------------------------
