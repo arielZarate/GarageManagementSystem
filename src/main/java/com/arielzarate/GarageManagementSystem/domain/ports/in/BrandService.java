@@ -14,7 +14,7 @@ public interface BrandService {
 
     List<Brand> getBrandsByVehicleType(VehicleType type);
 
-    Map<Long, Boolean> getBrandsWithModelsStatus(String query);
+    Brand getBrandById(Long id);
 
     Brand updateBrand(Long id, String name);
 

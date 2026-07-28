@@ -9,10 +9,10 @@ import com.arielzarate.GarageManagementSystem.domain.ports.out.VehicleProvider;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -84,22 +84,14 @@ public class VehicleUseCase implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Vehicle> getVehicles(String query, VehicleType type) {
+    public Page<Vehicle> getVehicles(String query, VehicleType type , Pageable pageable) {
         if (type != null) {
-            return provider.findByVehicleType(type);
+            return provider.findByVehicleType(type,pageable);
         }
         if (query != null && !query.isBlank()) {
-            // buscamos por patente
-            var byPlate = provider.findByLicensePlate(query.trim());
-            return byPlate.map(List::of).orElseGet(List::of);
+            return provider.searchByLicensePlateOrDNI(query.trim().toLowerCase(),pageable);
         }
-        return provider.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Vehicle> getVehiclesByCustomer(Long customerId) {
-        return provider.findByCustomerId(customerId);
+        return provider.findAll(pageable);
     }
 
     @Override

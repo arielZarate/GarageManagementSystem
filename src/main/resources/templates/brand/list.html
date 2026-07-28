@@ -32,8 +32,8 @@
                 <tr th:each="b : ${brands}"
                     class="hover:bg-surface-container-low even:bg-surface-container-low/50 border-b border-outline-variant">
                     <td class="px-2 py-2 flex items-center gap-1.5">
-                        <span th:if="${brandsWithModels.get(b.id)}" class="inline-block w-2 h-2 bg-green-500 rounded-full shrink-0" title="Tiene modelos"></span>
-                        <span th:unless="${brandsWithModels.get(b.id)}" class="inline-block w-2 h-2 bg-gray-300 rounded-full shrink-0" title="Sin modelos"></span>
+                        <span th:if="${b.hasModels}" class="inline-block w-2 h-2 bg-green-500 rounded-full shrink-0" title="Tiene modelos"></span>
+                        <span th:unless="${b.hasModels}" class="inline-block w-2 h-2 bg-gray-300 rounded-full shrink-0" title="Sin modelos"></span>
                         <span th:text="${#strings.toUpperCase(b.name)}"></span>
                     </td>
                     <td class="px-2 py-2 text-center">
@@ -57,10 +57,7 @@
                 </tr>
                 <!-- Fila vacía -->
                 <tr th:if="${#lists.isEmpty(brands)}">
-                    <td colspan="3" class="px-3 py-12 text-center text-on-surface/40">
-                        <p class="text-sm mb-1">No hay marcas registradas</p>
-                        <p class="text-xs">Creá la primera marca</p>
-                    </td>
+                    <th:block th:replace="~{fragments/components/empty-table :: emptyRow(message='No hay marcas registradas', submessage='Creá la primera marca')}"></th:block>
                 </tr>
                 </tbody>
             </table>

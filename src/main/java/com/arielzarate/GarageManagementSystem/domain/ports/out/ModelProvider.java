@@ -25,7 +25,5 @@ public interface ModelProvider {
 
     long countByBrandId(Long brandId);
 
-    Map<Long, Long> countModelsGroupedByBrand();
-
     void deleteById(Long id);
 }

@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "vehicle")
-public class Vehicle extends BaseEntity {
+public class VehicleEntity extends BaseEntity {
 
     @Column(unique = true, nullable = false)
     private String licensePlate;

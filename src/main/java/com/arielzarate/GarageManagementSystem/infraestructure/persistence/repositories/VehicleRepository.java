@@ -1,18 +1,52 @@
 package com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories;
 
-import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
+import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.VehicleEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-import java.util.Optional;
+public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
 
-public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    Optional<Vehicle> findByLicensePlate(String licensePlate);
+    /**
+     LEFT JOIN FETCH v.brand b
+     LEFT JOIN FETCH v.model m
+     LEFT JOIN FETCH v.version ve
+     * */
 
-    List<Vehicle> findByCustomerId(Long customerId);
+    @Query("""
+        SELECT DISTINCT v 
+        FROM VehicleEntity v
+        LEFT JOIN v.customer c
+        WHERE v.licensePlate LIKE CONCAT('%', :query, '%')
+        OR  c.dni LIKE CONCAT('%', :query , '%')
+        OR c.firstName LIKE CONCAT('%', :query, '%')                                                                                                                                      \s
+        OR c.lastName LIKE CONCAT('%', :query, '%')     
+    """)
+    Page<VehicleEntity> searchByLicensePlateOrDNI(@Param("query") String query, Pageable pageable);
 
-    List<Vehicle> findByVehicleType(VehicleType type);
+
+    /**
+     @Query("""
+     SELECT DISTINCT v FROM VehicleEntity v
+     LEFT JOIN FETCH v.brand b
+     LEFT JOIN FETCH v.model m
+     LEFT JOIN FETCH v.version ve
+     LEFT JOIN FETCH v.customer c
+     JOIN v.model mo
+     WHERE mo.vehicleType = :type
+     """)
+     * */
+
+    @Query("""
+          SELECT DISTINCT v FROM VehicleEntity v
+          JOIN  v.model m 
+          WHERE m.vehicleType = :type         
+                            
+         """)
+    Page <VehicleEntity> findByVehicleType(@Param("type") VehicleType type, Pageable pageable);
 
 }

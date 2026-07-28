@@ -46,10 +46,7 @@
                     </tr>
                     <!-- Fila vacía -->
                     <tr th:if="${#lists.isEmpty(employees)}">
-                        <td colspan="8" class="px-3 py-12 text-center text-on-surface/40">
-                            <p class="text-sm mb-1">No hay empleados registrados</p>
-                            <p class="text-xs">Creá el primer empleado</p>
-                        </td>
+                        <th:block th:replace="~{fragments/components/empty-table :: emptyRow(message='No hay empleados registrados', submessage='Creá el primer empleado')}"></th:block>
                     </tr>
                 </tbody>
             </table>

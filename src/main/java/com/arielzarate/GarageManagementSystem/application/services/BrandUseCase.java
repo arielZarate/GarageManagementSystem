@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +50,18 @@ public class BrandUseCase implements BrandService {
     }
 
     @Override
+    public Brand getBrandById(Long id) {
+        return provider.findById(id)
+                .orElseThrow(() -> new ApplicationErrorException(
+                        ApplicationError.notFoundError("Marca no encontrada con el id: " + id)));
+    }
+
+
+    /***
+     *
+     * list brand with filter
+     * */
+    @Override
     public List<Brand> getBrands(String query) {
         List<Brand> brands;
         if (query != null && !query.isBlank()) {
@@ -61,16 +72,7 @@ public class BrandUseCase implements BrandService {
         return brands;
     }
 
-    @Override
-    public Map<Long, Boolean> getBrandsWithModelsStatus(String query) {
-        List<Brand> brands = getBrands(query);
-        Map<Long, Long> countsByBrand = modelProvider.countModelsGroupedByBrand();
-        Map<Long, Boolean> result = new HashMap<>();
-        for (var b : brands) {
-            result.put(b.getId(), countsByBrand.getOrDefault(b.getId(), 0L) > 0);
-        }
-        return result;
-    }
+
 
     @Override
     public Brand updateBrand(Long id, String name) {
@@ -87,6 +89,6 @@ public class BrandUseCase implements BrandService {
         provider.findById(id)
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationError.notFoundError("Marca no encontrada con el id " + id)));
         provider.deleteById(id);
-        log.info("Marca eliminada con el id: {}", id);
+        log.info("Brand deleted with id: {}", id);
     }
 }

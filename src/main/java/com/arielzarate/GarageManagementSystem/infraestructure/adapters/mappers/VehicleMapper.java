@@ -13,7 +13,7 @@ public class VehicleMapper {
     private final ModelMapper modelMapper;
     private final VersionMapper versionMapper;
 
-    public Vehicle toDomain(com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle entity) {
+    public Vehicle toDomain(VehicleEntity entity) {
         Vehicle domain = new Vehicle();
         domain.setId(entity.getId());
         domain.setLicensePlate(entity.getLicensePlate());
@@ -31,15 +31,15 @@ public class VehicleMapper {
         return domain;
     }
 
-    public com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle toEntity(
+    public VehicleEntity toEntity(
             Vehicle domain,
             BrandEntity brand,
             ModelEntity model,
             VersionEntity version,
             CustomerEntity customer
     ) {
-        com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle entity =
-                new com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.Vehicle();
+        VehicleEntity entity =
+                new VehicleEntity();
         entity.setId(domain.getId());
         entity.setLicensePlate(domain.getLicensePlate());
         entity.setBrand(brand);

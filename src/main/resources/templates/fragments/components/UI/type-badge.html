@@ -1,0 +1,10 @@
+<th:block th:fragment="typeBadge(type)">
+    <th:block th:switch="${type}">
+        <span th:case="'Auto'" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-blue-100 text-blue-700" th:text="${type}"></span>
+        <span th:case="'Moto'" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-amber-100 text-amber-700" th:text="${type}"></span>
+        <span th:case="'Camioneta'" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-green-100 text-green-700" th:text="${type}"></span>
+        <span th:case="'Camión'" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-purple-100 text-purple-700" th:text="${type}"></span>
+        <span th:case="'Furgón'" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-cyan-100 text-cyan-700" th:text="${type}"></span>
+        <span th:case="*" class="rounded-full px-2 py-0.5 text-xs whitespace-nowrap bg-gray-100 text-gray-700" th:text="${type}"></span>
+    </th:block>
+</th:block>

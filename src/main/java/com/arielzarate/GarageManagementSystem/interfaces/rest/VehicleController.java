@@ -8,6 +8,10 @@ import com.arielzarate.GarageManagementSystem.interfaces.rest.dto.vehicle.Vehicl
 import com.arielzarate.GarageManagementSystem.interfaces.rest.mappers.VehicleDTOMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +29,16 @@ public class VehicleController {
     @GetMapping
     public String getVehicles(@RequestParam(value = "q", required = false) String query,
                               @RequestParam(value = "type", required = false) VehicleType type,
+                              @RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "20") int size,
                               Model model) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Vehicle> vehiclePage = vehicleService.getVehicles(query, type, pageRequest);
         model.addAttribute("pageTitle", "Vehículos");
         model.addAttribute("content", "vehicle/list");
-        model.addAttribute("vehicles", vehicleService.getVehicles(query, type)
-                .stream()
-                .map(mapper::toResponse)
-                .toList());
+        model.addAttribute("vehicles", vehiclePage.stream().map(mapper::toResponse).toList());
+        model.addAttribute("currentPage", vehiclePage.getNumber());
+        model.addAttribute("totalPages", vehiclePage.getTotalPages());
         model.addAttribute("vehicleTypes", VehicleType.values());
         model.addAttribute("selectedType", type);
         model.addAttribute("searchQuery", query);
@@ -55,9 +62,6 @@ public class VehicleController {
         model.addAttribute("fuelTypes", FuelType.values());
         return "fragments/base";
     }
-
-
-
 
     /***
      *
@@ -108,7 +112,7 @@ public class VehicleController {
     public String createVehicle(@ModelAttribute VehicleRequest request,
                                 RedirectAttributes redirectAttributes) {
         vehicleService.addVehicle(mapper.toDomain(request));
-        log.info("Vehicle created: {}", request.getLicensePlate());
+        log.info("Vehicle created with licence plate: {}", request.getLicensePlate());
         redirectAttributes.addFlashAttribute("successMsg", "Vehículo creado exitosamente");
         return "redirect:/vehicle";
     }

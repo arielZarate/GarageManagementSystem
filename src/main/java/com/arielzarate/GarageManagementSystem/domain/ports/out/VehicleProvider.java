@@ -2,8 +2,9 @@ package com.arielzarate.GarageManagementSystem.domain.ports.out;
 
 import com.arielzarate.GarageManagementSystem.domain.model.Vehicle;
 import com.arielzarate.GarageManagementSystem.domain.model.enums.VehicleType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface VehicleProvider {
@@ -14,13 +15,9 @@ public interface VehicleProvider {
 
     Optional<Vehicle> findById(Long id);
 
-    Optional<Vehicle> findByLicensePlate(String licensePlate);
-
-    List<Vehicle> findByCustomerId(Long customerId);
-
-    List<Vehicle> findByVehicleType(VehicleType type);
-
-    List<Vehicle> findAll();
+    Page<Vehicle> searchByLicensePlateOrDNI(String query, Pageable  pageable);
+    Page<Vehicle> findByVehicleType(VehicleType type,Pageable pageable);
+    Page<Vehicle> findAll(Pageable pageable);
 
     void deleteById(Long id);
 }

@@ -12,4 +12,5 @@ import lombok.*;
 public class Brand {
     private Long id;
     private String name;  // Honda, Ford, Toyota...
+    private Boolean hasModels;
 }

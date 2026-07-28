@@ -7,9 +7,10 @@ import com.arielzarate.GarageManagementSystem.infraestructure.adapters.mappers.V
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.entities.*;
 import com.arielzarate.GarageManagementSystem.infraestructure.persistence.repositories.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -27,7 +28,6 @@ public class VehicleAdapter implements VehicleProvider {
     public Vehicle create(Vehicle vehicle) {
         BrandEntity brand = brandRepository.findById(vehicle.getBrand().getId()).get();
         ModelEntity model = modelRepository.findById(vehicle.getModel().getId()).get();
-        //vehicle.setVehicleType(model.getVehicleType());
         VersionEntity version = vehicle.getVersion() != null
                 ? versionRepository.findById(vehicle.getVersion().getId()).get()
                 : null;
@@ -65,32 +65,23 @@ public class VehicleAdapter implements VehicleProvider {
     }
 
     @Override
-    public Optional<Vehicle> findByLicensePlate(String licensePlate) {
-        return repository.findByLicensePlate(licensePlate).map(mapper::toDomain);
+    public Page<Vehicle> searchByLicensePlateOrDNI(String query, Pageable pageable) {
+        return repository.searchByLicensePlateOrDNI(query,pageable)
+                .map(mapper::toDomain);
+    }
+
+
+    @Override
+    public Page<Vehicle> findByVehicleType(VehicleType type,Pageable pageable) {
+        return repository.findByVehicleType(type,pageable)
+                .map(mapper::toDomain);
+
     }
 
     @Override
-    public List<Vehicle> findByCustomerId(Long customerId) {
-        return repository.findByCustomerId(customerId)
-                .stream()
-                .map(mapper::toDomain)
-                .toList();
-    }
-
-    @Override
-    public List<Vehicle> findByVehicleType(VehicleType type) {
-        return repository.findByVehicleType(type)
-                .stream()
-                .map(mapper::toDomain)
-                .toList();
-    }
-
-    @Override
-    public List<Vehicle> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::toDomain)
-                .toList();
+    public Page<Vehicle> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toDomain);
     }
 
     @Override
